@@ -12,6 +12,9 @@ public class PlayerController : MonoBehaviour
 	private float moveDist = 1f;
 	private bool isMoving = false;
 
+	[SerializeField]
+	private CritterController child;
+
 	private void Start()
 	{
 		currentMoveTimer = defaultMoveTimer;
@@ -56,6 +59,7 @@ public class PlayerController : MonoBehaviour
 		Vector3 startPos = transform.position;
 		Vector3 targetPos = startPos + direction * moveDist;
 
+		child.Move(startPos);
 		transform.LookAt(targetPos);
 
 		float jumpHeight = 0.5f;
