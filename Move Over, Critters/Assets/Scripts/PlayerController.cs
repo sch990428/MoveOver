@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
 	private Vector3 direction = Vector3.forward;
 	private float defaultMoveTimer = 0.3f; 
 	private float currentMoveTimer;
+	private float moveDist = 1f;
 	private bool isMoving = false;
 
 	private void Start()
@@ -53,7 +54,7 @@ public class PlayerController : MonoBehaviour
 		isMoving = true;
 
 		Vector3 startPos = transform.position;
-		Vector3 targetPos = startPos + direction;
+		Vector3 targetPos = startPos + direction * moveDist;
 
 		transform.LookAt(targetPos);
 
