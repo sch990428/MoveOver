@@ -9,6 +9,8 @@ public class PlayerController : CritterController
 	private float currentMoveTimer;
 	private float moveDist = 1f;
 
+	public GameObject Projectile;
+
 	private void Start()
 	{
 		currentMoveTimer = defaultMoveTimer;
@@ -43,6 +45,14 @@ public class PlayerController : CritterController
 		else if (Input.GetKeyUp(KeyCode.D))
 		{
 			direction = Vector3.right;
+		}
+
+		if (Input.GetKeyUp(KeyCode.Space))
+		{
+			Vector3 muzzlePos = transform.position;
+			muzzlePos.y = 1f;
+			GameObject go = Instantiate(Projectile, muzzlePos, Quaternion.identity);
+			go.GetComponent<ProjectileController>().dir = direction;
 		}
 	}
 }
