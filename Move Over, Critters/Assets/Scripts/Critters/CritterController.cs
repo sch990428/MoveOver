@@ -10,6 +10,7 @@ public class CritterController : MonoBehaviour
 
 	// 플레이어 이동 관련;
 	protected bool isMoving = false;
+	protected bool godMode = true;
 
 	protected void Move(Vector3 targetPos)
 	{
@@ -49,10 +50,12 @@ public class CritterController : MonoBehaviour
 
 		transform.position = targetPos;
 		isMoving = false;
+		godMode = false;
 	}
 
 	protected void OnTriggerEnter(Collider other)
 	{
+		
 		if (other.transform.CompareTag("Item"))
 		{
 			Destroy(other.gameObject);
@@ -71,6 +74,13 @@ public class CritterController : MonoBehaviour
 			go = Instantiate((GameObject)Resources.Load("Prefabs/Items/Apple"));
 			go.transform.position = new Vector3(Random.Range(-10, 11), 1, Random.Range(-10, 11));
 		}
+		else if (other.transform.CompareTag("PlayerHead"))
+		{
+			if (!godMode)
+			{
+				Cut();
+			}
+		}
 	}
 
 	protected CritterController GetLastChild()
@@ -82,5 +92,38 @@ public class CritterController : MonoBehaviour
 		}
 
 		return current;
+	}
+
+	private void Cut()
+	{
+		if (parent != null)
+		{
+			parent.child = null;
+		}
+
+		if (child != null)
+		{
+			child.Cut();
+		}
+
+		Retire();
+	}
+
+	private void Retire()
+	{
+		Rigidbody rb = GetComponent<Rigidbody>();
+		rb.isKinematic = false;
+		rb.useGravity = true;
+
+		Vector3 randomDirection = new Vector3(
+					UnityEngine.Random.Range(-1f, 1f),
+					UnityEngine.Random.Range(0f, 1f),
+					UnityEngine.Random.Range(-1f, 1f)
+				).normalized;
+
+		rb.AddForce(randomDirection * 30, ForceMode.Impulse);
+		rb.AddTorque(randomDirection * 10, ForceMode.Impulse);
+		parent = null;
+		child = null;
 	}
 }
