@@ -4,30 +4,19 @@ using UnityEngine;
 public class CritterController : MonoBehaviour
 {
 	[SerializeField]
-	private CritterController child;
+	protected CritterController child;
 
 	// 플레이어 이동 관련;
-	private bool isMoving = false;
+	protected bool isMoving = false;
 
-	void Start()
-    {
-
-    }
-
-    void Update()
-    {
-
-    }
-
-	public void Move(Vector3 targetPos)
+	protected void Move(Vector3 targetPos)
 	{
 		StartCoroutine(MoveWithJump(targetPos));
 	}
 
-	private IEnumerator MoveWithJump(Vector3 targetPos)
+	protected IEnumerator MoveWithJump(Vector3 targetPos)
 	{
 		isMoving = true;
-		Debug.Log(targetPos);
 
 		Vector3 startPos = transform.position;
 
@@ -57,9 +46,6 @@ public class CritterController : MonoBehaviour
 		}
 
 		transform.position = targetPos;
-
-		
-
 		isMoving = false;
 	}
 }
