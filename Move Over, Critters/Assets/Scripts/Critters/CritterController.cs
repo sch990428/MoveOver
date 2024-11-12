@@ -33,7 +33,7 @@ public class CritterController : MonoBehaviour
 
 		transform.LookAt(lookPos);
 
-		float jumpHeight = 0.5f;
+		float jumpHeight = 0.3f;
 		float elapsedTime = 0;
 		float jumpDuration = 0.1f;
 
@@ -125,5 +125,7 @@ public class CritterController : MonoBehaviour
 		rb.AddTorque(randomDirection * 10, ForceMode.Impulse);
 		parent = null;
 		child = null;
+
+		Destroy(gameObject, 2f);
 	}
 }
