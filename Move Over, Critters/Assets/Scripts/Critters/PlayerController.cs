@@ -19,7 +19,7 @@ public class PlayerController : CritterController
 		// 일정 시간마다 이동
         if (!isMoving && currentMoveTimer < 0)
         {
-			Move(transform.position + direction);
+			Move(transform.position + direction * moveDist);
 			currentMoveTimer = defaultMoveTimer;
 		}
         else

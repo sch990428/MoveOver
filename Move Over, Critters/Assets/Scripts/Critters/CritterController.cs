@@ -48,4 +48,31 @@ public class CritterController : MonoBehaviour
 		transform.position = targetPos;
 		isMoving = false;
 	}
+
+	protected void OnTriggerEnter(Collider other)
+	{
+		if (other.transform.CompareTag("Item"))
+		{
+			Destroy(other.gameObject);
+			GameObject go = Instantiate((GameObject)Resources.Load("Prefabs/Critters/Chicken"));
+
+			CritterController tailCritter = GetLastChild();
+			go.transform.position = tailCritter.transform.position;
+			tailCritter.child = go.GetComponent<CritterController>();
+
+			go = Instantiate((GameObject)Resources.Load("Prefabs/Items/Apple"));
+			go.transform.position = new Vector3(Random.Range(-10, 11), 1, Random.Range(-10, 11));
+		}
+	}
+
+	protected CritterController GetLastChild()
+	{
+		CritterController current = this;
+		while (current.child != null)
+		{
+			current = current.child;
+		}
+
+		return current;
+	}
 }
