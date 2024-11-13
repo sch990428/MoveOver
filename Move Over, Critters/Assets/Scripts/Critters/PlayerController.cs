@@ -7,7 +7,7 @@ public class PlayerController : CritterController
 	private Vector3 direction = Vector3.forward;
 	private float defaultMoveTimer = 0.3f; 
 	private float currentMoveTimer;
-	private float moveDist = 1f;
+	private float moveDist = 2f;
 
 	public GameObject Projectile;
 

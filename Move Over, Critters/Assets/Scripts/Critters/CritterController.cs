@@ -33,7 +33,7 @@ public class CritterController : MonoBehaviour
 
 		transform.LookAt(lookPos);
 
-		float jumpHeight = 0.3f;
+		float jumpHeight = 0.5f;
 		float elapsedTime = 0;
 		float jumpDuration = 0.1f;
 
@@ -72,7 +72,7 @@ public class CritterController : MonoBehaviour
 			tailCritter.child = newChild;
 
 			go = Instantiate((GameObject)Resources.Load("Prefabs/Items/Apple"));
-			go.transform.position = new Vector3(Random.Range(-10, 11), 1, Random.Range(-10, 11));
+			go.transform.position = new Vector3(Random.Range(-5, 5) * 2, 1, Random.Range(-5, 5) * 2);
 		}
 		else if (other.transform.CompareTag("PlayerHead"))
 		{
