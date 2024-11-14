@@ -3,13 +3,7 @@ using UnityEngine;
 
 public class PoolManager : Singleton<PoolManager>
 {
-	public enum PoolableType
-	{
-		Player,
-		Projectile,
-	}
-
-	Dictionary<int, Data.Poolable> poolingDict;
+	public Dictionary<int, Data.Poolable> poolingDict;
 
 	protected override void Awake()
 	{
@@ -29,10 +23,42 @@ public class PoolManager : Singleton<PoolManager>
 			{
 				GameObject go = ResourceManager.Instance.Instantiate(poolPair.Value.ResourcePath);
 				go.transform.SetParent(transform);
-				go.name = ((PoolableType)poolPair.Key).ToString();
+				go.name = ((Define.PoolableType)poolPair.Key).ToString();
 				go.SetActive(false);
 				poolPair.Value.PoolingQueue.Enqueue(go);
 			}
+		}
+	}
+
+	public GameObject Instantiate(Define.PoolableType type)
+	{
+		GameObject go;
+
+		if (poolingDict[(int)type].PoolingQueue.Count != 0)
+		{
+			go = poolingDict[(int)type].PoolingQueue.Dequeue();
+			go.transform.SetParent(null);
+			go.SetActive(true);
+		}
+		else
+		{
+			go = ResourceManager.Instance.Instantiate(poolingDict[(int)type].ResourcePath);
+		}
+
+		return go;
+	}
+
+	public void Destroy(Define.PoolableType type, GameObject go)
+	{
+		if (poolingDict[(int)type].PoolingQueue.Count < poolingDict[(int)type].PoolingAmount)
+		{
+			go.SetActive(false);
+			poolingDict[(int)type].PoolingQueue.Enqueue(go);
+			go.transform.SetParent(transform);
+		}
+		else
+		{
+			ResourceManager.Instance.Destroy(go);
 		}
 	}
 }

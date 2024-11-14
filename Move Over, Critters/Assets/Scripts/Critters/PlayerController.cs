@@ -76,8 +76,7 @@ public class PlayerController : CritterController
 	{
 		if (other.transform.CompareTag("Item"))
 		{
-			Destroy(other.gameObject);
-			GameObject go = Instantiate((GameObject)Resources.Load("Prefabs/Critters/Rooster"));
+			GameObject go = PoolManager.Instance.Instantiate(Define.PoolableType.Player);
 
 			Vector3 createPos = Tails[Tails.Count - 1].transform.position;
 			createPos.y = 0.5f;
@@ -87,8 +86,7 @@ public class PlayerController : CritterController
 
 			Tails.Add(newChild);
 
-			go = Instantiate((GameObject)Resources.Load("Prefabs/Items/Apple"));
-			go.transform.position = new Vector3(Random.Range(-5, 5) * 2, 1, Random.Range(-5, 5) * 2);
+			other.transform.position = new Vector3(Random.Range(-5, 5) * 2, 1, Random.Range(-5, 5) * 2);
 		}
 	}
 }
