@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerController : CritterController
@@ -67,8 +68,10 @@ public class PlayerController : CritterController
 		{
 			Vector3 muzzlePos = transform.position;
 			muzzlePos.y = 1f;
-			GameObject go = Instantiate(Projectile, muzzlePos, Quaternion.identity);
+			GameObject go = PoolManager.Instance.Instantiate(Define.PoolableType.Projectile);
+			go.transform.position = muzzlePos;
 			go.GetComponent<ProjectileController>().dir = direction;
+			PoolManager.Instance.Destroy(Define.PoolableType.Projectile, go, 2f);
 		}
 	}
 
@@ -76,7 +79,7 @@ public class PlayerController : CritterController
 	{
 		if (other.transform.CompareTag("Item"))
 		{
-			GameObject go = PoolManager.Instance.Instantiate(Define.PoolableType.Player);
+			GameObject go = PoolManager.Instance.Instantiate(Define.PoolableType.PlayerTail);
 
 			Vector3 createPos = Tails[Tails.Count - 1].transform.position;
 			createPos.y = 0.5f;

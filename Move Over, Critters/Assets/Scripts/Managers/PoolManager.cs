@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,7 +10,6 @@ public class PoolManager : Singleton<PoolManager>
 	{
 		base.Awake();
 
-		poolingDict = new Dictionary<int, Data.Poolable>();
 		Init();
 	}
 
@@ -34,7 +34,7 @@ public class PoolManager : Singleton<PoolManager>
 	{
 		GameObject go;
 
-		if (poolingDict[(int)type].PoolingQueue.Count != 0)
+		if (poolingDict[(int)type].PoolingQueue.Count > 0)
 		{
 			go = poolingDict[(int)type].PoolingQueue.Dequeue();
 			go.transform.SetParent(null);
@@ -48,17 +48,24 @@ public class PoolManager : Singleton<PoolManager>
 		return go;
 	}
 
-	public void Destroy(Define.PoolableType type, GameObject go)
+	public void Destroy(Define.PoolableType type, GameObject go, float t = 0f)
 	{
+		StartCoroutine(EnqueueOrDestroy(type, go, t));
+	}
+
+	private IEnumerator EnqueueOrDestroy(Define.PoolableType type, GameObject go, float t)
+	{
+		yield return new WaitForSeconds(t);
 		if (poolingDict[(int)type].PoolingQueue.Count < poolingDict[(int)type].PoolingAmount)
 		{
 			go.SetActive(false);
+			go.name = type.ToString();
 			poolingDict[(int)type].PoolingQueue.Enqueue(go);
 			go.transform.SetParent(transform);
 		}
 		else
 		{
-			ResourceManager.Instance.Destroy(go);
+			ResourceManager.Instance.Destroy(go, t);
 		}
 	}
 }
