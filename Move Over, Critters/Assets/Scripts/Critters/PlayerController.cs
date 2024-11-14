@@ -77,7 +77,7 @@ public class PlayerController : CritterController
 		if (other.transform.CompareTag("Item"))
 		{
 			Destroy(other.gameObject);
-			GameObject go = Instantiate((GameObject)Resources.Load("Prefabs/Critters/Chicken"));
+			GameObject go = Instantiate((GameObject)Resources.Load("Prefabs/Critters/Rooster"));
 
 			Vector3 createPos = Tails[Tails.Count - 1].transform.position;
 			createPos.y = 0.5f;
