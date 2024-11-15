@@ -86,10 +86,23 @@ public class PlayerController : CritterController
 
 			go.transform.position = createPos;
 			CritterController newChild = go.GetComponent<CritterController>();
-
+			newChild.Order = Tails.Count;
 			Tails.Add(newChild);
 
 			other.transform.position = new Vector3(Random.Range(-5, 5) * 2, 1, Random.Range(-5, 5) * 2);
+		}
+		else if (other.transform.CompareTag("PlayerTail"))
+		{
+			CritterController collider = other.GetComponent<CritterController>();
+			if (collider.Order != 1)
+			{
+				for (int i = collider.Order; i < Tails.Count; i++)
+				{
+					Tails[i].GetComponent<Collider>().enabled = false;
+					Tails[i].Retire();
+				}
+				Tails.RemoveRange(collider.Order, Tails.Count - collider.Order);
+			}
 		}
 	}
 }
