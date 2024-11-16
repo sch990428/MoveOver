@@ -961,7 +961,7 @@ GameObject:
   - component: {fileID: 814474704092713222}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: PlayerHead
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1010,6 +1010,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prePos: {x: 0, y: 0, z: 0}
+  Order: 0
   Tails: []
   Projectile: {fileID: 6415164516589915943, guid: a1f596afde9d2c645b674a8bd7f394da, type: 3}
 --- !u!54 &814474704092713223

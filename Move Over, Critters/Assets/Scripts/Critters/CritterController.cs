@@ -24,17 +24,15 @@ public class CritterController : MonoBehaviour
 
 		transform.LookAt(lookPos);
 
-		float jumpHeight = 0.5f;
 		float elapsedTime = 0;
-		float jumpDuration = 0.1f;
+		float jumpDuration = 0.3f;
 
 		while (elapsedTime < jumpDuration)
 		{
 			elapsedTime += Time.deltaTime;
 			float t = elapsedTime / jumpDuration;
 
-			float height = Mathf.Sin(Mathf.PI * t) * jumpHeight;
-			transform.position = Vector3.Lerp(prePos, targetPos, t) + Vector3.up * height;
+			transform.position = Vector3.Lerp(prePos, targetPos, t);
 
 			yield return null;
 		}
@@ -57,6 +55,11 @@ public class CritterController : MonoBehaviour
 
 		rb.AddForce(randomDirection * 30, ForceMode.Impulse);
 		rb.AddTorque(randomDirection * 10, ForceMode.Impulse);
-		Destroy(gameObject, 2f);
+		PoolManager.Instance.Destroy(Define.PoolableType.PlayerTail, gameObject, 2f);
+
+		//rb.linearVelocity = Vector3.zero;
+		//rb.angularVelocity = Vector3.zero;
+		//rb.isKinematic = true;
+		//rb.useGravity = false;
 	}
 }

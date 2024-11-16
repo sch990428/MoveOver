@@ -7,8 +7,6 @@ public class PlayerController : CritterController
 {
 	// 플레이어 이동 관련
 	private Vector3 direction = Vector3.forward;
-	private float defaultMoveTimer = 0.3f; 
-	private float currentMoveTimer;
 	private float moveDist = 2f;
 
 	// 자식 관련
@@ -19,49 +17,32 @@ public class PlayerController : CritterController
 
 	private void Start()
 	{
-		currentMoveTimer = defaultMoveTimer;
 		Tails = new List<CritterController>();
 		Tails.Add(this);
 	}
 
     private void Update()
     {
-		// 일정 시간마다 이동
-        if (!isMoving && currentMoveTimer < 0)
-        {
-			Move(transform.position + direction * moveDist);
-
-			if (Tails.Count > 0)
-			{
-				for (int i = 1; i < Tails.Count; i++)
-				{
-					Tails[i].Move(Tails[i - 1].prePos);
-				}
-			}
-
-			currentMoveTimer = defaultMoveTimer;
-		}
-        else
-        {
-			currentMoveTimer -= Time.deltaTime;
-        }
-
 		// 방향 전환
-		if (Input.GetKeyUp(KeyCode.W))
+		if (Input.GetKey(KeyCode.W))
 		{
 			direction = Vector3.forward;
+			MoveWithChild();
 		}
-		else if (Input.GetKeyUp(KeyCode.S))
+		else if (Input.GetKey(KeyCode.S))
 		{
 			direction = Vector3.back;
+			MoveWithChild();
 		}
-		else if (Input.GetKeyUp(KeyCode.A))
+		else if (Input.GetKey(KeyCode.A))
 		{
 			direction = Vector3.left;
+			MoveWithChild();
 		}
-		else if (Input.GetKeyUp(KeyCode.D))
+		else if (Input.GetKey(KeyCode.D))
 		{
 			direction = Vector3.right;
+			MoveWithChild();
 		}
 
 		if (Input.GetKeyUp(KeyCode.Space))
@@ -72,6 +53,22 @@ public class PlayerController : CritterController
 			go.transform.position = muzzlePos;
 			go.GetComponent<ProjectileController>().dir = direction;
 			PoolManager.Instance.Destroy(Define.PoolableType.Projectile, go, 2f);
+		}
+	}
+
+	private void MoveWithChild()
+	{
+		if (!isMoving)
+		{
+			Move(transform.position + direction * moveDist);
+
+			if (Tails.Count > 0)
+			{
+				for (int i = 1; i < Tails.Count; i++)
+				{
+					Tails[i].Move(Tails[i - 1].prePos);
+				}
+			}
 		}
 	}
 
