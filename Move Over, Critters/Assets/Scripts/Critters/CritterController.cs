@@ -9,8 +9,17 @@ public class CritterController : MonoBehaviour
 
 	public int Order;
 
+	private void OnEnable()
+	{
+		transform.rotation = Quaternion.Euler(Vector3.forward);
+	}
+
 	public void Move(Vector3 targetPos)
 	{
+		Rigidbody rb = GetComponent<Rigidbody>();
+		rb.isKinematic = true;
+		rb.useGravity = false;
+
 		prePos = transform.position;
 		StartCoroutine(MoveWithJump(targetPos));
 	}
@@ -20,9 +29,9 @@ public class CritterController : MonoBehaviour
 		isMoving = true;
 
 		targetPos.y = 0.5f;
-		Vector3 lookPos = targetPos;
 
-		transform.LookAt(lookPos);
+		Vector3 lookDirection = (targetPos - transform.position).normalized;
+		Quaternion targetRotation = Quaternion.LookRotation(lookDirection);
 
 		float elapsedTime = 0;
 		float jumpDuration = 0.3f;
@@ -32,6 +41,7 @@ public class CritterController : MonoBehaviour
 			elapsedTime += Time.deltaTime;
 			float t = elapsedTime / jumpDuration;
 
+			transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, t);
 			transform.position = Vector3.Lerp(prePos, targetPos, t);
 
 			yield return null;

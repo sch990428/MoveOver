@@ -97,6 +97,7 @@ public class PlayerController : CritterController
 				{
 					Tails[i].GetComponent<Collider>().enabled = false;
 					Tails[i].Retire();
+					Tails[i].GetComponent<Collider>().enabled = true;
 				}
 				Tails.RemoveRange(collider.Order, Tails.Count - collider.Order);
 			}
