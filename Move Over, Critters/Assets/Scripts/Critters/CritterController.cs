@@ -66,10 +66,5 @@ public class CritterController : MonoBehaviour
 		rb.AddForce(randomDirection * 30, ForceMode.Impulse);
 		rb.AddTorque(randomDirection * 10, ForceMode.Impulse);
 		PoolManager.Instance.Destroy(Define.PoolableType.PlayerTail, gameObject, 2f);
-
-		//rb.linearVelocity = Vector3.zero;
-		//rb.angularVelocity = Vector3.zero;
-		//rb.isKinematic = true;
-		//rb.useGravity = false;
 	}
 }

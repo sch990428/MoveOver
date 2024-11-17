@@ -55,7 +55,11 @@ public class PoolManager : Singleton<PoolManager>
 
 	private IEnumerator EnqueueOrDestroy(Define.PoolableType type, GameObject go, float t)
 	{
-		yield return new WaitForSeconds(t);
+		yield return new WaitForSeconds(t / 4);
+		Rigidbody rb = go.GetComponent<Rigidbody>();
+		rb.linearVelocity = Vector3.zero;
+		rb.angularVelocity = Vector3.zero;
+		yield return new WaitForSeconds(t / 4 * 3);
 		if (poolingDict[(int)type].PoolingQueue.Count < poolingDict[(int)type].PoolingAmount)
 		{
 			go.SetActive(false);
