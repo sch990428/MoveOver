@@ -57,8 +57,11 @@ public class PoolManager : Singleton<PoolManager>
 	{
 		yield return new WaitForSeconds(t / 4);
 		Rigidbody rb = go.GetComponent<Rigidbody>();
-		rb.linearVelocity = Vector3.zero;
-		rb.angularVelocity = Vector3.zero;
+		if (rb != null)
+		{
+			rb.linearVelocity = Vector3.zero;
+			rb.angularVelocity = Vector3.zero;
+		}
 		yield return new WaitForSeconds(t / 4 * 3);
 		if (poolingDict[(int)type].PoolingQueue.Count < poolingDict[(int)type].PoolingAmount)
 		{
