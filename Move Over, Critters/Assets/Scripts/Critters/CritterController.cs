@@ -31,7 +31,8 @@ public class CritterController : MonoBehaviour
 		targetPos.y = 0.5f;
 
 		Vector3 lookDirection = (targetPos - transform.position).normalized;
-		Quaternion targetRotation = Quaternion.LookRotation(lookDirection);
+		Vector3 lookOffset = new Vector3(Random.Range(-0.2f, 0.2f), 0, Random.Range(-0.2f, 0.2f));
+		Quaternion targetRotation = Quaternion.LookRotation(lookDirection + lookOffset);
 
 		float elapsedTime = 0;
 		float jumpDuration = 0.3f;
