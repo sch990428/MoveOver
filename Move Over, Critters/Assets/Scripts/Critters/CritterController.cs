@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using TMPro;
 using UnityEngine;
 
 public class CritterController : MonoBehaviour
@@ -9,9 +10,12 @@ public class CritterController : MonoBehaviour
 
 	public int Order;
 
+	public TMP_Text text;
+
 	private void OnEnable()
 	{
 		transform.rotation = Quaternion.Euler(Vector3.forward);
+		
 	}
 
 	public void Move(Vector3 targetPos)
@@ -21,6 +25,11 @@ public class CritterController : MonoBehaviour
 		rb.useGravity = false;
 
 		prePos = transform.position;
+
+		if (text != null)
+		{
+			text.text = Order.ToString();
+		}
 		StartCoroutine(MoveWithJump(targetPos));
 	}
 

@@ -1011,8 +1011,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prePos: {x: 0, y: 0, z: 0}
   Order: 0
+  text: {fileID: 0}
   Tails: []
-  Projectile: {fileID: 6415164516589915943, guid: a1f596afde9d2c645b674a8bd7f394da, type: 3}
+  Projectile: {fileID: 2823692577009596860, guid: 523338cf0c93c2c4b88628cc553cb48c, type: 3}
 --- !u!54 &814474704092713223
 Rigidbody:
   m_ObjectHideFlags: 0
