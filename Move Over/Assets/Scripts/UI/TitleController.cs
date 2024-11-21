@@ -4,6 +4,7 @@ using UnityEngine;
 public class TitleController : MonoBehaviour
 {
     private bool isSwitching;
+	[SerializeField] private GameObject lobby;
 
     private void OnEnable()
 	{
@@ -31,5 +32,6 @@ public class TitleController : MonoBehaviour
 		GetComponent<Animator>().SetTrigger("Disable");
 		yield return new WaitForSeconds(1f);
         gameObject.SetActive(false);
+		lobby.SetActive(true);
 	}
 }
