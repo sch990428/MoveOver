@@ -1,9 +1,10 @@
 using System.Collections;
 using UnityEngine;
 
-public class TitleController : MonoBehaviour
+public class UIController : MonoBehaviour
 {
     private bool isSwitching;
+	[SerializeField] private GameObject title;
 	[SerializeField] private GameObject lobby;
 
     private void OnEnable()
@@ -29,9 +30,10 @@ public class TitleController : MonoBehaviour
 
 	private IEnumerator GoToLobby()
     {
-		GetComponent<Animator>().SetTrigger("Disable");
+		GetComponent<Animator>().SetTrigger("ToLobby");
 		yield return new WaitForSeconds(1f);
-        gameObject.SetActive(false);
+
+		title.SetActive(false);
 		lobby.SetActive(true);
 	}
 }
