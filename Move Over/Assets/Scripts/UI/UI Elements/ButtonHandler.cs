@@ -9,6 +9,7 @@ public class ButtonHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 	private Sprite normalImage;
 	private Color32 normalColor;
 	private bool isHover;
+	private bool isSelected;
 
 	[SerializeField]
 	private Sprite hoverImage;
@@ -19,49 +20,83 @@ public class ButtonHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 	[SerializeField]
 	private Color32 clickColor;
 
+	[SerializeField]
+	private UIController uiController;
+
+	[SerializeField]
+	private int index;
+
 	private void Awake()
     {
         buttonImage = GetComponent<Image>();
 		normalImage = buttonImage.sprite;
 		normalColor = buttonImage.color;
+		uiController.onSelectedChange -= OnSelected;
+		uiController.onSelectedChange += OnSelected;
     }
 
 	public void OnPointerEnter(PointerEventData eventData)
 	{
-		buttonImage.sprite = hoverImage;
-		buttonImage.color = hoverColor;
-		isHover = true;
+		if (!isSelected)
+		{
+			buttonImage.sprite = hoverImage;
+			buttonImage.color = hoverColor;
+			isHover = true;
+		}
 }
 
 	public void OnPointerExit(PointerEventData eventData)
 	{
-		buttonImage.sprite = normalImage;
-		buttonImage.color = normalColor;
-		isHover = false;
+		if (!isSelected)
+		{
+			buttonImage.sprite = normalImage;
+			buttonImage.color = normalColor;
+			isHover = false;
+		}
 	}
 
 	public void OnPointerDown(PointerEventData eventData)
 	{
-		buttonImage.color = clickColor;
+		if (!isSelected)
+		{
+			buttonImage.color = clickColor;
+		}
 	}
 
 	public void OnPointerUp(PointerEventData eventData)
 	{
-		if (isHover)
+		if (!isSelected)
 		{
-			buttonImage.sprite = hoverImage;
-			buttonImage.color = hoverColor;
+			if (isHover)
+			{
+				buttonImage.sprite = hoverImage;
+				buttonImage.color = hoverColor;
+			}
+			else
+			{
+				buttonImage.sprite = normalImage;
+				buttonImage.color = normalColor;
+			}
 		}
-		else
-		{
-			buttonImage.sprite = normalImage;
-			buttonImage.color = normalColor;
-		}
-		
 	}
 
 	public void OnPointerClick(PointerEventData eventData)
 	{
-		Debug.Log($"버튼 클릭 : {transform.GetChild(0).GetComponent<TMP_Text>().text}");
+		uiController.SwitchDetail(index);
+		//Debug.Log($"버튼 클릭 : {transform.GetChild(0).GetComponent<TMP_Text>().text}");
+	}
+
+	public void OnSelected(int i)
+	{
+		if (index == i)
+		{
+			buttonImage.color = clickColor;
+			isSelected = true;
+		}
+		else
+		{
+			buttonImage.color = normalColor;
+			isSelected = false;
+		}
 	}
 }

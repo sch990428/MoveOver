@@ -1,15 +1,19 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
 public class UIController : MonoBehaviour
 {
     private bool isSwitching;
+	private int selectedDetailID;
 	[SerializeField] private GameObject title;
 	[SerializeField] private GameObject lobby;
+	public Action<int> onSelectedChange;
 
     private void OnEnable()
 	{
-        isSwitching = true;
+		selectedDetailID = 0;
+		isSwitching = true;
 		StartCoroutine(InitTitle());
 	}
 
@@ -31,9 +35,14 @@ public class UIController : MonoBehaviour
 	private IEnumerator GoToLobby()
     {
 		GetComponent<Animator>().SetTrigger("ToLobby");
-		yield return new WaitForSeconds(1f);
-
-		title.SetActive(false);
 		lobby.SetActive(true);
+		onSelectedChange.Invoke(0);
+		yield return new WaitForSeconds(1f);
+	}
+
+	public void SwitchDetail(int index)
+	{
+		selectedDetailID = index;
+		onSelectedChange.Invoke(selectedDetailID);
 	}
 }
