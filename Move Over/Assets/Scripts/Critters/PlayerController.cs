@@ -64,12 +64,18 @@ public class PlayerController : MonoBehaviour
 
 	private IEnumerator Move()
 	{
-		isMoving = true;
-
 		Vector3 prePos = transform.position;
 		Vector3 destPos = transform.position + moveDir * moveDistance;
 		transform.rotation = Quaternion.LookRotation(moveDir);
 
+		Debug.DrawRay(prePos, moveDir, Color.red, 1f);
+		RaycastHit hit;
+        if (Physics.Raycast(prePos, moveDir, out hit, 1f, LayerMask.GetMask("Obstacle")))
+        {
+			Debug.Log(hit.collider.name);
+			yield break;
+        }
+		isMoving = true;
 		float elapsedTime = 0f;
 
 		while (elapsedTime < moveDuration)
