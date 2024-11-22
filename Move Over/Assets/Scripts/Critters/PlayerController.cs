@@ -92,6 +92,8 @@ public class PlayerController : MonoBehaviour
 
 	private void OnAttack()
 	{
-		Debug.Log("공격");
+		GameObject go = Instantiate(Resources.Load<GameObject>("Prefabs/Bomb"));
+		Vector3 pos = transform.position;
+		go.transform.position = new Vector3(Mathf.RoundToInt(pos.x), Mathf.RoundToInt(pos.y), Mathf.RoundToInt(pos.z));
 	}
 }
