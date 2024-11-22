@@ -1,77 +1,91 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-	private bool isMoving = false;
-	public Vector3 prePos;
+	public enum PlayerState
+	{
+		Idle,
+		Move,
+		Attack,
+	}
 
-	private Vector3 direction = Vector3.forward;
-	private float moveDist = 2f;
+	[SerializeField] private bool isMoving = false;
+
+	public PlayerState state;
+
+	private Vector3 moveDir = Vector3.zero;
+	[SerializeField] private float moveDuration = 0.3f;
+	[SerializeField] private float moveDistance = 1f;
 
 	private void Update()
 	{
-		if (Input.GetKey(KeyCode.W))
+		switch (state)
 		{
-			direction = Vector3.forward;
-			MoveWithChild();
-		}
-		else if (Input.GetKey(KeyCode.S))
-		{
-			direction = Vector3.back;
-			MoveWithChild();
-		}
-		else if (Input.GetKey(KeyCode.A))
-		{
-			direction = Vector3.left;
-			MoveWithChild();
-		}
-		else if (Input.GetKey(KeyCode.D))
-		{
-			direction = Vector3.right;
-			MoveWithChild();
+			case PlayerState.Move:
+				if (!isMoving)
+				{
+					StartCoroutine(Move());
+				}
+				break;
 		}
 	}
 
-	private void MoveWithChild()
+	private void OnMove(InputValue value)
 	{
-		if (!isMoving)
-		{
-			Move(transform.position + direction * moveDist);
+		Vector2 input = value.Get<Vector2>();
+
+        if (Mathf.Abs(input.x) > 0.5f && Mathf.Abs(input.y) > 0.5f)
+        {
+			// 대각선 입력 방지 규칙
+			if (Mathf.Abs(input.x) > Mathf.Abs(input.y))
+			{
+				input = new Vector2(input.x, 0); // 좌/우 우선
+			}
+			else
+			{
+				input = new Vector2(0, input.y); // 상/하 우선
+			}
 		}
+
+		moveDir = new Vector3(input.x, 0, input.y);
+
+		if (moveDir == Vector3.zero)
+		{
+			state = PlayerState.Idle;
+		}
+		else
+		{
+			state = PlayerState.Move;
+		}
+		moveDir.Normalize();
 	}
 
-	public void Move(Vector3 targetPos)
-	{
-		prePos = transform.position;
-		StartCoroutine(MoveWithJump(targetPos ));
-	}
-
-	protected IEnumerator MoveWithJump(Vector3 targetPos)
+	private IEnumerator Move()
 	{
 		isMoving = true;
 
-		targetPos.y = 0f;
+		Vector3 prePos = transform.position;
+		Vector3 destPos = transform.position + moveDir * moveDistance;
+		transform.rotation = Quaternion.LookRotation(moveDir);
 
-		Vector3 lookDirection = (targetPos - transform.position).normalized;
-		Vector3 lookOffset = new Vector3(Random.Range(-0.2f, 0.2f), 0, Random.Range(-0.2f, 0.2f));
-		Quaternion targetRotation = Quaternion.LookRotation(lookDirection + lookOffset);
+		float elapsedTime = 0f;
 
-		float elapsedTime = 0;
-		float jumpDuration = 0.3f;
-
-		while (elapsedTime < jumpDuration)
+		while (elapsedTime < moveDuration)
 		{
 			elapsedTime += Time.deltaTime;
-			float t = elapsedTime / jumpDuration;
-
-			transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, t);
-			transform.position = Vector3.Lerp(prePos, targetPos, t);
-
+			float t = elapsedTime / moveDuration;
+			transform.position = Vector3.Lerp(prePos, destPos, t);
 			yield return null;
 		}
-
-		transform.position = targetPos;
+		
+		transform.position = destPos;
 		isMoving = false;
+	}
+
+	private void OnAttack()
+	{
+		Debug.Log("공격");
 	}
 }
