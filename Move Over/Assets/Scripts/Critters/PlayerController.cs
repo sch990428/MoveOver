@@ -1,8 +1,9 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : CritterController
 {
 	public enum PlayerState
 	{
@@ -11,16 +12,25 @@ public class PlayerController : MonoBehaviour
 		Attack,
 	}
 
-	[SerializeField] private bool isMoving = false;
-
 	public PlayerState state;
 
 	private Vector3 moveDir = Vector3.zero;
 	[SerializeField] private float moveDuration = 0.3f;
 	[SerializeField] private float moveDistance = 1f;
 
+	public List<CritterController> Critters;
+
 	private void Update()
 	{
+		if (Input.GetKeyDown(KeyCode.X))
+		{
+			GameObject go = Instantiate((GameObject)Resources.Load("Prefabs/Critters/Rooster Critter"));
+			go.transform.position = transform.position;
+			CritterController c = go.GetComponent<CritterController>();
+			Critters.Add(c);
+			c.prePos = c.transform.position;
+		}
+
 		switch (state)
 		{
 			case PlayerState.Move:
@@ -64,7 +74,7 @@ public class PlayerController : MonoBehaviour
 
 	private IEnumerator Move()
 	{
-		Vector3 prePos = transform.position;
+		prePos = transform.position;
 		Vector3 destPos = transform.position + moveDir * moveDistance;
 		transform.rotation = Quaternion.LookRotation(moveDir);
 
@@ -78,6 +88,15 @@ public class PlayerController : MonoBehaviour
 		isMoving = true;
 		float elapsedTime = 0f;
 
+		if (Critters.Count > 0)
+		{
+			Critters[0].MoveTo(prePos, moveDuration);
+			for (int i = 1; i < Critters.Count; i++)
+			{
+				Critters[i].MoveTo(Critters[i - 1].prePos, moveDuration);
+			}
+		}
+
 		while (elapsedTime < moveDuration)
 		{
 			elapsedTime += Time.deltaTime;
@@ -86,6 +105,8 @@ public class PlayerController : MonoBehaviour
 			yield return null;
 		}
 		
+		
+
 		transform.position = destPos;
 		isMoving = false;
 	}
