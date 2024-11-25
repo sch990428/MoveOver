@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : CritterController
 {
+	// 플레이어 행동상태 관련
 	public enum PlayerState
 	{
 		Idle,
@@ -14,14 +15,17 @@ public class PlayerController : CritterController
 
 	public PlayerState state;
 
+	// 플레이어 이동 관련
 	private Vector3 moveDir = Vector3.zero;
 	[SerializeField] private float moveDuration = 0.3f;
 	[SerializeField] private float moveDistance = 1f;
 
+	// 플레이어 부하 관련
 	public List<CritterController> Critters;
 
 	private void Update()
 	{
+		// 테스트용 부하 생성
 		if (Input.GetKeyDown(KeyCode.X))
 		{
 			GameObject go = Instantiate((GameObject)Resources.Load("Prefabs/Critters/Rooster Critter"));
@@ -51,11 +55,11 @@ public class PlayerController : CritterController
 			// 대각선 입력 방지 규칙
 			if (Mathf.Abs(input.x) > Mathf.Abs(input.y))
 			{
-				input = new Vector2(input.x, 0); // 좌/우 우선
+				input = new Vector2(input.x, 0); // 좌우 우선
 			}
 			else
 			{
-				input = new Vector2(0, input.y); // 상/하 우선
+				input = new Vector2(0, input.y); // 상하 우선
 			}
 		}
 
@@ -78,6 +82,7 @@ public class PlayerController : CritterController
 		Vector3 destPos = transform.position + moveDir * moveDistance;
 		transform.rotation = Quaternion.LookRotation(moveDir);
 
+		// 충돌 처리
 		Debug.DrawRay(prePos, moveDir, Color.red, 1f);
 		RaycastHit hit;
         if (Physics.Raycast(prePos, moveDir, out hit, 1f, LayerMask.GetMask("Obstacle")))
@@ -85,9 +90,11 @@ public class PlayerController : CritterController
 			Debug.Log(hit.collider.name);
 			yield break;
         }
+
 		isMoving = true;
 		float elapsedTime = 0f;
 
+		// 부하들을 순차적으로 이동
 		if (Critters.Count > 0)
 		{
 			Critters[0].MoveTo(prePos, moveDuration);
@@ -97,6 +104,7 @@ public class PlayerController : CritterController
 			}
 		}
 
+		// 자기 자신 이동
 		while (elapsedTime < moveDuration)
 		{
 			elapsedTime += Time.deltaTime;
@@ -104,8 +112,6 @@ public class PlayerController : CritterController
 			transform.position = Vector3.Lerp(prePos, destPos, t);
 			yield return null;
 		}
-		
-		
 
 		transform.position = destPos;
 		isMoving = false;
