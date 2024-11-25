@@ -17,7 +17,7 @@ public class CritterController : MonoBehaviour
 		Vector3 prePos = transform.position;
 		Vector3 destDir = destPos - prePos;
 		destDir.Normalize();
-		transform.rotation = Quaternion.LookRotation(destDir);
+		Quaternion targetRotation = Quaternion.LookRotation(destDir);
 
 		isMoving = true;
 		float elapsedTime = 0f;
@@ -26,7 +26,10 @@ public class CritterController : MonoBehaviour
 		{
 			elapsedTime += Time.deltaTime;
 			float t = elapsedTime / moveDuration;
+
+			transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, t);
 			transform.position = Vector3.Lerp(prePos, destPos, t);
+
 			yield return null;
 		}
 

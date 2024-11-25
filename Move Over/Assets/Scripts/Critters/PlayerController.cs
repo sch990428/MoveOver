@@ -29,7 +29,18 @@ public class PlayerController : CritterController
 		if (Input.GetKeyDown(KeyCode.X))
 		{
 			GameObject go = Instantiate((GameObject)Resources.Load("Prefabs/Critters/Rooster Critter"));
-			go.transform.position = transform.position;
+
+			if (Critters.Count > 0)
+			{
+				go.transform.position = Critters[Critters.Count - 1].transform.position;
+				go.transform.rotation = Critters[Critters.Count - 1].transform.rotation;
+			}
+			else
+			{
+				go.transform.position = transform.position;
+				go.transform.rotation = transform.rotation;
+			}
+
 			CritterController c = go.GetComponent<CritterController>();
 			Critters.Add(c);
 			c.prePos = c.transform.position;
