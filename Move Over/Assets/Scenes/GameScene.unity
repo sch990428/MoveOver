@@ -1739,6 +1739,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Rooster
       objectReference: {fileID: 0}
+    - target: {fileID: 8801555700657945887, guid: 6aee58d62551a7647b978c664faab2c3, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
