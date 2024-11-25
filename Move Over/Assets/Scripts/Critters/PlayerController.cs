@@ -132,6 +132,6 @@ public class PlayerController : CritterController
 	{
 		GameObject go = Instantiate(Resources.Load<GameObject>("Prefabs/Bomb"));
 		Vector3 pos = transform.position + Vector3.up;
-		go.transform.position = new Vector3(Mathf.RoundToInt(pos.x), Mathf.RoundToInt(pos.y), Mathf.RoundToInt(pos.z));
+		go.GetComponent<BombController>().SetPosition(new Vector3(Mathf.RoundToInt(pos.x), Mathf.RoundToInt(pos.y), Mathf.RoundToInt(pos.z)));
 	}
 }
