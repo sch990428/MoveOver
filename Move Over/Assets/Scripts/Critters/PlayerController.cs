@@ -20,8 +20,18 @@ public class PlayerController : CritterController
 	[SerializeField] private float moveDuration = 0.3f;
 	[SerializeField] private float moveDistance = 1f;
 
+	// 플레이어 콜라이더 관련
+	private Collider playerCollider;
+	private float bombY;
+
 	// 플레이어 부하 관련
 	public List<CritterController> Critters;
+
+	private void Awake()
+	{
+		playerCollider = GetComponent<Collider>();
+		bombY = playerCollider.bounds.max.y;
+	}
 
 	private void Update()
 	{
@@ -51,7 +61,31 @@ public class PlayerController : CritterController
 			case PlayerState.Move:
 				if (!isMoving)
 				{
-					StartCoroutine(Move());
+					prePos = transform.position;
+					Vector3 destPos = transform.position + moveDir * moveDistance;
+
+					// 충돌 처리
+					Debug.DrawRay(prePos, moveDir, Color.red, 1f);
+					RaycastHit hit;
+					if (Physics.Raycast(prePos, moveDir, out hit, 1f, LayerMask.GetMask("Obstacle")))
+					{
+						Debug.Log(hit.collider.name);
+						break;
+					}
+
+					isMoving = true;
+
+					// 부하들을 순차적으로 이동
+					if (Critters.Count > 0)
+					{
+						Critters[0].MoveTo(prePos, moveDuration);
+						for (int i = 1; i < Critters.Count; i++)
+						{
+							Critters[i].MoveTo(Critters[i - 1].prePos, moveDuration);
+						}
+					}
+
+					StartCoroutine(Move(destPos, moveDuration));
 				}
 				break;
 		}
@@ -87,56 +121,17 @@ public class PlayerController : CritterController
 		moveDir.Normalize();
 	}
 
-	private IEnumerator Move()
-	{
-		prePos = transform.position;
-		Vector3 destPos = transform.position + moveDir * moveDistance;
-		transform.rotation = Quaternion.LookRotation(moveDir);
-
-		// 충돌 처리
-		Debug.DrawRay(prePos, moveDir, Color.red, 1f);
-		RaycastHit hit;
-        if (Physics.Raycast(prePos, moveDir, out hit, 1f, LayerMask.GetMask("Obstacle")))
-        {
-			Debug.Log(hit.collider.name);
-			yield break;
-        }
-
-		isMoving = true;
-		float elapsedTime = 0f;
-
-		// 부하들을 순차적으로 이동
-		if (Critters.Count > 0)
-		{
-			Critters[0].MoveTo(prePos, moveDuration);
-			for (int i = 1; i < Critters.Count; i++)
-			{
-				Critters[i].MoveTo(Critters[i - 1].prePos, moveDuration);
-			}
-		}
-
-		// 자기 자신 이동
-		while (elapsedTime < moveDuration)
-		{
-			elapsedTime += Time.deltaTime;
-			float t = elapsedTime / moveDuration;
-			transform.position = Vector3.Lerp(prePos, destPos, t);
-			yield return null;
-		}
-
-		transform.position = destPos;
-		isMoving = false;
-	}
-
 	private void OnAttack()
 	{
 		GameObject go = Instantiate(Resources.Load<GameObject>("Prefabs/Bomb"));
-		Vector3 pos = transform.position + Vector3.up;
-		go.GetComponent<BombController>().SetPosition(new Vector3(Mathf.RoundToInt(pos.x), Mathf.RoundToInt(pos.y), Mathf.RoundToInt(pos.z)));
+		Vector3 pos = transform.position;
+		pos.y = bombY;
+		go.GetComponent<BombController>().SetPosition(new Vector3(Mathf.RoundToInt(pos.x), pos.y, Mathf.RoundToInt(pos.z)));
+		StartCoroutine(Spin());
 	}
 
 	private void OnCollisionEnter(Collision collision)
 	{
-
+		
 	}
 }

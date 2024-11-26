@@ -16,7 +16,7 @@ public class CritterController : MonoBehaviour
 		}
 	}
 
-	private IEnumerator Spin()
+	protected IEnumerator Spin()
 	{
 		isSpinned = true;
 		float elapsedTime = 0f;
@@ -62,7 +62,7 @@ public class CritterController : MonoBehaviour
 		StartCoroutine(Move(destPos, moveDuration));
 	}
 
-	private IEnumerator Move(Vector3 destPos, float moveDuration)
+	protected IEnumerator Move(Vector3 destPos, float moveDuration)
 	{
 		Vector3 prePos = transform.position;
 		Vector3 destDir = destPos - prePos;
@@ -71,12 +71,11 @@ public class CritterController : MonoBehaviour
 
 		isMoving = true;
 		float elapsedTime = 0f;
-
 		while (elapsedTime < moveDuration)
 		{
 			elapsedTime += Time.deltaTime;
 			float t = elapsedTime / moveDuration;
-
+			
 			if (!isSpinned)
 			{
 				transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, t);
