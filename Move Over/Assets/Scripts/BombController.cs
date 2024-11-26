@@ -4,15 +4,19 @@ using UnityEngine;
 public class BombController : MonoBehaviour
 {
 	[SerializeField] GameObject RangeGridPrefab;
+	[SerializeField] GameObject ExplodePrefab;
 	public List<GameObject> ExplodeAreas;
 	
 	public Stack<Vector3> CandidatePosStack;
 
 	public int Wide;
 
+	public float Timer;
+
 	private void Awake()
 	{
 		CandidatePosStack = new Stack<Vector3>();
+		Timer = 3f;
 	}
 
 	public void SetPosition(Vector3 pos)
@@ -74,10 +78,26 @@ public class BombController : MonoBehaviour
 		GameObject go = Instantiate(RangeGridPrefab);
 		go.transform.position = newPos;
 		ExplodeAreas.Add(go);
+		Timer += 0.5f;
 	}
 
 	void Update()
     {
-        
+		if (Timer > 0)
+		{
+			Timer -= Time.deltaTime;
+		}
+		else
+		{
+			foreach(GameObject area in ExplodeAreas)
+			{
+				GameObject go = Instantiate(ExplodePrefab);
+				go.transform.position = area.transform.position;
+				Destroy(area);
+			}
+
+			Destroy(gameObject);
+		}
+
     }
 }
