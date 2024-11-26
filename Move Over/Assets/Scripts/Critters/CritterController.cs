@@ -10,7 +10,7 @@ public class CritterController : MonoBehaviour
 
 	private void OnCollisionEnter(Collision collision)
 	{
-		if (collision.transform.CompareTag("Bomb"))
+		if (collision.transform.CompareTag("Bomb") && !isSpinned)
 		{
 			StartCoroutine(Spin());
 		}
@@ -52,6 +52,8 @@ public class CritterController : MonoBehaviour
 			height = Mathf.Sin(t * Mathf.PI) * 0.3f;
 			yield return null;
 		}
+
+		height = 0;
 	}
 
 	public void MoveTo(Vector3 destPos, float moveDuration)

@@ -1743,6 +1743,14 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 8938424266411023283, guid: 6aee58d62551a7647b978c664faab2c3, type: 3}
+      propertyPath: m_Size.y
+      value: 0.7011933
+      objectReference: {fileID: 0}
+    - target: {fileID: 8938424266411023283, guid: 6aee58d62551a7647b978c664faab2c3, type: 3}
+      propertyPath: m_Center.y
+      value: 0.35059664
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
