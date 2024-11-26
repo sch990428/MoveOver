@@ -127,6 +127,7 @@ public class PlayerController : CritterController
 		Vector3 pos = transform.position;
 		pos.y = bombY;
 		go.GetComponent<BombController>().SetPosition(new Vector3(Mathf.RoundToInt(pos.x), pos.y, Mathf.RoundToInt(pos.z)));
+		bomb = go.GetComponent<BombController>();
 		StartCoroutine(Spin());
 	}
 

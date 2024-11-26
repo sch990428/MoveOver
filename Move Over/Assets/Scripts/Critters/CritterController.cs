@@ -7,11 +7,14 @@ public class CritterController : MonoBehaviour
 	public Vector3 prePos;
 	public float height;
 	public bool isSpinned = false;
+	protected BombController bomb;
 
 	private void OnCollisionEnter(Collision collision)
 	{
 		if (collision.transform.CompareTag("Bomb") && !isSpinned)
 		{
+			bomb = collision.transform.GetComponent<BombController>();
+			bomb.AddRange();
 			StartCoroutine(Spin());
 		}
 	}
