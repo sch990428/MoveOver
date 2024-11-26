@@ -134,4 +134,9 @@ public class PlayerController : CritterController
 		Vector3 pos = transform.position + Vector3.up;
 		go.GetComponent<BombController>().SetPosition(new Vector3(Mathf.RoundToInt(pos.x), Mathf.RoundToInt(pos.y), Mathf.RoundToInt(pos.z)));
 	}
+
+	private void OnCollisionEnter(Collision collision)
+	{
+
+	}
 }
