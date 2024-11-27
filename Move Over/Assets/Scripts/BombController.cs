@@ -92,11 +92,12 @@ public class BombController : MonoBehaviour
 			foreach(GameObject area in ExplodeAreas)
 			{
 				GameObject go = Instantiate(ExplodePrefab);
+				Camera.main.GetComponent<CameraController>().OnShakeCameraByPosition();
 				go.transform.position = area.transform.position;
 				Destroy(area);
 				Destroy(go, 1f);
 			}
-
+			SoundManager.Instance.PlaySound(SoundManager.GameSound.Explode);
 			Destroy(gameObject);
 		}
 

@@ -123,6 +123,7 @@ public class PlayerController : CritterController
 
 	private void OnAttack()
 	{
+		SoundManager.Instance.PlaySound(SoundManager.GameSound.CreateBomb);
 		GameObject go = Instantiate(Resources.Load<GameObject>("Prefabs/Bomb"));
 		Vector3 pos = transform.position;
 		pos.y = bombY;

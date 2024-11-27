@@ -15,6 +15,7 @@ public class CritterController : MonoBehaviour
 		{
 			bomb = collision.transform.GetComponent<BombController>();
 			bomb.AddRange();
+			SoundManager.Instance.PlaySound(SoundManager.GameSound.EnhenceBomb);
 			StartCoroutine(Spin());
 		}
 	}
