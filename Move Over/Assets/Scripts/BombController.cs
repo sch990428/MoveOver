@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 using UnityEngine.UI;
 
 public class BombController : MonoBehaviour
@@ -8,6 +9,9 @@ public class BombController : MonoBehaviour
 	[SerializeField] GameObject RangeGridPrefab;
 	[SerializeField] GameObject ExplodePrefab;
 	[SerializeField] GameObject EnhencePrefab;
+
+	public PlayerController Player;
+
 	[SerializeField] private Image barImage;
 
 	public List<GameObject> ExplodeAreas;
@@ -78,7 +82,7 @@ public class BombController : MonoBehaviour
 				CandidatePosStack.Push(v);
 			}
 
-			Debug.Log($"범위 갱신{pos} / {CandidatePosStack.Count}");
+			// Debug.Log($"범위 갱신{pos} / {CandidatePosStack.Count}");
 		}
 
 		Vector3 newPos = CandidatePosStack.Pop();
@@ -102,14 +106,36 @@ public class BombController : MonoBehaviour
 		}
 		else
 		{
+			int minIndex = int.MaxValue;
 			foreach(GameObject area in ExplodeAreas)
 			{
 				GameObject go = Instantiate(ExplodePrefab);
 				Camera.main.GetComponent<CameraController>().OnShakeCameraByPosition();
 				go.transform.position = area.transform.position;
 				Destroy(area);
+
+				Collider[] hits = Physics.OverlapBox(area.transform.position, Vector3.one / 2, Quaternion.identity);
+				foreach (Collider hit in hits)
+				{
+					if (hit.CompareTag("Tail"))
+					{
+						CritterController c = hit.GetComponent<CritterController>();
+						if (!c.isRetire)
+						{
+							minIndex = Mathf.Min(c.Order, minIndex);
+						}
+					}
+					else if (hit.CompareTag("Player"))
+					{
+						minIndex = -1;
+					}
+				}
+
 				Destroy(go, 1f);
 			}
+
+			if (minIndex < int.MaxValue) { Player.Damage(minIndex); }
+			
 			SoundManager.Instance.PlaySound(SoundManager.GameSound.Explode);
 			Destroy(gameObject);
 		}

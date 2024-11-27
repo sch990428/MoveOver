@@ -23,6 +23,7 @@ public class CritterController : MonoBehaviour
 
 	private void OnCollisionEnter(Collision collision)
 	{
+		if (isRetire) { return; }
 		if (collision.transform.CompareTag("Bomb") && !isSpinned)
 		{
 			bomb = collision.transform.GetComponent<BombController>();
@@ -74,6 +75,8 @@ public class CritterController : MonoBehaviour
 
 	public void MoveTo(Vector3 destPos, float moveDuration)
 	{
+		if (isRetire) { return; }
+
 		prePos = transform.position;
 		StartCoroutine(Move(destPos, moveDuration));
 	}

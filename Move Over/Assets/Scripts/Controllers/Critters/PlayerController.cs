@@ -75,7 +75,7 @@ public class PlayerController : CritterController
 							break;
 						}
 					}
-					
+
 
 					isMoving = true;
 
@@ -99,8 +99,8 @@ public class PlayerController : CritterController
 	{
 		Vector2 input = value.Get<Vector2>();
 
-        if (Mathf.Abs(input.x) > 0.5f && Mathf.Abs(input.y) > 0.5f)
-        {
+		if (Mathf.Abs(input.x) > 0.5f && Mathf.Abs(input.y) > 0.5f)
+		{
 			// 대각선 입력 방지 규칙
 			if (Mathf.Abs(input.x) > Mathf.Abs(input.y))
 			{
@@ -133,6 +133,7 @@ public class PlayerController : CritterController
 		pos.y = bombY;
 		go.GetComponent<BombController>().SetPosition(new Vector3(Mathf.RoundToInt(pos.x), pos.y, Mathf.RoundToInt(pos.z)));
 		bomb = go.GetComponent<BombController>();
+		bomb.Player = this;
 		StartCoroutine(Spin());
 	}
 
@@ -142,8 +143,8 @@ public class PlayerController : CritterController
 		{
 			CritterController c = collision.transform.GetComponent<CritterController>();
 
-            if (!c.isBirth && !c.isRetire)
-            {
+			if (!c.isBirth && !c.isRetire)
+			{
 				int o = c.Order;
 
 				for (int i = o; i < Critters.Count; i++)
@@ -153,6 +154,39 @@ public class PlayerController : CritterController
 
 				Critters.RemoveRange(c.Order, Critters.Count - o);
 			}
+		}
+	}
+
+	public void Damage(int hitPoint)
+	{
+		if (hitPoint < 0)
+		{
+			if (Critters.Count > 0)
+			{
+				foreach (CritterController c in Critters)
+				{
+					c.Retire();
+				}
+
+				Critters.Clear();
+			}
+			else
+			{
+				Debug.Log("게임 오버");
+			}
+		}
+		else if (hitPoint > Critters.Count)
+		{
+			return;
+		}
+		else
+		{
+			for (int i = hitPoint; i < Critters.Count; i++)
+			{
+				Critters[i].Retire();
+			}
+
+			Critters.RemoveRange(hitPoint, Critters.Count - hitPoint);
 		}
 	}
 }
