@@ -78,7 +78,7 @@ public class BombController : MonoBehaviour
 		GameObject go = Instantiate(RangeGridPrefab);
 		go.transform.position = newPos;
 		ExplodeAreas.Add(go);
-		Timer += 0.5f;
+		Timer += 0.4f;
 	}
 
 	void Update()
@@ -94,6 +94,7 @@ public class BombController : MonoBehaviour
 				GameObject go = Instantiate(ExplodePrefab);
 				go.transform.position = area.transform.position;
 				Destroy(area);
+				Destroy(go, 1f);
 			}
 
 			Destroy(gameObject);
