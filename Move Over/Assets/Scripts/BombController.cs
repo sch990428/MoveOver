@@ -1,10 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BombController : MonoBehaviour
 {
 	[SerializeField] GameObject RangeGridPrefab;
 	[SerializeField] GameObject ExplodePrefab;
+	[SerializeField] private Image barImage;
+
 	public List<GameObject> ExplodeAreas;
 	
 	public Stack<Vector3> CandidatePosStack;
@@ -12,11 +15,13 @@ public class BombController : MonoBehaviour
 	public int Wide;
 
 	public float Timer;
+	public float MaxTimer;
 
 	private void Awake()
 	{
 		CandidatePosStack = new Stack<Vector3>();
 		Timer = 3f;
+		MaxTimer = 3f;
 	}
 
 	public void SetPosition(Vector3 pos)
@@ -78,11 +83,14 @@ public class BombController : MonoBehaviour
 		GameObject go = Instantiate(RangeGridPrefab);
 		go.transform.position = newPos;
 		ExplodeAreas.Add(go);
-		Timer += 0.4f;
+		MaxTimer += 0.3f;
+		Timer += 0.3f;
 	}
 
 	void Update()
     {
+		barImage.fillAmount = Timer / MaxTimer;
+
 		if (Timer > 0)
 		{
 			Timer -= Time.deltaTime;
