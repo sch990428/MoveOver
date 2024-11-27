@@ -7,7 +7,19 @@ public class CritterController : MonoBehaviour
 	public Vector3 prePos;
 	public float height;
 	public bool isSpinned = false;
+	public bool isBirth = true;
+	public bool isRetire = false;
 	protected BombController bomb;
+	public int Order;
+
+	public Rigidbody _rigidBody;
+	public Collider _collider;
+
+	private void Awake()
+	{
+		_collider = GetComponent<Collider>();
+		_rigidBody = GetComponent<Rigidbody>();
+	}
 
 	private void OnCollisionEnter(Collision collision)
 	{
@@ -92,5 +104,28 @@ public class CritterController : MonoBehaviour
 
 		transform.position = destPos;
 		isMoving = false;
+		if (isBirth) { isBirth = false; }
+	}
+
+	public void Retire()
+	{
+		if (!isRetire)
+		{
+			isRetire = true;
+			Collider collider = GetComponent<Collider>();
+			Rigidbody rb = GetComponent<Rigidbody>();
+
+			rb.useGravity = true;
+			rb.constraints = RigidbodyConstraints.None;
+
+			Vector3 randomDirection = new Vector3(
+						UnityEngine.Random.Range(-1f, 1f),
+						UnityEngine.Random.Range(0f, 1f),
+						UnityEngine.Random.Range(-1f, 1f)
+					).normalized;
+
+			rb.AddForce(randomDirection * 20, ForceMode.Impulse);
+			rb.AddTorque(randomDirection * 2, ForceMode.Impulse);
+		}
 	}
 }

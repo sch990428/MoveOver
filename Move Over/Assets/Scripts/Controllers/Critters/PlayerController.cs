@@ -52,6 +52,7 @@ public class PlayerController : CritterController
 			}
 
 			CritterController c = go.GetComponent<CritterController>();
+			c.Order = Critters.Count;
 			Critters.Add(c);
 			c.prePos = c.transform.position;
 		}
@@ -67,11 +68,14 @@ public class PlayerController : CritterController
 					// 충돌 처리
 					Debug.DrawRay(prePos, moveDir, Color.red, 1f);
 					RaycastHit hit;
-					if (Physics.Raycast(prePos, moveDir, out hit, 1f, LayerMask.GetMask("Obstacle")))
+					if (Physics.Raycast(prePos, moveDir, out hit, 1f))
 					{
-						Debug.Log(hit.collider.name);
-						break;
+						if (hit.collider.CompareTag("Wall") || hit.collider.CompareTag("Bomb"))
+						{
+							break;
+						}
 					}
+					
 
 					isMoving = true;
 
@@ -134,6 +138,21 @@ public class PlayerController : CritterController
 
 	private void OnCollisionEnter(Collision collision)
 	{
-		
+		if (collision.gameObject.CompareTag("Tail"))
+		{
+			CritterController c = collision.transform.GetComponent<CritterController>();
+
+            if (!c.isBirth && !c.isRetire)
+            {
+				int o = c.Order;
+
+				for (int i = o; i < Critters.Count; i++)
+				{
+					Critters[i].Retire();
+				}
+
+				Critters.RemoveRange(c.Order, Critters.Count - o);
+			}
+		}
 	}
 }

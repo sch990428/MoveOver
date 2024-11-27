@@ -26,7 +26,6 @@ public class CameraController : MonoBehaviour
 	{
 		this.shakeTime = shakeTime;
 		this.shakeIntensity = shakeIntensity;
-		Debug.Log(gameObject.name);
 
 		StopCoroutine(ShakeByPosition());
 		StartCoroutine(ShakeByPosition());
