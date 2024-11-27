@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,6 +7,7 @@ public class BombController : MonoBehaviour
 {
 	[SerializeField] GameObject RangeGridPrefab;
 	[SerializeField] GameObject ExplodePrefab;
+	[SerializeField] GameObject EnhencePrefab;
 	[SerializeField] private Image barImage;
 
 	public List<GameObject> ExplodeAreas;
@@ -62,7 +64,7 @@ public class BombController : MonoBehaviour
 				CandidatePosList.Add(new Vector3(pos.x + x, 0.01f, pos.z + r)); 
 			}
 
-			// 필요시 셔플
+			// 셔플
 			
 			for (int i = CandidatePosList.Count - 1; i > 0; i--)
 			{
@@ -81,6 +83,9 @@ public class BombController : MonoBehaviour
 
 		Vector3 newPos = CandidatePosStack.Pop();
 		GameObject go = Instantiate(RangeGridPrefab);
+		GameObject effect = Instantiate(EnhencePrefab);
+		effect.transform.position = transform.position;
+		Destroy(effect, 0.5f);
 		go.transform.position = newPos;
 		ExplodeAreas.Add(go);
 		MaxTimer += 0.3f;
