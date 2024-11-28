@@ -19,7 +19,6 @@ public class PoolManager : Singleton<PoolManager>
 		
 		foreach (var poolPair in poolingDict)
 		{
-			Debug.Log(poolPair.Value.PoolingAmount);
 			for (int i = 0; i < poolPair.Value.PoolingAmount; i++)
 			{
 				GameObject go = ResourceManager.Instance.Instantiate(poolPair.Value.ResourcePath);

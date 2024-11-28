@@ -117,7 +117,7 @@ public class BombController : MonoBehaviour
 			go.transform.position = area.transform.position;
 			PoolManager.Instance.Destroy(Define.PoolableType.WarningGrid, area);
 
-			Collider[] hits = Physics.OverlapBox(area.transform.position, Vector3.one / 2, Quaternion.identity, LayerMask.GetMask("Critter"));
+			Collider[] hits = Physics.OverlapBox(area.transform.position, Vector3.one / 2, Quaternion.identity, LayerMask.GetMask("Critter", "Obstacle"));
 			foreach (Collider hit in hits)
 			{
 				if (hit.CompareTag("Tail"))
@@ -131,6 +131,11 @@ public class BombController : MonoBehaviour
 				else if (hit.CompareTag("Player"))
 				{
 					minIndex = -1;
+				}
+				else if (hit.CompareTag("Explodable"))
+				{
+					Explodable e = hit.GetComponent<Explodable>();
+					e.Explode();
 				}
 			}
 

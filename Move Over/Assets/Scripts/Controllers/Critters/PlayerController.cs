@@ -73,7 +73,7 @@ public class PlayerController : CritterController
 					RaycastHit hit;
 					if (Physics.Raycast(prePos, moveDir, out hit, 1f))
 					{
-						if (hit.collider.CompareTag("Wall") || hit.collider.CompareTag("Bomb"))
+						if (hit.collider.CompareTag("Wall") || hit.collider.CompareTag("Bomb") || hit.collider.CompareTag("Explodable"))
 						{
 							break;
 						}
