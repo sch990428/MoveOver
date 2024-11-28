@@ -109,7 +109,7 @@ public class BombController : MonoBehaviour
 			int minIndex = int.MaxValue;
 			Physics.SyncTransforms();
 			float n = Wide / 15f;
-			Debug.Log(n);
+			// Debug.Log(n);
 			Camera.main.GetComponent<CameraController>().OnShakeCameraByPosition(n, n);
 			foreach (GameObject area in ExplodeAreas)
 			{
