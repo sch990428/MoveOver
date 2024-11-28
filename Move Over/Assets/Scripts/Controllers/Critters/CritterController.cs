@@ -118,16 +118,20 @@ public class CritterController : MonoBehaviour
 			Collider collider = GetComponent<Collider>();
 			Rigidbody rb = GetComponent<Rigidbody>();
 
-			rb.useGravity = true;
 			rb.constraints = RigidbodyConstraints.None;
+			collider.enabled = false;
 
-			Vector3 randomDirection = new Vector3(
-						UnityEngine.Random.Range(-1f, 1f),
-						UnityEngine.Random.Range(0f, 1f),
-						UnityEngine.Random.Range(-1f, 1f)
-					).normalized;
+			Vector3 randomDirection = new Vector3(Random.Range(0.5f, 1f), 1f, Random.Range(0.5f, 1f));
 
-			rb.AddForce(randomDirection * 20, ForceMode.Impulse);
+			int r = Random.Range(0, 2);
+			if (r == 0) { 
+				randomDirection = -randomDirection; 
+				randomDirection.y = 1f;
+			}
+
+			randomDirection = randomDirection.normalized;
+
+			rb.AddForce(randomDirection * 40, ForceMode.Impulse);
 			rb.AddTorque(randomDirection * 2, ForceMode.Impulse);
 		}
 	}

@@ -27,6 +27,9 @@ public class PlayerController : CritterController
 	// 플레이어 부하 관련
 	public List<CritterController> Critters;
 
+	// 플레이어 이펙트 관련
+	[SerializeField] private GameObject MeleeDamageEffect;
+
 	private void Awake()
 	{
 		playerCollider = GetComponent<Collider>();
@@ -145,6 +148,10 @@ public class PlayerController : CritterController
 
 			if (!c.isBirth && !c.isRetire)
 			{
+				GameObject go = Instantiate(MeleeDamageEffect);
+				go.transform.position = transform.position;
+				Destroy(go, 1f);
+
 				int o = c.Order;
 
 				for (int i = o; i < Critters.Count; i++)
