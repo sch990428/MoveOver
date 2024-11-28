@@ -121,18 +121,20 @@ public class CritterController : MonoBehaviour
 			rb.constraints = RigidbodyConstraints.None;
 			collider.enabled = false;
 
-			Vector3 randomDirection = new Vector3(Random.Range(0.5f, 1f), 1f, Random.Range(0.5f, 1f));
+			Vector3 randomDirection = new Vector3(Random.Range(0.5f, 1f), 0f, Random.Range(0.5f, 1f));
 
 			int r = Random.Range(0, 2);
 			if (r == 0) { 
 				randomDirection = -randomDirection; 
-				randomDirection.y = 1f;
 			}
 
 			randomDirection = randomDirection.normalized;
+			randomDirection.y = 1f;
 
 			rb.AddForce(randomDirection * 40, ForceMode.Impulse);
-			rb.AddTorque(randomDirection * 2, ForceMode.Impulse);
+			rb.AddTorque(randomDirection * 5, ForceMode.Impulse);
+
+			Destroy(gameObject, 1f);
 		}
 	}
 }

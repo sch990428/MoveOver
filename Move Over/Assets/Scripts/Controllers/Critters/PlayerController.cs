@@ -153,7 +153,7 @@ public class PlayerController : CritterController
 				Destroy(go, 1f);
 
 				int o = c.Order;
-
+				Camera.main.GetComponent<CameraController>().OnShakeCameraByPosition(0.3f, 0.3f);
 				for (int i = o; i < Critters.Count; i++)
 				{
 					Critters[i].Retire();
