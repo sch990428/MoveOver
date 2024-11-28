@@ -37,7 +37,7 @@ public class BombController : MonoBehaviour
 		{
 			for (int z = -1; z <= 1; z++)
 			{
-				GameObject go = Instantiate(RangeGridPrefab);
+				GameObject go = PoolManager.Instance.Instantiate(Define.PoolableType.WarningGrid);
 				go.transform.position = new Vector3(pos.x + x, 0.01f, pos.z + z);
 				ExplodeAreas.Add(go);
 			}
@@ -86,7 +86,7 @@ public class BombController : MonoBehaviour
 		}
 
 		Vector3 newPos = CandidatePosStack.Pop();
-		GameObject go = Instantiate(RangeGridPrefab);
+		GameObject go = PoolManager.Instance.Instantiate(Define.PoolableType.WarningGrid);
 		GameObject effect = Instantiate(EnhencePrefab);
 		effect.transform.position = transform.position;
 		Destroy(effect, 0.5f);
@@ -113,9 +113,9 @@ public class BombController : MonoBehaviour
 		Camera.main.GetComponent<CameraController>().OnShakeCameraByPosition(n, n);
 		foreach (GameObject area in ExplodeAreas)
 		{
-			GameObject go = Instantiate(ExplodePrefab);
+			GameObject go = PoolManager.Instance.Instantiate(Define.PoolableType.ExplodeEffect);
 			go.transform.position = area.transform.position;
-			Destroy(area);
+			PoolManager.Instance.Destroy(Define.PoolableType.WarningGrid, area);
 
 			Collider[] hits = Physics.OverlapBox(area.transform.position, Vector3.one / 2, Quaternion.identity, LayerMask.GetMask("Critter"));
 			foreach (Collider hit in hits)
@@ -134,7 +134,7 @@ public class BombController : MonoBehaviour
 				}
 			}
 
-			Destroy(go, 1f);
+			PoolManager.Instance.Destroy(Define.PoolableType.ExplodeEffect, go, 1f);
 		}
 
 		if (minIndex < int.MaxValue)
@@ -143,9 +143,4 @@ public class BombController : MonoBehaviour
 		SoundManager.Instance.PlaySound(SoundManager.GameSound.Explode);
 		PoolManager.Instance.Destroy(Define.PoolableType.Bomb, gameObject);
 	}
-
-	void Update()
-    {
-
-    }
 }
