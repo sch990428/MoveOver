@@ -107,14 +107,16 @@ public class BombController : MonoBehaviour
 		else
 		{
 			int minIndex = int.MaxValue;
-			foreach(GameObject area in ExplodeAreas)
+			Physics.SyncTransforms();
+
+			foreach (GameObject area in ExplodeAreas)
 			{
 				GameObject go = Instantiate(ExplodePrefab);
 				Camera.main.GetComponent<CameraController>().OnShakeCameraByPosition();
 				go.transform.position = area.transform.position;
 				Destroy(area);
 
-				Collider[] hits = Physics.OverlapBox(area.transform.position, Vector3.one / 2, Quaternion.identity);
+				Collider[] hits = Physics.OverlapBox(area.transform.position, Vector3.one / 2, Quaternion.identity, LayerMask.GetMask("Critter"));
 				foreach (Collider hit in hits)
 				{
 					if (hit.CompareTag("Tail"))
