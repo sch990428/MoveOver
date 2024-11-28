@@ -15,10 +15,17 @@ public class CritterController : MonoBehaviour
 	public Rigidbody _rigidBody;
 	public Collider _collider;
 
-	private void Awake()
+	private void OnEnable()
 	{
 		_collider = GetComponent<Collider>();
 		_rigidBody = GetComponent<Rigidbody>();
+
+		_collider.enabled = true;
+		_rigidBody.constraints = RigidbodyConstraints.FreezeAll;
+
+		isSpinned = false;
+		isBirth = true;
+		isRetire = false;
 	}
 
 	private void OnCollisionEnter(Collision collision)
@@ -115,11 +122,9 @@ public class CritterController : MonoBehaviour
 		if (!isRetire)
 		{
 			isRetire = true;
-			Collider collider = GetComponent<Collider>();
-			Rigidbody rb = GetComponent<Rigidbody>();
 
-			rb.constraints = RigidbodyConstraints.None;
-			collider.enabled = false;
+			_rigidBody.constraints = RigidbodyConstraints.None;
+			_collider.enabled = false;
 
 			Vector3 randomDirection = new Vector3(Random.Range(0.5f, 1f), 0f, Random.Range(0.5f, 1f));
 
@@ -131,10 +136,10 @@ public class CritterController : MonoBehaviour
 			randomDirection = randomDirection.normalized;
 			randomDirection.y = 1f;
 
-			rb.AddForce(randomDirection * 40, ForceMode.Impulse);
-			rb.AddTorque(randomDirection * 5, ForceMode.Impulse);
+			_rigidBody.AddForce(randomDirection * 40, ForceMode.Impulse);
+			_rigidBody.AddTorque(randomDirection * 5, ForceMode.Impulse);
 
-			Destroy(gameObject, 1f);
+			PoolManager.Instance.Destroy(Define.PoolableType.Critter, gameObject, 1f);
 		}
 	}
 }

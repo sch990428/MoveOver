@@ -1,7 +1,6 @@
+using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 using UnityEngine.UI;
 
 public class BombController : MonoBehaviour
@@ -20,13 +19,12 @@ public class BombController : MonoBehaviour
 
 	public int Wide;
 
-	public float Timer;
 	public float MaxTimer;
 
-	private void Awake()
+	private void OnEnable()
 	{
+		ExplodeAreas = new List<GameObject>();
 		CandidatePosStack = new Stack<Vector3>();
-		Timer = 3f;
 		MaxTimer = 3f;
 	}
 
@@ -44,6 +42,8 @@ public class BombController : MonoBehaviour
 				ExplodeAreas.Add(go);
 			}
 		}
+
+		StartCoroutine(Explosion());
 	}
 
 	public void AddRange()
@@ -93,55 +93,59 @@ public class BombController : MonoBehaviour
 		go.transform.position = newPos;
 		ExplodeAreas.Add(go);
 		MaxTimer += 0.3f;
-		Timer += 0.3f;
+	}
+
+	public IEnumerator Explosion()
+	{
+		float Timer = 0f;
+
+		while (Timer < MaxTimer)
+		{
+			barImage.fillAmount = Timer / MaxTimer;
+			Timer += Time.deltaTime;
+			yield return null;
+		}
+
+		int minIndex = int.MaxValue;
+		Physics.SyncTransforms();
+		float n = Wide / 15f;
+		// Debug.Log(n);
+		Camera.main.GetComponent<CameraController>().OnShakeCameraByPosition(n, n);
+		foreach (GameObject area in ExplodeAreas)
+		{
+			GameObject go = Instantiate(ExplodePrefab);
+			go.transform.position = area.transform.position;
+			Destroy(area);
+
+			Collider[] hits = Physics.OverlapBox(area.transform.position, Vector3.one / 2, Quaternion.identity, LayerMask.GetMask("Critter"));
+			foreach (Collider hit in hits)
+			{
+				if (hit.CompareTag("Tail"))
+				{
+					CritterController c = hit.GetComponent<CritterController>();
+					if (!c.isRetire)
+					{
+						minIndex = Mathf.Min(c.Order, minIndex);
+					}
+				}
+				else if (hit.CompareTag("Player"))
+				{
+					minIndex = -1;
+				}
+			}
+
+			Destroy(go, 1f);
+		}
+
+		if (minIndex < int.MaxValue)
+		{ Player.Damage(minIndex); }
+
+		SoundManager.Instance.PlaySound(SoundManager.GameSound.Explode);
+		PoolManager.Instance.Destroy(Define.PoolableType.Bomb, gameObject);
 	}
 
 	void Update()
     {
-		barImage.fillAmount = Timer / MaxTimer;
-
-		if (Timer > 0)
-		{
-			Timer -= Time.deltaTime;
-		}
-		else
-		{
-			int minIndex = int.MaxValue;
-			Physics.SyncTransforms();
-			float n = Wide / 15f;
-			// Debug.Log(n);
-			Camera.main.GetComponent<CameraController>().OnShakeCameraByPosition(n, n);
-			foreach (GameObject area in ExplodeAreas)
-			{
-				GameObject go = Instantiate(ExplodePrefab);
-				go.transform.position = area.transform.position;
-				Destroy(area);
-
-				Collider[] hits = Physics.OverlapBox(area.transform.position, Vector3.one / 2, Quaternion.identity, LayerMask.GetMask("Critter"));
-				foreach (Collider hit in hits)
-				{
-					if (hit.CompareTag("Tail"))
-					{
-						CritterController c = hit.GetComponent<CritterController>();
-						if (!c.isRetire)
-						{
-							minIndex = Mathf.Min(c.Order, minIndex);
-						}
-					}
-					else if (hit.CompareTag("Player"))
-					{
-						minIndex = -1;
-					}
-				}
-
-				Destroy(go, 1f);
-			}
-
-			if (minIndex < int.MaxValue) { Player.Damage(minIndex); }
-			
-			SoundManager.Instance.PlaySound(SoundManager.GameSound.Explode);
-			Destroy(gameObject);
-		}
 
     }
 }

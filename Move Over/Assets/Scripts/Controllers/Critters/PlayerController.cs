@@ -41,7 +41,7 @@ public class PlayerController : CritterController
 		// 테스트용 부하 생성
 		if (Input.GetKeyDown(KeyCode.X))
 		{
-			GameObject go = ResourceManager.Instance.Instantiate("Prefabs/Critters/Rooster Critter");
+			GameObject go = PoolManager.Instance.Instantiate(Define.PoolableType.Critter);
 
 			if (Critters.Count > 0)
 			{
@@ -131,7 +131,7 @@ public class PlayerController : CritterController
 	private void OnAttack()
 	{
 		SoundManager.Instance.PlaySound(SoundManager.GameSound.CreateBomb);
-		GameObject go = ResourceManager.Instance.Instantiate("Prefabs/Bomb");
+		GameObject go = PoolManager.Instance.Instantiate(Define.PoolableType.Bomb);
 		Vector3 pos = transform.position;
 		pos.y = bombY;
 		go.GetComponent<BombController>().SetPosition(new Vector3(Mathf.RoundToInt(pos.x), pos.y, Mathf.RoundToInt(pos.z)));
