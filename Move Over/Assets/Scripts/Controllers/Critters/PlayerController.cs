@@ -80,17 +80,28 @@ public class PlayerController : CritterController
 					Vector3 destPos = transform.position + moveDir * moveDistance;
 
 					// 충돌 처리
-					Debug.DrawRay(prePos, moveDir, Color.red, 1f);
-					RaycastHit hit;
-					if (Physics.Raycast(prePos, moveDir, out hit, 1f))
-					{
-						if (hit.collider.CompareTag("Wall") || hit.collider.CompareTag("Bomb") || hit.collider.CompareTag("Explodable"))
+					Debug.DrawRay(destPos - Vector3.down * 0.1f, Vector3.up, Color.red, 1f);
+
+					Collider[] hits = Physics.OverlapBox(destPos, new Vector3(0.49f, 0.7f, 0.49f), Quaternion.identity, LayerMask.GetMask("Obstacle", "Explodable"));
+					bool isBlocked = false;
+					if (hits.Length > 0) {
+						foreach (Collider hit in hits)
 						{
-							break;
+							if (hit.CompareTag("Bomb"))
+							{
+								hit.GetComponent<BombController>().ForcedExplode();
+							}
+							else
+							{
+								isBlocked = true;
+							}
 						}
+
+						transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(destPos - prePos), 0.3f);
 					}
 
-
+					if (isBlocked)
+					{ break; }
 					isMoving = true;
 
 					// 부하들을 순차적으로 이동
