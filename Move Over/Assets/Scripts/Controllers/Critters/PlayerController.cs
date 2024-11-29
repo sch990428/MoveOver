@@ -1,3 +1,4 @@
+using Newtonsoft.Json.Bson;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -27,6 +28,12 @@ public class PlayerController : CritterController
 	// 플레이어 부하 관련
 	public List<CritterController> Critters;
 
+	// 플레이어 폭탄 관련
+	public int maxBomb;
+	public int currentBomb;
+	public bool bombEnable = true;
+	public float bombCooltime;
+
 	// 플레이어 이펙트 관련
 	[SerializeField] private GameObject MeleeDamageEffect;
 
@@ -34,6 +41,10 @@ public class PlayerController : CritterController
 	{
 		playerCollider = GetComponent<Collider>();
 		bombY = playerCollider.bounds.max.y;
+		maxBomb = 3;
+		currentBomb = 0;
+		bombEnable = true;
+		bombCooltime = 1f;
 	}
 
 	private void Update()
@@ -130,14 +141,24 @@ public class PlayerController : CritterController
 
 	private void OnAttack()
 	{
-		SoundManager.Instance.PlaySound(SoundManager.GameSound.CreateBomb);
-		GameObject go = PoolManager.Instance.Instantiate(Define.PoolableType.Bomb);
-		Vector3 pos = transform.position;
-		pos.y = bombY;
-		go.GetComponent<BombController>().SetPosition(new Vector3(Mathf.RoundToInt(pos.x), pos.y, Mathf.RoundToInt(pos.z)));
-		bomb = go.GetComponent<BombController>();
-		bomb.Player = this;
-		StartCoroutine(Spin());
+		if (currentBomb < maxBomb && bombEnable)
+		{
+			currentBomb++;
+			bombEnable = false;
+			SoundManager.Instance.PlaySound(SoundManager.GameSound.CreateBomb);
+			GameObject go = PoolManager.Instance.Instantiate(Define.PoolableType.Bomb);
+			Vector3 pos = transform.position;
+			pos.y = bombY;
+			go.GetComponent<BombController>().SetPosition(new Vector3(Mathf.RoundToInt(pos.x), pos.y, Mathf.RoundToInt(pos.z)));
+			bomb = go.GetComponent<BombController>();
+			bomb.Player = this;
+			StartCoroutine(Spin());
+			StartCoroutine(CreateBomb());
+		}
+		else
+		{
+			Debug.Log("불가");
+		}
 	}
 
 	private void OnCollisionEnter(Collision collision)
@@ -195,5 +216,11 @@ public class PlayerController : CritterController
 
 			Critters.RemoveRange(hitPoint, Critters.Count - hitPoint);
 		}
+	}
+
+	private IEnumerator CreateBomb()
+	{
+		yield return new WaitForSeconds(bombCooltime);
+		bombEnable = true;
 	}
 }

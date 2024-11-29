@@ -799,6 +799,7 @@ GameObject:
   - component: {fileID: 585625839}
   - component: {fileID: 585625838}
   - component: {fileID: 585625840}
+  - component: {fileID: 585625841}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -935,7 +936,7 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 0
+  m_RenderPostProcessing: 1
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
   m_StopNaN: 0
@@ -970,6 +971,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cameras:
   - {fileID: 1772712207}
+--- !u!114 &585625841
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 585625834}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IsGlobal: 1
+  priority: 0
+  blendDistance: 0
+  weight: 1
+  sharedProfile: {fileID: 11400000, guid: 10fc4df2da32a41aaa32d77bc913491c, type: 2}
 --- !u!1 &699780024
 GameObject:
   m_ObjectHideFlags: 0
@@ -1989,6 +2007,10 @@ MonoBehaviour:
   moveDuration: 0.3
   moveDistance: 1
   Critters: []
+  maxBomb: 0
+  currentBomb: 0
+  bombEnable: 1
+  bombCooltime: 0
   MeleeDamageEffect: {fileID: 180128, guid: fff00a2a4bf74c14d889e4e6949aa3f2, type: 3}
 --- !u!23 &877478291495033850
 MeshRenderer:
