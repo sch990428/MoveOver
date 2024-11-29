@@ -97,7 +97,7 @@ public class BombController : MonoBehaviour
 
 	public void ForcedExplode()
 	{
-		MaxTimer = 0f;
+		MaxTimer = 0.01f;
 	}
 
 	public IEnumerator Explosion()
