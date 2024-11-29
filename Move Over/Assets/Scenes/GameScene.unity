@@ -1903,7 +1903,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &858933529
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2244,6 +2244,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1024940921}
   - component: {fileID: 1024940922}
+  - component: {fileID: 1024940923}
   m_Layer: 0
   m_Name: 1-1 Env
   m_TagString: Untagged
@@ -2372,6 +2373,20 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1024940923
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1024940920}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5892ed7e64b019443aca11e85f326f6a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  size: 25
+  color: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1 &1086869249
 GameObject:
   m_ObjectHideFlags: 0
@@ -2677,6 +2692,7 @@ GameObject:
   - component: {fileID: 1420773768}
   - component: {fileID: 1420773767}
   - component: {fileID: 1420773771}
+  - component: {fileID: 1420773772}
   m_Layer: 5
   m_Name: UI Canvas
   m_TagString: Untagged
@@ -2781,6 +2797,28 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!95 &1420773772
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1420773766}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 672abde285ff35e44a1cdadb012c5d42, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1671706237
 GameObject:
   m_ObjectHideFlags: 0
