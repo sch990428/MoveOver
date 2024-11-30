@@ -1,16 +1,17 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class UIController : MonoBehaviour
 {
-    private bool isSwitching;
+	private bool isSwitching;
 	private int selectedDetailID;
 	[SerializeField] private GameObject title;
 	[SerializeField] private GameObject lobby;
 	public Action<int> onSelectedChange;
 
-    private void OnEnable()
+	private void OnEnable()
 	{
 		selectedDetailID = 0;
 		isSwitching = true;
@@ -18,13 +19,13 @@ public class UIController : MonoBehaviour
 	}
 
 	private void Update()
-    {
-        if (Input.anyKey && !isSwitching)
-        {
-            StartCoroutine(GoToLobby());
+	{
+		if (Input.anyKey && !isSwitching)
+		{
+			StartCoroutine(GoToLobby());
 			isSwitching = true;
 		}
-    }
+	}
 
 	private IEnumerator InitTitle()
 	{
@@ -33,7 +34,7 @@ public class UIController : MonoBehaviour
 	}
 
 	private IEnumerator GoToLobby()
-    {
+	{
 		GetComponent<Animator>().SetTrigger("ToLobby");
 		lobby.SetActive(true);
 		onSelectedChange.Invoke(0);
@@ -44,5 +45,17 @@ public class UIController : MonoBehaviour
 	{
 		selectedDetailID = index;
 		onSelectedChange.Invoke(selectedDetailID);
+	}
+
+	public void SwitchScene()
+	{
+		GetComponent<Animator>().SetTrigger("SwitchScene");
+		StartCoroutine(GoToScene());
+	}
+
+	private IEnumerator GoToScene()
+	{
+		yield return new WaitForSeconds(1f);
+		SceneManager.LoadScene("GameScene");
 	}
 }

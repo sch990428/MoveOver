@@ -85,7 +85,7 @@ public class ButtonHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 		uiController.SwitchDetail(index);
 		if (index == 3)
 		{
-			SceneManager.LoadScene("GameScene");
+			GlobalSceneManager.Instance.LoadScene("GameScene");
 		}
 		//Debug.Log($"버튼 클릭 : {transform.GetChild(0).GetComponent<TMP_Text>().text}");
 	}
