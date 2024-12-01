@@ -34,17 +34,28 @@ public class PlayerController : CritterController
 	public bool bombEnable = true;
 	public float bombCooltime;
 
+	// 코인 수집 관련 (추후 게임매니저로 이동)
+	public int maxCoin = 20;
+	public int currentCoin = 0;
+
 	// 플레이어 이펙트 관련
 	[SerializeField] private GameObject MeleeDamageEffect;
+
+	// UI 관련
+	[SerializeField] private GameUIController uiController;
 
 	private void Awake()
 	{
 		playerCollider = GetComponent<Collider>();
 		bombY = playerCollider.bounds.max.y;
-		maxBomb = 3;
+		maxBomb = 1;
 		currentBomb = 0;
 		bombEnable = true;
 		bombCooltime = 1f;
+
+		BombCountChange();
+		CoinCountChange();
+		CritterCountChange();
 	}
 
 	private void Update()
@@ -69,6 +80,7 @@ public class PlayerController : CritterController
 			c.Order = Critters.Count;
 			Critters.Add(c);
 			c.prePos = c.transform.position;
+			CritterCountChange();
 		}
 
 		switch (state)
@@ -165,6 +177,7 @@ public class PlayerController : CritterController
 			bomb.Player = this;
 			StartCoroutine(Spin());
 			StartCoroutine(CreateBomb());
+			BombCountChange();
 		}
 		else
 		{
@@ -192,6 +205,7 @@ public class PlayerController : CritterController
 				}
 
 				Critters.RemoveRange(c.Order, Critters.Count - o);
+				CritterCountChange();
 			}
 		}
 		else if (collision.gameObject.CompareTag("Item"))
@@ -231,11 +245,28 @@ public class PlayerController : CritterController
 
 			Critters.RemoveRange(hitPoint, Critters.Count - hitPoint);
 		}
+
+		CritterCountChange();
 	}
 
 	private IEnumerator CreateBomb()
 	{
 		yield return new WaitForSeconds(bombCooltime);
 		bombEnable = true;
+	}
+
+	public void BombCountChange()
+	{
+		uiController.UpdateBomb(maxBomb - currentBomb, maxBomb);
+	}
+
+	public void CritterCountChange()
+	{
+		uiController.UpdateCritter(Critters.Count + 1);
+	}
+
+	public void CoinCountChange()
+	{
+		uiController.UpdateCoin(currentCoin, maxCoin);
 	}
 }

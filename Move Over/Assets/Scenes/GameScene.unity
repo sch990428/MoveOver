@@ -1271,7 +1271,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   alpha: 0
-  type: 0
+  type: 1
+  Player: {fileID: 645680040535925260}
 --- !u!1 &405193377
 GameObject:
   m_ObjectHideFlags: 0
@@ -1419,6 +1420,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   alpha: 0
   type: 0
+  Player: {fileID: 645680040535925260}
 --- !u!1 &448665249
 GameObject:
   m_ObjectHideFlags: 0
@@ -4058,6 +4060,7 @@ GameObject:
   - component: {fileID: 1420773767}
   - component: {fileID: 1420773771}
   - component: {fileID: 1420773772}
+  - component: {fileID: 1420773773}
   m_Layer: 5
   m_Name: UI Canvas
   m_TagString: Untagged
@@ -4185,6 +4188,21 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1420773773
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1420773766}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aeaa1c68767b25f45957b376eca70140, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bombStatUI: {fileID: 997942214}
+  coinStatUI: {fileID: 1288431971}
+  critterStatUI: {fileID: 717112644}
 --- !u!1 &1671706237
 GameObject:
   m_ObjectHideFlags: 0
@@ -5551,7 +5569,7 @@ GameObject:
   - component: {fileID: 2099272628}
   - component: {fileID: 2099272633}
   m_Layer: 0
-  m_Name: Bomb Item (1)
+  m_Name: Bomb Item
   m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5683,6 +5701,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   alpha: 0
   type: 0
+  Player: {fileID: 645680040535925260}
 --- !u!114 &645680040535925260
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5712,7 +5731,10 @@ MonoBehaviour:
   currentBomb: 0
   bombEnable: 1
   bombCooltime: 0
+  maxCoin: 20
+  currentCoin: 0
   MeleeDamageEffect: {fileID: 180128, guid: fff00a2a4bf74c14d889e4e6949aa3f2, type: 3}
+  uiController: {fileID: 1420773773}
 --- !u!23 &877478291495033850
 MeshRenderer:
   m_ObjectHideFlags: 0

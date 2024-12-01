@@ -11,6 +11,7 @@ public class BaseItem : MonoBehaviour, IBaseItem
 {
 	[SerializeField] private float alpha;
 	[SerializeField] private Define.ItemType type;
+	[SerializeField] private PlayerController Player;
 
 	private Animator animator;
 	private Renderer _renderer;
@@ -42,14 +43,29 @@ public class BaseItem : MonoBehaviour, IBaseItem
 	{
 		if (!isCollected)
 		{
+			isCollected = true;
 			animator.SetTrigger("Collected");
+
+			switch (type)
+			{
+				case Define.ItemType.MaxBomb:
+					Player.maxBomb++;
+					Player.BombCountChange();
+					break;
+				case Define.ItemType.Coin:
+					Player.currentCoin++;
+					Player.CoinCountChange();
+					break;
+				case Define.ItemType.Critter:
+					break;
+			}
+			
 			StartCoroutine(Destroy());
 		}
 	}
 
 	protected IEnumerator Destroy()
 	{
-		isCollected = true;
 		yield return new WaitForSeconds(0.5f);
 		Destroy(gameObject);
 	}

@@ -152,6 +152,7 @@ public class BombController : MonoBehaviour
 
 		SoundManager.Instance.PlaySound(SoundManager.GameSound.Explode);
 		Player.currentBomb--;
+		Player.BombCountChange();
 		PoolManager.Instance.Destroy(Define.PoolableType.Bomb, gameObject);
 	}
 }
