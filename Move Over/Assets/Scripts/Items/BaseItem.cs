@@ -57,6 +57,7 @@ public class BaseItem : MonoBehaviour, IBaseItem
 					Player.CoinCountChange();
 					break;
 				case Define.ItemType.Critter:
+					Player.AddCritter();
 					break;
 			}
 			

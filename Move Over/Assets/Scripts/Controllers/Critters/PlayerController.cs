@@ -1,6 +1,7 @@
 using Newtonsoft.Json.Bson;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -63,24 +64,7 @@ public class PlayerController : CritterController
 		// 테스트용 부하 생성
 		if (Input.GetKeyDown(KeyCode.X))
 		{
-			GameObject go = PoolManager.Instance.Instantiate(Define.PoolableType.Critter);
-
-			if (Critters.Count > 0)
-			{
-				go.transform.position = Critters[Critters.Count - 1].transform.position;
-				go.transform.rotation = Critters[Critters.Count - 1].transform.rotation;
-			}
-			else
-			{
-				go.transform.position = transform.position;
-				go.transform.rotation = transform.rotation;
-			}
-
-			CritterController c = go.GetComponent<CritterController>();
-			c.Order = Critters.Count;
-			Critters.Add(c);
-			c.prePos = c.transform.position;
-			CritterCountChange();
+			AddCritter();
 		}
 
 		switch (state)
@@ -130,6 +114,28 @@ public class PlayerController : CritterController
 				}
 				break;
 		}
+	}
+
+	public void AddCritter()
+	{
+		GameObject go = PoolManager.Instance.Instantiate(Define.PoolableType.Critter);
+
+		if (Critters.Count > 0)
+		{
+			go.transform.position = Critters[Critters.Count - 1].transform.position;
+			go.transform.rotation = Critters[Critters.Count - 1].transform.rotation;
+		}
+		else
+		{
+			go.transform.position = transform.position;
+			go.transform.rotation = transform.rotation;
+		}
+
+		CritterController c = go.GetComponent<CritterController>();
+		c.Order = Critters.Count;
+		Critters.Add(c);
+		c.prePos = c.transform.position;
+		CritterCountChange();
 	}
 
 	private void OnMove(InputValue value)
