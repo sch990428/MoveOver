@@ -9,6 +9,9 @@ TagManager:
   - Tail
   - Obstacle
   - Explodable
+  - ItemBomb
+  - ItemCoin
+  - ItemCritter
   layers:
   - Default
   - TransparentFX
