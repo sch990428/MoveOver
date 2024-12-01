@@ -194,6 +194,10 @@ public class PlayerController : CritterController
 				Critters.RemoveRange(c.Order, Critters.Count - o);
 			}
 		}
+		else if (collision.gameObject.CompareTag("Item"))
+		{
+			collision.transform.GetComponent<IBaseItem>().Collected();
+		}
 	}
 
 	public void Damage(int hitPoint)

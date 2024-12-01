@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class UIController : MonoBehaviour
+public class LobbyUIController : MonoBehaviour
 {
 	private bool isSwitching;
 	private int selectedDetailID;

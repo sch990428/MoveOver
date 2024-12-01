@@ -9,4 +9,11 @@ public class Define
 		WarningGrid,
 		ExplodeEffect
 	}
+
+	public enum ItemType
+	{
+		MaxBomb,
+		Coin,
+		Critter
+	}
 }

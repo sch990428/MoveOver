@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class LobbyDetailHandler : MonoBehaviour
 {
-	[SerializeField] private UIController uiController;
+	[SerializeField] private LobbyUIController uiController;
 	[SerializeField] private List<GameObject> details;
 	int currentDetail;
 

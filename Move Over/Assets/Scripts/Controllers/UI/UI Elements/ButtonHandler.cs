@@ -21,7 +21,7 @@ public class ButtonHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 	private Color32 clickColor;
 
 	[SerializeField]
-	private UIController uiController;
+	private LobbyUIController uiController;
 
 	[SerializeField]
 	private int index;
