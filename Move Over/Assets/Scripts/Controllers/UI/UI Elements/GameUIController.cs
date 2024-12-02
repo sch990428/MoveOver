@@ -9,6 +9,7 @@ public class GameUIController : MonoBehaviour
 	[SerializeField] private TMP_Text critterStatUI;
 	[SerializeField] private TMP_Text chapterCode;
 	[SerializeField] private TMP_Text chapterName;
+	[SerializeField] private TMP_Text stageName;
 
 	private int currentStage;
 	private Data.BaseStage stage;
@@ -17,7 +18,7 @@ public class GameUIController : MonoBehaviour
 	{
 		currentStage = StageManager.Instance.currentStage;
 		stage = StageManager.Instance.StageDict[currentStage];
-
+		stageName.text = $"{stage.ChapterCode} - {stage.ChapterName}";
 		chapterCode.text = stage.ChapterCode;
 		chapterName.text = stage.ChapterName;
 	}
