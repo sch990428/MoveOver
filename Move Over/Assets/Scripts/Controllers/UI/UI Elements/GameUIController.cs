@@ -7,6 +7,20 @@ public class GameUIController : MonoBehaviour
 	[SerializeField] private TMP_Text bombStatUI;
 	[SerializeField] private TMP_Text coinStatUI;
 	[SerializeField] private TMP_Text critterStatUI;
+	[SerializeField] private TMP_Text chapterCode;
+	[SerializeField] private TMP_Text chapterName;
+
+	private int currentStage;
+	private Data.BaseStage stage;
+
+	private void Awake()
+	{
+		currentStage = StageManager.Instance.currentStage;
+		stage = StageManager.Instance.StageDict[currentStage];
+
+		chapterCode.text = stage.ChapterCode;
+		chapterName.text = stage.ChapterName;
+	}
 
 	public void UpdateBomb(int current, int max)
 	{
