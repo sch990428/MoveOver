@@ -51,13 +51,16 @@ public class BaseItem : MonoBehaviour, IBaseItem
 				case Define.ItemType.MaxBomb:
 					Player.maxBomb++;
 					Player.BombCountChange();
+					SoundManager.Instance.PlaySound(SoundManager.GameSound.CollectItem);
 					break;
 				case Define.ItemType.Coin:
 					Player.currentCoin++;
 					Player.CoinCountChange();
+					SoundManager.Instance.PlaySound(SoundManager.GameSound.CollectItem);
 					break;
 				case Define.ItemType.Critter:
 					Player.AddCritter();
+					SoundManager.Instance.PlaySound(SoundManager.GameSound.CollectCritter);
 					break;
 			}
 			

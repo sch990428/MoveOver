@@ -253,6 +253,7 @@ public class PlayerController : CritterController
 		}
 
 		CritterCountChange();
+		SoundManager.Instance.PlaySound(SoundManager.GameSound.Damage);
 	}
 
 	private IEnumerator CreateBomb()

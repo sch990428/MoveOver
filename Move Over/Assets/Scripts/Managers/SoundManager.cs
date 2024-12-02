@@ -14,6 +14,10 @@ public class SoundManager : Singleton<SoundManager>
 		CreateBomb,
 		EnhenceBomb,
 		Explode,
+		Damage,
+		CollectItem,
+		CollectCritter,
+		Break,
 	}
 
 	private Dictionary<GameSound, AudioClip> audioClipDict;
