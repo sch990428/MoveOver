@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -47,15 +48,8 @@ public class LobbyUIController : MonoBehaviour
 		onSelectedChange.Invoke(selectedDetailID);
 	}
 
-	public void SwitchScene()
+	public void StartGame(string scene)
 	{
-		GetComponent<Animator>().SetTrigger("SwitchScene");
-		StartCoroutine(GoToScene());
-	}
-
-	private IEnumerator GoToScene()
-	{
-		yield return new WaitForSeconds(1f);
-		SceneManager.LoadScene("GameScene");
+		GlobalSceneManager.Instance.LoadScene(scene);
 	}
 }
