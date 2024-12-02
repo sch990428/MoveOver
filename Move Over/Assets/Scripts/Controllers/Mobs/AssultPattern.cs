@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -185,7 +186,7 @@ public class AssultPattern : MonoBehaviour
 	}
 
 	// 경로를 따라 이동
-	System.Collections.IEnumerator MoveAlongPath(List<Vector2Int> path)
+	private IEnumerator MoveAlongPath(List<Vector2Int> path)
 	{
 		isMoving = true;
 
@@ -193,9 +194,14 @@ public class AssultPattern : MonoBehaviour
 		{
 			Vector3 targetPosition = new Vector3(position.x, transform.position.y, position.y);
 
+			Vector3 direction = (targetPosition - transform.position).normalized;
+			Quaternion targetRotation = Quaternion.LookRotation(direction, Vector3.up);
+
 			while (Vector3.Distance(transform.position, targetPosition) > 0.1f)
 			{
+				transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 20f * Time.deltaTime);
 				transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
+				
 				yield return null;
 			}
 
