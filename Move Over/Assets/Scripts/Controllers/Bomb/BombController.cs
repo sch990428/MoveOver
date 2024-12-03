@@ -18,6 +18,7 @@ public class BombController : MonoBehaviour
 	public Stack<Vector3> CandidatePosStack;
 
 	public int Wide;
+	public float Damage;
 
 	public float MaxTimer;
 
@@ -26,6 +27,7 @@ public class BombController : MonoBehaviour
 		ExplodeAreas = new List<GameObject>();
 		CandidatePosStack = new Stack<Vector3>();
 		MaxTimer = 3f;
+		Damage = 3f;
 	}
 
 	public void SetPosition(Vector3 pos)
@@ -93,6 +95,7 @@ public class BombController : MonoBehaviour
 		go.transform.position = newPos;
 		ExplodeAreas.Add(go);
 		MaxTimer += 0.3f;
+		Damage += 0.5f;
 	}
 
 	public void ForcedExplode()
@@ -141,6 +144,11 @@ public class BombController : MonoBehaviour
 				{
 					Explodable e = hit.GetComponent<Explodable>();
 					e.Explode();
+				}
+				else if (hit.CompareTag("Monster"))
+				{
+					BaseMob b = hit.GetComponent<BaseMob>();
+					b.GetDamage(Damage);
 				}
 			}
 

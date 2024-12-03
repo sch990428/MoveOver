@@ -9,7 +9,6 @@ public class AssultPatternMob : BaseMob
 	public float assultChannelingDuration = 1f;
 	public int assultLength = 5;
 	public int assultTerm = 5;
-	private Coroutine moveCoroutine;
 
 	private void Update()
 	{
@@ -26,6 +25,11 @@ public class AssultPatternMob : BaseMob
 
 		while (true)
 		{
+			if (isRetire)
+			{
+				yield break;
+			}
+
 			if (currentTerm < assultTerm)
 			{
 				Vector2Int enemyPosition = new Vector2Int(
@@ -43,8 +47,8 @@ public class AssultPatternMob : BaseMob
 
 				if (newPath == null || newPath.Count < 2)
 				{
-					currentTerm = 0;
 					Debug.Log("No path found");
+					yield return new WaitForSeconds(1f);
 					moveCoroutine = null; // 이동 종료
 					yield break;
 				}

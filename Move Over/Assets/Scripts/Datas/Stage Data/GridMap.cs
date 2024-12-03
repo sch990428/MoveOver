@@ -21,6 +21,11 @@ public class GridMap : MonoBehaviour
 
 	public Dictionary<Vector2Int, Grid> Grids;
 
+	private void Awake()
+	{
+		MakeGridMap();
+	}
+
 	public void MakeGridMap()
 	{
 		// Grids 채우기

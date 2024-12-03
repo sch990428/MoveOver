@@ -9,6 +9,7 @@ public class Stage0 : MonoBehaviour
 	[SerializeField] private PlayerController player;
 	[SerializeField] private GameObject helper;
 	public List<string> MissionList;
+	public List<BaseMob> MobList;
 	public int currentMission;
 
 	private void Awake()
@@ -28,9 +29,30 @@ public class Stage0 : MonoBehaviour
         {
             if (player.Critters.Count == 4)
 			{
+				foreach (BaseMob mob in MobList)
+				{
+					mob.gameObject.SetActive(true);
+				}
 				UpdateMission(2);
 			}
         }
+
+		if (currentMission == 2)
+		{
+			int count = 0;
+			foreach (BaseMob mob in MobList)
+			{
+				if (mob == null)
+				{
+					count++;
+				}
+
+				if (count == 2)
+				{
+					UpdateMission(3);
+				}
+			}
+		}
     }
 
 	public void UpdateMission(int index)

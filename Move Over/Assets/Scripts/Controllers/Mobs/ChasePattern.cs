@@ -6,7 +6,6 @@ public class ChasePatternMob : BaseMob
 {
 	[SerializeField] private float detectRange;
 	public float moveDuration = 0.5f;
-	private Coroutine moveCoroutine;
 
 	private void Update()
 	{
@@ -21,6 +20,11 @@ public class ChasePatternMob : BaseMob
 	{
 		while (true)
 		{
+			if (isRetire)
+			{
+				yield break;
+			}
+
 			Vector2Int enemyPosition = new Vector2Int(
 				Mathf.RoundToInt(transform.position.x),
 				Mathf.RoundToInt(transform.position.z)
@@ -37,6 +41,7 @@ public class ChasePatternMob : BaseMob
 			if (newPath == null || newPath.Count < 2)
 			{
 				Debug.Log("No path found");
+				yield return new WaitForSeconds(1f);
 				moveCoroutine = null; // 이동 종료
 				yield break;
 			}

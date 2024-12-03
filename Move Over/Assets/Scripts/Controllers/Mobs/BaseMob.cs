@@ -12,14 +12,22 @@ public class BaseMob : MonoBehaviour
 	public Transform player; // 플레이어 Transform
 	protected Vector2Int enemyPosition; // 적의 현재 위치 (그리드 좌표)
 	public float moveSpeed = 2f; // 이동 속도
+	public float HP = 10f; // 체력
+
+	protected bool isRetire = false;
+	public Rigidbody _rigidBody;
+	public Collider _collider;
 
 	protected List<Vector2Int> currentPath; // 계산된 경로
 	protected bool isMoving = false; // 이동 중 여부
+	protected Coroutine moveCoroutine;
 
 	private void Awake()
 	{
 		enemyPosition = new Vector2Int();
 		map.MakeGridMap();
+		_collider = GetComponent<Collider>();
+		_rigidBody = GetComponent<Rigidbody>();
 	}
 
 	// A* 알고리즘 구현
@@ -180,6 +188,11 @@ public class BaseMob : MonoBehaviour
 
 		while (elapsedTime < duration)
 		{
+			if (isRetire)
+			{
+				yield break;
+			}
+
 			// 부드러운 회전
 			transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 20f * Time.deltaTime);
 
@@ -239,5 +252,44 @@ public class BaseMob : MonoBehaviour
 		GameObject go = Instantiate(MeleeDamageEffect);
 		go.transform.position = transform.position + Vector3.up / 2;
 		Destroy(go, 1f);
+	}
+
+	public void GetDamage(float damage)
+	{
+		HP -= damage;
+		if (HP < 0)
+		{
+			Retire();
+		}
+	}
+
+	public void Retire()
+	{
+		if (!isRetire)
+		{
+			isRetire = true;
+
+			StopCoroutine(moveCoroutine);
+			moveCoroutine = null;
+
+			_rigidBody.constraints = RigidbodyConstraints.None;
+			_collider.enabled = false;
+
+			Vector3 randomDirection = new Vector3(Random.Range(0.5f, 1f), 0f, Random.Range(0.5f, 1f));
+
+			int r = Random.Range(0, 2);
+			if (r == 0)
+			{
+				randomDirection = -randomDirection;
+			}
+
+			randomDirection = randomDirection.normalized;
+			randomDirection.y = 1f;
+
+			_rigidBody.AddForce(randomDirection * 40, ForceMode.Impulse);
+			_rigidBody.AddTorque(randomDirection * 5, ForceMode.Impulse);
+
+			ResourceManager.Instance.Destroy(gameObject, 1f);
+		}
 	}
 }
