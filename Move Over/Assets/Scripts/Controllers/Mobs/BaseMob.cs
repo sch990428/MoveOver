@@ -237,7 +237,7 @@ public class BaseMob : MonoBehaviour
 		player.GetComponent<PlayerController>().Damage(order);
 
 		GameObject go = Instantiate(MeleeDamageEffect);
-		go.transform.position = transform.position;
+		go.transform.position = transform.position + Vector3.up / 2;
 		Destroy(go, 1f);
 	}
 }
