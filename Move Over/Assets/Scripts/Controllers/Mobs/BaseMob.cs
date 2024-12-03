@@ -25,7 +25,7 @@ public class BaseMob : MonoBehaviour
 	private void Awake()
 	{
 		enemyPosition = new Vector2Int();
-		map.MakeGridMap();
+		//map.MakeGridMap();
 		_collider = GetComponent<Collider>();
 		_rigidBody = GetComponent<Rigidbody>();
 	}

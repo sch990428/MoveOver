@@ -6409,6 +6409,7 @@ MonoBehaviour:
   isSpinned: 0
   isBirth: 1
   isRetire: 0
+  player: {fileID: 0}
   Order: 0
   _rigidBody: {fileID: 0}
   _collider: {fileID: 0}
@@ -6422,6 +6423,7 @@ MonoBehaviour:
   bombCooltime: 0
   maxCoin: 20
   currentCoin: 0
+  currentMap: {fileID: 844813334}
   MeleeDamageEffect: {fileID: 104829970813648393, guid: 5c57a5b44366f2b41932082d5477050d, type: 3}
   uiController: {fileID: 1420773773}
 --- !u!23 &877478291495033850

@@ -11,7 +11,7 @@ public class BaseItem : MonoBehaviour, IBaseItem
 {
 	[SerializeField] private float alpha;
 	[SerializeField] private Define.ItemType type;
-	[SerializeField] private PlayerController Player;
+	public PlayerController Player;
 
 	private Animator animator;
 	private Renderer _renderer;

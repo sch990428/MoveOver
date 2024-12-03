@@ -9,6 +9,7 @@ public class CritterController : MonoBehaviour
 	public bool isSpinned = false;
 	public bool isBirth = true;
 	public bool isRetire = false;
+	public PlayerController player;
 	protected BombController bomb;
 	public int Order;
 

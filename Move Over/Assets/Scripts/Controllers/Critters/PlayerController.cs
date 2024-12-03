@@ -39,6 +39,8 @@ public class PlayerController : CritterController
 	public int maxCoin = 20;
 	public int currentCoin = 0;
 
+	public GridMap currentMap;
+
 	// 플레이어 이펙트 관련
 	[SerializeField] private GameObject MeleeDamageEffect;
 
@@ -132,6 +134,7 @@ public class PlayerController : CritterController
 		}
 
 		CritterController c = go.GetComponent<CritterController>();
+		c.player = this;
 		c.Order = Critters.Count;
 		Critters.Add(c);
 		c.prePos = c.transform.position;
@@ -205,10 +208,7 @@ public class PlayerController : CritterController
 
 				int o = c.Order;
 				Camera.main.GetComponent<CameraController>().OnShakeCameraByPosition(0.3f, 0.3f);
-				for (int i = o; i < Critters.Count; i++)
-				{
-					Critters[i].Retire();
-				}
+				Damage(o);
 
 				Critters.RemoveRange(c.Order, Critters.Count - o);
 				CritterCountChange();
@@ -222,6 +222,7 @@ public class PlayerController : CritterController
 
 	public void Damage(int hitPoint)
 	{
+		int retireAmount = 0;
 		if (hitPoint < 0)
 		{
 			if (Critters.Count > 0)
@@ -231,6 +232,7 @@ public class PlayerController : CritterController
 					c.Retire();
 				}
 
+				retireAmount = Critters.Count;
 				Critters.Clear();
 			}
 			else
@@ -244,17 +246,42 @@ public class PlayerController : CritterController
 		}
 		else
 		{
+			
 			for (int i = hitPoint; i < Critters.Count; i++)
 			{
 				Critters[i].Retire();
+				
 			}
 
+			retireAmount = Critters.Count - hitPoint;
 			Critters.RemoveRange(hitPoint, Critters.Count - hitPoint);
 		}
 
 		CritterCountChange();
 		Camera.main.GetComponent<CameraController>().OnShakeCameraByPosition(0.3f, 0.3f);
 		SoundManager.Instance.PlaySound(SoundManager.GameSound.Damage);
+
+		HashSet<Vector2Int> respawnPos = new HashSet<Vector2Int>();
+		Debug.Log($"{retireAmount}만큼 만들자");
+		while (respawnPos.Count < retireAmount)
+		{
+			int x = Random.Range(currentMap.Min_X, currentMap.Max_X + 1);
+			int z = Random.Range(currentMap.Min_Z, currentMap.Max_Z + 1);
+
+			Vector2Int pos = new Vector2Int(x, z);
+
+			if (currentMap.Grids[pos].IsWalkable)
+			{
+				respawnPos.Add(pos);
+			}
+		}
+
+		foreach (Vector2Int pos in respawnPos)
+		{
+			GameObject go = ResourceManager.Instance.Instantiate("Prefabs/Items/Critter Item");
+			go.GetComponent<BaseItem>().Player = this;
+			go.transform.position = new Vector3(pos.x, 0.5f, pos.y);
+		}
 	}
 
 	private IEnumerator CreateBomb()
