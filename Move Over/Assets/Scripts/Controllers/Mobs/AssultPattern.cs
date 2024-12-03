@@ -1,70 +1,139 @@
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
-public class AssultPattern : PathFinding
+public class AssultPatternMob : PathFinding
 {
 	[SerializeField] private float detectRange;
-	private bool isPlayerDetected = false; // 감지 여부
+	public float moveDuration = 0.5f;
+	public float assultChannelingDuration = 1f;
+	public int assultLength = 5;
+	public int assultTerm = 5;
+	private Coroutine moveCoroutine;
 
 	private void Update()
 	{
-		Vector2Int enemyPosition; // 적의 현재 위치 (그리드 좌표)
-		float distanceToPlayer = Vector3.Distance(transform.position, player.position);
-
-		if (distanceToPlayer <= detectRange)
+		if (moveCoroutine == null && Vector3.Distance(transform.position, player.position) <= detectRange)
 		{
-			isPlayerDetected = true;
+			// 이동 시작
+			moveCoroutine = StartCoroutine(MoveAndUpdatePath());
 		}
+	}
 
-		if (isPlayerDetected)
+	private IEnumerator MoveAndUpdatePath()
+	{
+		int currentTerm = 0;
+
+		while (true)
 		{
-			if (!isMoving)
+			if (currentTerm < assultTerm)
 			{
-				// 플레이어 위치를 그리드 좌표로 변환
-				Vector2Int targetPosition = new Vector2Int(Mathf.RoundToInt(player.position.x), Mathf.RoundToInt(player.position.z));
-				enemyPosition = new Vector2Int(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.z));
+				Vector2Int enemyPosition = new Vector2Int(
+					Mathf.RoundToInt(transform.position.x),
+					Mathf.RoundToInt(transform.position.z)
+				);
 
-				// A* 알고리즘으로 경로 계산
-				currentPath = FindPath(enemyPosition, targetPosition);
+				Vector2Int targetPosition = new Vector2Int(
+					Mathf.RoundToInt(player.position.x),
+					Mathf.RoundToInt(player.position.z)
+				);
 
-				if (currentPath != null && currentPath.Count > 1)
+				// 경로 계산
+				List<Vector2Int> newPath = FindPath(enemyPosition, targetPosition);
+
+				if (newPath == null || newPath.Count < 2)
 				{
-					// 다음 목표 위치로 이동
-					StartCoroutine(MoveAlongPath(currentPath));
+					currentTerm = 0;
+					Debug.Log("No path found");
+					moveCoroutine = null; // 이동 종료
+					yield break;
 				}
-				else
+
+				// 한 칸씩 이동
+				Vector3 nextPosition = new Vector3(newPath[1].x, transform.position.y, newPath[1].y);
+				bool isBlocked = CheckCollision(nextPosition);
+				if (isBlocked)
 				{
-					// 정지
+					Debug.Log($"{nextPosition}이동 중 차단됨");
+					break;
 				}
+
+				yield return StartCoroutine(MoveToPosition(nextPosition, moveDuration));
+				currentTerm++;
+			}
+			else
+			{
+				Debug.Log("돌진 준비!");
+				yield return new WaitForSeconds(assultChannelingDuration);
+
+				for (int i = 0; i < assultLength; i++)
+				{
+					Vector3 dashTarget = transform.position + transform.forward; // 현재 바라보는 방향으로 한 칸 이동
+
+					// 돌진 이동 중 충돌 여부 검사
+					bool isBlocked = CheckCollision(dashTarget);
+					if (isBlocked)
+					{
+						Debug.Log("돌진 중 차단됨");
+						break;
+					}
+
+					yield return StartCoroutine(MoveToPosition(dashTarget, moveDuration / 2));
+					Debug.Log($"돌진: {i + 1}/{assultLength}");
+					yield return new WaitForSeconds(0.1f);
+				}
+
+				currentTerm = 0;
 			}
 		}
 	}
 
-	// 경로를 따라 이동
-	private IEnumerator MoveAlongPath(List<Vector2Int> path)
+	// 범용 이동 함수
+	private IEnumerator MoveToPosition(Vector3 targetPosition, float duration)
 	{
-		isMoving = true;
+		Vector3 startPosition = transform.position;
+		Quaternion targetRotation = Quaternion.LookRotation((targetPosition - startPosition).normalized, Vector3.up);
 
-		foreach (Vector2Int position in path)
+		float elapsedTime = 0f;
+
+		while (elapsedTime < duration)
 		{
-			Vector3 targetPosition = new Vector3(position.x, transform.position.y, position.y);
+			// 부드러운 회전
+			transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 20f * Time.deltaTime);
 
-			Vector3 direction = (targetPosition - transform.position).normalized;
-			Quaternion targetRotation = Quaternion.LookRotation(direction, Vector3.up);
+			// 부드러운 이동
+			transform.position = Vector3.Lerp(startPosition, targetPosition, elapsedTime / duration);
 
-			while (Vector3.Distance(transform.position, targetPosition) > 0.1f)
-			{
-				transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 20f * Time.deltaTime);
-				transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
-
-				yield return null;
-			}
-
-			enemyPosition = position; // 현재 위치 갱신
+			elapsedTime += Time.deltaTime;
+			yield return null;
 		}
 
-		isMoving = false;
+		// 최종 위치 보정
+		transform.position = targetPosition;
+	}
+
+	// 충돌 검사 함수
+	private bool CheckCollision(Vector3 position)
+	{
+		Collider[] hits = Physics.OverlapBox(
+			position,
+			new Vector3(0.49f, 0.7f, 0.49f),
+			Quaternion.identity,
+			LayerMask.GetMask("Obstacle", "Explodable")
+		);
+
+		foreach (Collider hit in hits)
+		{
+			if (hit.CompareTag("Bomb"))
+			{
+				hit.GetComponent<BombController>().ForcedExplode();
+			}
+			else
+			{
+				return true; // 충돌 발생
+			}
+		}
+
+		return false; // 충돌 없음
 	}
 }

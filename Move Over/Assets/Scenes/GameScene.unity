@@ -3385,6 +3385,11 @@ MonoBehaviour:
   player: {fileID: 2124825735925786074}
   moveSpeed: 2
   detectRange: 10
+  moveDuration: 0.5
+  assultDuration: 0.2
+  assultChannelingDuration: 1
+  assultLength: 5
+  assultTerm: 5
 --- !u!1 &865541422
 GameObject:
   m_ObjectHideFlags: 0
@@ -5985,7 +5990,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3166069175767508008, guid: a7466adaa7f47df4599e9b936cad63b5, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
