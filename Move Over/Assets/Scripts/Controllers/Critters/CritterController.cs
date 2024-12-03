@@ -71,6 +71,10 @@ public class CritterController : MonoBehaviour
 
 		while (elapsedTime < jumpDuration)
 		{
+			if (isRetire)
+			{
+				yield break;
+			}
 			elapsedTime += Time.deltaTime;
 			float t = elapsedTime / jumpDuration;
 			height = Mathf.Sin(t * Mathf.PI) * 0.3f;
