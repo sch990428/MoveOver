@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AssultPatternMob : PathFinding
+public class AssultPatternMob : BaseMob
 {
 	[SerializeField] private float detectRange;
 	public float moveDuration = 0.5f;
@@ -86,54 +86,5 @@ public class AssultPatternMob : PathFinding
 				currentTerm = 0;
 			}
 		}
-	}
-
-	// 범용 이동 함수
-	private IEnumerator MoveToPosition(Vector3 targetPosition, float duration)
-	{
-		Vector3 startPosition = transform.position;
-		Quaternion targetRotation = Quaternion.LookRotation((targetPosition - startPosition).normalized, Vector3.up);
-
-		float elapsedTime = 0f;
-
-		while (elapsedTime < duration)
-		{
-			// 부드러운 회전
-			transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 20f * Time.deltaTime);
-
-			// 부드러운 이동
-			transform.position = Vector3.Lerp(startPosition, targetPosition, elapsedTime / duration);
-
-			elapsedTime += Time.deltaTime;
-			yield return null;
-		}
-
-		// 최종 위치 보정
-		transform.position = targetPosition;
-	}
-
-	// 충돌 검사 함수
-	private bool CheckCollision(Vector3 position)
-	{
-		Collider[] hits = Physics.OverlapBox(
-			position,
-			new Vector3(0.49f, 0.7f, 0.49f),
-			Quaternion.identity,
-			LayerMask.GetMask("Obstacle", "Explodable")
-		);
-
-		foreach (Collider hit in hits)
-		{
-			if (hit.CompareTag("Bomb"))
-			{
-				hit.GetComponent<BombController>().ForcedExplode();
-			}
-			else
-			{
-				return true; // 충돌 발생
-			}
-		}
-
-		return false; // 충돌 없음
 	}
 }

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ChasePatternMob : PathFinding
+public class ChasePatternMob : BaseMob
 {
 	[SerializeField] private float detectRange;
 	public float moveDuration = 0.5f;
@@ -21,7 +21,6 @@ public class ChasePatternMob : PathFinding
 	{
 		while (true)
 		{
-
 			Vector2Int enemyPosition = new Vector2Int(
 				Mathf.RoundToInt(transform.position.x),
 				Mathf.RoundToInt(transform.position.z)
@@ -43,30 +42,14 @@ public class ChasePatternMob : PathFinding
 			}
 
 			// 한 칸씩 이동
-			Vector2Int nextPosition = newPath[1];
-			Vector3 startPosition = transform.position;
-			Vector3 targetWorldPosition = new Vector3(nextPosition.x, transform.position.y, nextPosition.y);
-
-			Vector3 direction = (targetWorldPosition - transform.position).normalized;
-			Quaternion targetRotation = Quaternion.LookRotation(direction, Vector3.up);
-
-			float elapsedTime = 0f;
-			
-
-			while (elapsedTime < moveDuration)
+			Vector3 nextPosition = new Vector3(newPath[1].x, transform.position.y, newPath[1].y);
+			bool isBlocked = CheckCollision(nextPosition);
+			if (isBlocked)
 			{
-				// 부드럽게 회전
-				transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 20f * Time.deltaTime);
-
-				// Lerp로 이동
-				transform.position = Vector3.Lerp(startPosition, targetWorldPosition, elapsedTime / moveDuration);
-
-				elapsedTime += Time.deltaTime;
-				yield return null;
+				break;
 			}
 
-			// 정확한 위치 설정
-			transform.position = targetWorldPosition;
+			yield return StartCoroutine(MoveToPosition(nextPosition, moveDuration));
 		}
 	}
 }

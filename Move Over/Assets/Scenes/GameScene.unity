@@ -536,7 +536,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3166069175767508008, guid: a7466adaa7f47df4599e9b936cad63b5, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1460,7 +1460,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3166069175767508008, guid: a7466adaa7f47df4599e9b936cad63b5, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3386,7 +3386,6 @@ MonoBehaviour:
   moveSpeed: 2
   detectRange: 10
   moveDuration: 0.5
-  assultDuration: 0.2
   assultChannelingDuration: 1
   assultLength: 5
   assultTerm: 5
