@@ -6,7 +6,8 @@ using UnityEngine;
 public class BaseMob : MonoBehaviour
 {
 	[SerializeField] private GridMap map;
-	
+	[SerializeField] protected GameObject MeleeDamageEffect;
+
 	protected Dictionary<Vector2Int, Grid> Grids;
 	public Transform player; // 플레이어 Transform
 	protected Vector2Int enemyPosition; // 적의 현재 위치 (그리드 좌표)
@@ -216,5 +217,27 @@ public class BaseMob : MonoBehaviour
 		}
 
 		return false; // 충돌 없음
+	}
+
+	protected void OnCollisionEnter(Collision collision)
+	{
+		if (collision.transform.CompareTag("Tail"))
+		{
+			ApplyDamage(collision.transform.GetComponent<CritterController>().Order);
+
+		}
+		else if (collision.transform.CompareTag("Player"))
+		{
+			ApplyDamage(-1);
+		}
+	}
+
+	protected void ApplyDamage(int order)
+	{
+		player.GetComponent<PlayerController>().Damage(order);
+
+		GameObject go = Instantiate(MeleeDamageEffect);
+		go.transform.position = transform.position;
+		Destroy(go, 1f);
 	}
 }

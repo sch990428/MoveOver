@@ -253,6 +253,7 @@ public class PlayerController : CritterController
 		}
 
 		CritterCountChange();
+		Camera.main.GetComponent<CameraController>().OnShakeCameraByPosition(0.3f, 0.3f);
 		SoundManager.Instance.PlaySound(SoundManager.GameSound.Damage);
 	}
 

@@ -52,4 +52,6 @@ public class ChasePatternMob : BaseMob
 			yield return StartCoroutine(MoveToPosition(nextPosition, moveDuration));
 		}
 	}
+
+	
 }
