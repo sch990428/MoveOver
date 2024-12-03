@@ -2,17 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BaseMob : MonoBehaviour
 {
 	[SerializeField] private GridMap map;
 	[SerializeField] protected GameObject MeleeDamageEffect;
+	[SerializeField] protected Image HealthUI;
 
 	protected Dictionary<Vector2Int, Grid> Grids;
 	public Transform player; // 플레이어 Transform
 	protected Vector2Int enemyPosition; // 적의 현재 위치 (그리드 좌표)
 	public float moveSpeed = 2f; // 이동 속도
-	public float HP = 10f; // 체력
+	public float MaxHP = 10f; // 체력
+	public float HP; // 체력
 
 	protected bool isRetire = false;
 	public Rigidbody _rigidBody;
@@ -24,6 +27,7 @@ public class BaseMob : MonoBehaviour
 
 	private void Awake()
 	{
+		HP = MaxHP;
 		enemyPosition = new Vector2Int();
 		//map.MakeGridMap();
 		_collider = GetComponent<Collider>();
@@ -260,7 +264,9 @@ public class BaseMob : MonoBehaviour
 		if (HP < 0)
 		{
 			Retire();
+			return;
 		}
+		HealthUI.fillAmount = HP / MaxHP;
 	}
 
 	public void Retire()
