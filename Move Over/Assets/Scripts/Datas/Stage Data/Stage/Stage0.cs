@@ -20,7 +20,7 @@ public class Stage0 : MonoBehaviour
 
 	private void Awake()
 	{
-		currentMission = 3;
+		currentMission = 0;
 		MissionList.Add("폭탄으로 나무상자를 부수고 탈출하세요");
 		MissionList.Add("모든 부하들을 구출하세요");
 		MissionList.Add("폭탄으로 쥐들을 물리치세요");
