@@ -34,6 +34,7 @@ public class PlayerController : CritterController
 	public int currentBomb;
 	public bool bombEnable = true;
 	public float bombCooltime;
+	
 
 	// 코인 수집 관련 (추후 게임매니저로 이동)
 	public int maxCoin = 20;
@@ -98,8 +99,7 @@ public class PlayerController : CritterController
 						transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(destPos - prePos), 0.3f);
 					}
 
-					if (isBlocked)
-					{ break; }
+					if (isBlocked || validAngle + moveDir == Vector3.zero) { break; }
 					isMoving = true;
 
 					// 부하들을 순차적으로 이동

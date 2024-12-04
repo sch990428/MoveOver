@@ -5,6 +5,7 @@ public class CritterController : MonoBehaviour
 {
 	[SerializeField] protected bool isMoving = false;
 	public Vector3 prePos;
+	public Vector3 validAngle;
 	public float height;
 	public bool isSpinned = false;
 	public bool isBirth = true;
@@ -116,7 +117,7 @@ public class CritterController : MonoBehaviour
 
 			yield return null;
 		}
-
+		validAngle = transform.forward;
 		transform.position = destPos;
 		isMoving = false;
 		if (isBirth) { isBirth = false; }

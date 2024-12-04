@@ -2299,7 +2299,7 @@ Transform:
   m_GameObject: {fileID: 585625834}
   serializedVersion: 2
   m_LocalRotation: {x: 0.23911765, y: 0.3696438, z: -0.09904577, w: 0.89239913}
-  m_LocalPosition: {x: -82.855865, y: 75.00001, z: -82.85586}
+  m_LocalPosition: {x: -100.855865, y: 75.000015, z: -100.855865}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3697,6 +3697,7 @@ Transform:
   m_Children:
   - {fileID: 2124825735925786074}
   - {fileID: 844813333}
+  - {fileID: 1772712208}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &1024940922
@@ -5312,11 +5313,11 @@ Transform:
   m_GameObject: {fileID: 1772712205}
   serializedVersion: 2
   m_LocalRotation: {x: 0.23911765, y: 0.3696438, z: -0.09904577, w: 0.89239913}
-  m_LocalPosition: {x: -82.855865, y: 75.00001, z: -82.85586}
+  m_LocalPosition: {x: -100.855865, y: 75.000015, z: -100.855865}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1024940921}
   m_LocalEulerAnglesHint: {x: 30, y: 45, z: 0}
 --- !u!114 &1772712209
 MonoBehaviour:
@@ -5538,6 +5539,10 @@ PrefabInstance:
     - target: {fileID: 3166069175767508008, guid: 87642ca82110a6841a2c0ad316d9b96f, type: 3}
       propertyPath: m_Name
       value: AssultRat
+      objectReference: {fileID: 0}
+    - target: {fileID: 3166069175767508008, guid: 87642ca82110a6841a2c0ad316d9b96f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6305658647970985154, guid: 87642ca82110a6841a2c0ad316d9b96f, type: 3}
       propertyPath: map
@@ -6401,6 +6406,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isMoving: 0
   prePos: {x: 0, y: 0, z: 0}
+  validAngle: {x: 0, y: 0, z: 0}
   height: 0
   isSpinned: 0
   isBirth: 1
@@ -6476,7 +6482,7 @@ Transform:
   m_GameObject: {fileID: 3420695182261688290}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 9, y: 0, z: 9}
+  m_LocalPosition: {x: -9, y: 0, z: -9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -6586,6 +6592,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ChaseRat
       objectReference: {fileID: 0}
+    - target: {fileID: 3166069175767508008, guid: 7b65748d433ceec46af9c2ab2f5d8dc3, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5088483939433215154, guid: 7b65748d433ceec46af9c2ab2f5d8dc3, type: 3}
       propertyPath: map
       value: 
@@ -6694,7 +6704,6 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 585625837}
-  - {fileID: 1772712208}
   - {fileID: 1980497515}
   - {fileID: 1024940921}
   - {fileID: 1796064827}
