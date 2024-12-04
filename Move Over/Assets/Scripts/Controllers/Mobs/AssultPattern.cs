@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
+using UnityEngine.UIElements;
 
 public class AssultPatternMob : BaseMob
 {
 	[SerializeField] private float detectRange;
+	[SerializeField] private Transform AssultRangeIndicator;
 	public float moveDuration = 0.5f;
 	public float assultChannelingDuration = 1f;
 	public int assultLength = 5;
@@ -68,7 +71,9 @@ public class AssultPatternMob : BaseMob
 			else
 			{
 				// Debug.Log("돌진 준비!");
+				DrawAttackRange();
 				yield return new WaitForSeconds(assultChannelingDuration);
+				AssultRangeIndicator.gameObject.SetActive(false);
 
 				for (int i = 0; i < assultLength; i++)
 				{
@@ -82,7 +87,7 @@ public class AssultPatternMob : BaseMob
 						break;
 					}
 
-					yield return StartCoroutine(MoveToPosition(dashTarget, moveDuration / 2));
+					yield return StartCoroutine(MoveToPosition(dashTarget, moveDuration / 3));
 					// Debug.Log($"돌진: {i + 1}/{assultLength}");
 					yield return new WaitForSeconds(0.1f);
 				}
@@ -92,4 +97,16 @@ public class AssultPatternMob : BaseMob
 		}
 	}
 
+	public void DrawAttackRange()
+	{
+		for (int i = 0; i <= assultLength; i++)
+		{
+			Vector3 assultPos = transform.position + transform.forward * i; // 현재 바라보는 방향으로 한 칸 이동
+
+			GameObject go = PoolManager.Instance.Instantiate(Define.PoolableType.WarningGrid);
+			go.transform.position = assultPos + Vector3.up * 0.01f;
+
+			PoolManager.Instance.Destroy(Define.PoolableType.WarningGrid, go, 1f);
+		}
+	}
 }
