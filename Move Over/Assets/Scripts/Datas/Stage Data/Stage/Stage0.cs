@@ -9,8 +9,10 @@ public class Stage0 : MonoBehaviour
 	[SerializeField] private PlayerController player;
 	[SerializeField] private GameObject helper1;
 	[SerializeField] private GameObject helper2;
+	[SerializeField] private List<BaseMob> MobList;
+	[SerializeField] private List<SwitchController> SwitchList;
+
 	public List<string> MissionList;
-	public List<BaseMob> MobList;
 	public int currentMission;
 
 	private void Awake()
@@ -20,6 +22,7 @@ public class Stage0 : MonoBehaviour
 		MissionList.Add("모든 부하들을 구출하세요");
 		MissionList.Add("폭탄으로 쥐들을 물리치세요");
 		MissionList.Add("부하를 모아서 모든 버튼을 누르세요");
+		MissionList.Add("창고 깊은 곳으로 들어가세요");
 		MissionList.Add("대장을 물리치세요");
 		UpdateMission(currentMission);
 	}
@@ -54,6 +57,20 @@ public class Stage0 : MonoBehaviour
 					helper2.SetActive(true);
 				}
 			}
+		}
+
+		if (currentMission == 3)
+		{
+			foreach (SwitchController s in SwitchList)
+			{
+				if (!s.isOn)
+				{
+					return;
+				}
+			}
+
+			helper2.SetActive(false);
+			UpdateMission(4);
 		}
     }
 
