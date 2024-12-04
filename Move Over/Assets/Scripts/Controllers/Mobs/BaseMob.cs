@@ -8,7 +8,9 @@ public class BaseMob : MonoBehaviour
 {
 	[SerializeField] private GridMap map;
 	[SerializeField] protected GameObject MeleeDamageEffect;
-	[SerializeField] protected Image HealthUI;
+	[SerializeField] protected Image HPBar;
+	[SerializeField] protected GameObject IndicatorUI;
+	[SerializeField] protected GameObject HealthUI;
 
 	protected Dictionary<Vector2Int, Grid> Grids;
 	public Transform player; // 플레이어 Transform
@@ -266,7 +268,7 @@ public class BaseMob : MonoBehaviour
 			Retire();
 			return;
 		}
-		HealthUI.fillAmount = HP / MaxHP;
+		HPBar.fillAmount = HP / MaxHP;
 	}
 
 	public void Retire()
@@ -274,6 +276,9 @@ public class BaseMob : MonoBehaviour
 		if (!isRetire)
 		{
 			isRetire = true;
+
+			HealthUI.SetActive(false);
+			IndicatorUI.SetActive(false);
 
 			StopCoroutine(moveCoroutine);
 			moveCoroutine = null;

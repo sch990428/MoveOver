@@ -95,7 +95,7 @@ public class BombController : MonoBehaviour
 		go.transform.position = newPos;
 		ExplodeAreas.Add(go);
 		MaxTimer += 0.3f;
-		Damage += 0.5f;
+		Damage += 1f;
 	}
 
 	public void ForcedExplode()
