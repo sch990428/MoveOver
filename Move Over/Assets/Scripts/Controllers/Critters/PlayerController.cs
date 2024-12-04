@@ -200,7 +200,7 @@ public class PlayerController : CritterController
 		}
 		else
 		{
-			Debug.Log("불가");
+			// Debug.Log("불가");
 		}
 	}
 
@@ -272,7 +272,7 @@ public class PlayerController : CritterController
 		SoundManager.Instance.PlaySound(SoundManager.GameSound.Damage);
 
 		HashSet<Vector2Int> respawnPos = new HashSet<Vector2Int>();
-		Debug.Log($"{retireAmount}만큼 만들자");
+		// Debug.Log($"{retireAmount}만큼 만들자");
 		while (respawnPos.Count < retireAmount)
 		{
 			int x = Random.Range(currentMap.Min_X, currentMap.Max_X + 1);

@@ -58,7 +58,7 @@ public class AssultPatternMob : BaseMob
 				bool isBlocked = CheckCollision(nextPosition);
 				if (isBlocked)
 				{
-					Debug.Log($"{nextPosition}이동 중 차단됨");
+					// Debug.Log($"{nextPosition}이동 중 차단됨");
 					break;
 				}
 
@@ -67,7 +67,7 @@ public class AssultPatternMob : BaseMob
 			}
 			else
 			{
-				Debug.Log("돌진 준비!");
+				// Debug.Log("돌진 준비!");
 				yield return new WaitForSeconds(assultChannelingDuration);
 
 				for (int i = 0; i < assultLength; i++)
@@ -78,12 +78,12 @@ public class AssultPatternMob : BaseMob
 					bool isBlocked = CheckCollision(dashTarget);
 					if (isBlocked)
 					{
-						Debug.Log("돌진 중 차단됨");
+						// Debug.Log("돌진 중 차단됨");
 						break;
 					}
 
 					yield return StartCoroutine(MoveToPosition(dashTarget, moveDuration / 2));
-					Debug.Log($"돌진: {i + 1}/{assultLength}");
+					// Debug.Log($"돌진: {i + 1}/{assultLength}");
 					yield return new WaitForSeconds(0.1f);
 				}
 

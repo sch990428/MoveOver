@@ -47,7 +47,7 @@ public class GridMap : MonoBehaviour
 			}
 		}
 
-		Debug.Log(count);
+		//Debug.Log(count);
 	}
 
 	// 해당 위치에 장애물이 있는지 여부 반환

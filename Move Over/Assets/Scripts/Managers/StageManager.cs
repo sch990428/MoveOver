@@ -16,7 +16,7 @@ public class StageManager : Singleton<StageManager>
 	private void Init()
 	{
 		StageDict = DataManager.Instance.LoadJsonToDict<Data.BaseStage>("Data/stage");
-		Debug.Log(StageDict.Count);
+		// Debug.Log(StageDict.Count);
 	}
 
 	public void SetStage(int code)
