@@ -16,8 +16,9 @@ public class BaseMob : MonoBehaviour
 	public Transform player; // 플레이어 Transform
 	protected Vector2Int enemyPosition; // 적의 현재 위치 (그리드 좌표)
 	public float moveSpeed = 2f; // 이동 속도
-	public float MaxHP = 10f; // 체력
+	public float MaxHP = 10f; // 최대 체력
 	public float HP; // 체력
+	public bool isDamaged = false;
 
 	protected bool isRetire = false;
 	public Rigidbody _rigidBody;
@@ -262,13 +263,24 @@ public class BaseMob : MonoBehaviour
 
 	public void GetDamage(float damage)
 	{
-		HP -= damage;
-		if (HP < 0)
+		if (!isDamaged)
 		{
-			Retire();
-			return;
+			isDamaged = true;
+			HP -= damage;
+			if (HP <= 0)
+			{
+				Retire();
+				return;
+			}
+			HPBar.fillAmount = HP / MaxHP;
+			StartCoroutine(DamageTerm());
 		}
-		HPBar.fillAmount = HP / MaxHP;
+	}
+
+	private IEnumerator DamageTerm()
+	{
+		yield return new WaitForSeconds(0.5f);
+		isDamaged = false;
 	}
 
 	public void Retire()
