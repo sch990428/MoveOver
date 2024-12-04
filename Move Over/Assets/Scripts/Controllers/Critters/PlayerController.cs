@@ -48,11 +48,11 @@ public class PlayerController : CritterController
 
 	// UI 관련
 	[SerializeField] private GameUIController uiController;
-	private CameraController camera;
+	private CameraController mainCamera;
 
 	private void Awake()
 	{
-		camera = Camera.main.GetComponent<CameraController>();
+		mainCamera = Camera.main.GetComponent<CameraController>();
 		playerCollider = GetComponent<Collider>();
 		bombY = playerCollider.bounds.max.y;
 		maxBomb = 1;
@@ -60,7 +60,7 @@ public class PlayerController : CritterController
 		bombEnable = true;
 		bombCooltime = 1f;
 
-		viewIndex = camera.viewIndex;
+		viewIndex = mainCamera.viewIndex;
 
 		BombCountChange();
 		CoinCountChange();
@@ -86,7 +86,7 @@ public class PlayerController : CritterController
 					// 충돌 처리
 					Debug.DrawRay(destPos - Vector3.down * 0.1f, Vector3.up, Color.red, 1f);
 
-					Collider[] hits = Physics.OverlapBox(destPos, new Vector3(0.49f, 0.7f, 0.49f), Quaternion.identity, LayerMask.GetMask("Obstacle", "Explodable"));
+					Collider[] hits = Physics.OverlapBox(destPos, new Vector3(0.49f, 0.7f, 0.49f), Quaternion.identity, LayerMask.GetMask("Obstacle", "Explodable", "WallUp", "WallDown", "WallLeft", "WallRight"));
 					bool isBlocked = false;
 					if (hits.Length > 0) {
 						foreach (Collider hit in hits)
@@ -175,7 +175,7 @@ public class PlayerController : CritterController
 			state = PlayerState.Move;
 		}
 
-		viewIndex = camera.viewIndex;
+		viewIndex = mainCamera.viewIndex;
 		moveDir = Quaternion.Euler(0, 90 * viewIndex, 0) * moveDir;
 
 		moveDir.Normalize();

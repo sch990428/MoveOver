@@ -7,24 +7,41 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
 	[SerializeField] private List<CinemachineCamera> camerasViews;
+	private Camera mainCamera;
+
 	public int viewIndex;
 
 	private float shakeTime;
 	private float shakeIntensity;
 
-	Vector3 defaultPos;
-	Vector3 defaultRot;
-	Color32 defaultColor;
+	private Vector3 defaultPos;
+	private Vector3 defaultRot;
+	private Color32 defaultColor;
+
+	private int wallNorthMask;
+	private int wallEastMask;
+	private int wallSouthMask;
+	private int wallWestMask;
 
 	Material material;
 	
 	private void Awake()
 	{
+		mainCamera = GetComponent<Camera>();
+
 		viewIndex = 0;
 		camerasViews[viewIndex].gameObject.SetActive(true);
 
 		defaultPos = transform.position; // 카메라 초기위치 저장
 		defaultRot = transform.eulerAngles; // 카메라 초기방향 저장
+
+		// 레이어 마스크 초기화
+		wallNorthMask = LayerMask.GetMask("WallUp");
+		wallEastMask = LayerMask.GetMask("WallRight");
+		wallSouthMask = LayerMask.GetMask("WallDown");
+		wallWestMask = LayerMask.GetMask("WallLeft");
+
+		UpdateCullingMask();
 	}
 
 	private void Update()
@@ -36,6 +53,7 @@ public class CameraController : MonoBehaviour
 			{
 				viewIndex = camerasViews.Count - 1;
 			}
+			UpdateCullingMask();
 		}
 		else if (Input.GetKeyUp(KeyCode.Q))
 		{
@@ -44,11 +62,31 @@ public class CameraController : MonoBehaviour
 			{
 				viewIndex = 0;
 			}
+			UpdateCullingMask();
 		}
 
 		for (int i = 0; i < 4; i++)
 		{
 			camerasViews[i].gameObject.SetActive(i == viewIndex);
+		}
+	}
+
+	private void UpdateCullingMask()
+	{
+		switch (viewIndex)
+		{
+			case 0:
+				mainCamera.cullingMask = ~(wallSouthMask | wallWestMask);
+				break;
+			case 1:
+				mainCamera.cullingMask = ~(wallNorthMask | wallWestMask);
+				break;
+			case 2:
+				mainCamera.cullingMask = ~(wallNorthMask | wallEastMask);
+				break;
+			case 3:
+				mainCamera.cullingMask = ~(wallSouthMask | wallEastMask);
+				break;
 		}
 	}
 

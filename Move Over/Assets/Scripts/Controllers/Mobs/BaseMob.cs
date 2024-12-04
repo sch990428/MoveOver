@@ -220,7 +220,7 @@ public class BaseMob : MonoBehaviour
 			position,
 			new Vector3(0.49f, 0.7f, 0.49f),
 			Quaternion.identity,
-			LayerMask.GetMask("Obstacle", "Explodable")
+			LayerMask.GetMask("Obstacle", "Explodable", "WallUp", "WallDown", "WallLeft", "WallRight")
 		);
 
 		foreach (Collider hit in hits)

@@ -7,7 +7,8 @@ public class Stage0 : MonoBehaviour
 {
 	[SerializeField] private TMP_Text missionText;
 	[SerializeField] private PlayerController player;
-	[SerializeField] private GameObject helper;
+	[SerializeField] private GameObject helper1;
+	[SerializeField] private GameObject helper2;
 	public List<string> MissionList;
 	public List<BaseMob> MobList;
 	public int currentMission;
@@ -50,6 +51,7 @@ public class Stage0 : MonoBehaviour
 				if (count == 2)
 				{
 					UpdateMission(3);
+					helper2.SetActive(true);
 				}
 			}
 		}
@@ -66,7 +68,7 @@ public class Stage0 : MonoBehaviour
 		if (currentMission == 0)
 		{
 			UpdateMission(1);
-			helper.SetActive(false);
+			helper1.SetActive(false);
 		}
 	}
 }

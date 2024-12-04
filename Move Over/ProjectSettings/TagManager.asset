@@ -21,10 +21,10 @@ TagManager:
   - Obstacle
   - Critter
   - Item
-  - 
-  - 
-  - 
-  - 
+  - WallUp
+  - WallLeft
+  - WallDown
+  - WallRight
   - 
   - 
   - 
