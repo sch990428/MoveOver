@@ -20,6 +20,7 @@ public class BombController : MonoBehaviour
 	public int Wide;
 	public float Damage;
 
+	public float Timer = 0f;
 	public float MaxTimer;
 
 	private void OnEnable()
@@ -100,13 +101,11 @@ public class BombController : MonoBehaviour
 
 	public void ForcedExplode()
 	{
-		MaxTimer = 0.05f;
+		Timer = MaxTimer - 0.2f;
 	}
 
 	public IEnumerator Explosion()
 	{
-		float Timer = 0f;
-
 		while (Timer < MaxTimer)
 		{
 			barImage.fillAmount = Timer / MaxTimer;
