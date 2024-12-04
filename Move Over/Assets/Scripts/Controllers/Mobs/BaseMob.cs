@@ -20,6 +20,8 @@ public class BaseMob : MonoBehaviour
 	public float HP; // 체력
 	public bool isDamaged = false;
 
+	protected LayerMask mask;
+
 	protected bool isRetire = false;
 	public Rigidbody _rigidBody;
 	public Collider _collider;
@@ -35,6 +37,8 @@ public class BaseMob : MonoBehaviour
 		//map.MakeGridMap();
 		_collider = GetComponent<Collider>();
 		_rigidBody = GetComponent<Rigidbody>();
+
+		mask = LayerMask.GetMask("Obstacle", "Explodable", "WallUp", "WallDown", "WallLeft", "WallRight");
 	}
 
 	// A* 알고리즘 구현

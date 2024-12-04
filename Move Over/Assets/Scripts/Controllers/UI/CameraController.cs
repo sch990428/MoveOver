@@ -7,6 +7,7 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
 	[SerializeField] private List<CinemachineCamera> camerasViews;
+	private int preCam;
 	private Camera mainCamera;
 
 	public int viewIndex;
@@ -64,15 +65,15 @@ public class CameraController : MonoBehaviour
 			}
 			UpdateCullingMask();
 		}
-
-		for (int i = 0; i < 4; i++)
-		{
-			camerasViews[i].gameObject.SetActive(i == viewIndex);
-		}
 	}
 
 	private void UpdateCullingMask()
 	{
+		for (int i = 0; i < 4; i++)
+		{
+			camerasViews[i].gameObject.SetActive(i == viewIndex);
+		}
+
 		switch (viewIndex)
 		{
 			case 0:
@@ -87,7 +88,27 @@ public class CameraController : MonoBehaviour
 			case 3:
 				mainCamera.cullingMask = ~(wallSouthMask | wallEastMask);
 				break;
+			case -1:
+				mainCamera.cullingMask = -1;
+				break;
 		}
+	}
+
+	public void SwitchCamera(CinemachineCamera newCam, float time)
+	{
+		preCam = viewIndex;
+		newCam.gameObject.SetActive(true);
+		StartCoroutine(Switch(newCam, time));
+	}
+
+	protected IEnumerator Switch(CinemachineCamera newCam, float time)
+	{
+		viewIndex = -1;
+		UpdateCullingMask();
+		yield return new WaitForSeconds(time);
+		newCam.gameObject.SetActive(false);
+		viewIndex = preCam;
+		UpdateCullingMask();
 	}
 
 	// 카메라 위치기반 흔들림 효과
