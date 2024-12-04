@@ -27,6 +27,7 @@ public class BombController : MonoBehaviour
 	{
 		ExplodeAreas = new List<GameObject>();
 		CandidatePosStack = new Stack<Vector3>();
+		Timer = 0f;
 		MaxTimer = 3f;
 		Damage = 3f;
 	}

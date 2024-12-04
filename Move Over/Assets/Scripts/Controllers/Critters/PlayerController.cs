@@ -21,6 +21,7 @@ public class PlayerController : CritterController
 	private Vector3 moveDir = Vector3.zero;
 	[SerializeField] private float moveDuration = 0.3f;
 	[SerializeField] private float moveDistance = 1f;
+	public int viewIndex;
 
 	// 플레이어 콜라이더 관련
 	private Collider playerCollider;
@@ -47,15 +48,19 @@ public class PlayerController : CritterController
 
 	// UI 관련
 	[SerializeField] private GameUIController uiController;
+	private CameraController camera;
 
 	private void Awake()
 	{
+		camera = Camera.main.GetComponent<CameraController>();
 		playerCollider = GetComponent<Collider>();
 		bombY = playerCollider.bounds.max.y;
 		maxBomb = 1;
 		currentBomb = 0;
 		bombEnable = true;
 		bombCooltime = 1f;
+
+		viewIndex = camera.viewIndex;
 
 		BombCountChange();
 		CoinCountChange();
@@ -99,7 +104,8 @@ public class PlayerController : CritterController
 						transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(destPos - prePos), 0.3f);
 					}
 
-					if (isBlocked || validAngle + moveDir == Vector3.zero) { break; }
+					if (Critters.Count > 0 && validAngle + moveDir == Vector3.zero) { break; }
+					if (isBlocked) { break; }
 					isMoving = true;
 
 					// 부하들을 순차적으로 이동
@@ -168,6 +174,10 @@ public class PlayerController : CritterController
 		{
 			state = PlayerState.Move;
 		}
+
+		viewIndex = camera.viewIndex;
+		moveDir = Quaternion.Euler(0, 90 * viewIndex, 0) * moveDir;
+
 		moveDir.Normalize();
 	}
 

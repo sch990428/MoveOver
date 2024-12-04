@@ -18,7 +18,7 @@ public class Stage0 : MonoBehaviour
 		MissionList.Add("폭탄으로 나무상자를 부수고 탈출하세요");
 		MissionList.Add("모든 부하들을 구출하세요");
 		MissionList.Add("폭탄으로 쥐들을 물리치세요");
-		MissionList.Add("부하 2마리를 모아서 문을 여세요");
+		MissionList.Add("부하를 모아서 모든 버튼을 누르세요");
 		MissionList.Add("대장을 물리치세요");
 		UpdateMission(currentMission);
 	}

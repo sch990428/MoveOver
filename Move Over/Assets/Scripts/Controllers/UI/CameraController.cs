@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Cinemachine;
+using UnityEditor.Rendering.LookDev;
 using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-	[SerializeField] private List<CinemachineCamera> cameras;
+	[SerializeField] private List<CinemachineCamera> camerasViews;
+	public int viewIndex;
+
 	private float shakeTime;
 	private float shakeIntensity;
 
@@ -17,8 +20,36 @@ public class CameraController : MonoBehaviour
 	
 	private void Awake()
 	{
+		viewIndex = 0;
+		camerasViews[viewIndex].gameObject.SetActive(true);
+
 		defaultPos = transform.position; // 카메라 초기위치 저장
 		defaultRot = transform.eulerAngles; // 카메라 초기방향 저장
+	}
+
+	private void Update()
+	{
+		if (Input.GetKeyUp(KeyCode.E))
+		{
+			viewIndex--;
+			if (viewIndex < 0)
+			{
+				viewIndex = camerasViews.Count - 1;
+			}
+		}
+		else if (Input.GetKeyUp(KeyCode.Q))
+		{
+			viewIndex++;
+			if (viewIndex >= camerasViews.Count)
+			{
+				viewIndex = 0;
+			}
+		}
+
+		for (int i = 0; i < 4; i++)
+		{
+			camerasViews[i].gameObject.SetActive(i == viewIndex);
+		}
 	}
 
 	// 카메라 위치기반 흔들림 효과
@@ -35,7 +66,7 @@ public class CameraController : MonoBehaviour
 	private IEnumerator ShakeByPosition()
 	{
 		CinemachineBasicMultiChannelPerlin perlin =
-		cameras[0].GetComponent<CinemachineBasicMultiChannelPerlin>();
+		camerasViews[0].GetComponent<CinemachineBasicMultiChannelPerlin>();
 		perlin.AmplitudeGain = shakeIntensity;
 		perlin.FrequencyGain = shakeIntensity;
 

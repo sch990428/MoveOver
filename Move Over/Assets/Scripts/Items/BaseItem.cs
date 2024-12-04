@@ -39,6 +39,11 @@ public class BaseItem : MonoBehaviour, IBaseItem
 		}
 	}
 
+	private void LateUpdate()
+	{
+		transform.forward = Camera.main.transform.forward;
+	}
+
 	public virtual void Collected()
 	{
 		if (!isCollected)
