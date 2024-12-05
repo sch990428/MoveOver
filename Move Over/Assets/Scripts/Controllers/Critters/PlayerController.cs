@@ -35,7 +35,6 @@ public class PlayerController : CritterController
 	public int currentBomb;
 	public bool bombEnable = true;
 	public float bombCooltime;
-	
 
 	// 코인 수집 관련 (추후 게임매니저로 이동)
 	public int maxCoin = 20;
@@ -67,6 +66,20 @@ public class PlayerController : CritterController
 		CritterCountChange();
 	}
 
+	public void Init(Vector3 pos)
+	{
+		transform.position = pos;
+
+		foreach (var c in Critters)
+		{
+			c.transform.position = pos;
+			c.transform.rotation = transform.rotation;
+			c.Init();
+		}
+
+		isMovable = true;
+	}
+
 	private void Update()
 	{
 		// 테스트용 부하 생성
@@ -78,7 +91,7 @@ public class PlayerController : CritterController
 		switch (state)
 		{
 			case PlayerState.Move:
-				if (!isMoving)
+				if (!isMoving && isMovable)
 				{
 					prePos = transform.position;
 					Vector3 destPos = transform.position + moveDir * moveDistance;
@@ -108,6 +121,7 @@ public class PlayerController : CritterController
 					if (isBlocked) { break; }
 					isMoving = true;
 
+					StartCoroutine(Move(destPos, moveDuration));
 					// 부하들을 순차적으로 이동
 					if (Critters.Count > 0)
 					{
@@ -117,8 +131,6 @@ public class PlayerController : CritterController
 							Critters[i].MoveTo(Critters[i - 1].prePos, moveDuration);
 						}
 					}
-
-					StartCoroutine(Move(destPos, moveDuration));
 				}
 				break;
 		}
@@ -143,14 +155,17 @@ public class PlayerController : CritterController
 		c.player = this;
 		c.Order = Critters.Count;
 		Critters.Add(c);
+		GameObject effect = ResourceManager.Instance.Instantiate("Prefabs/Effects/Critter Effect/Creation");
+		effect.transform.position = c.transform.position + Vector3.up * 0.5f;
+		ResourceManager.Instance.Destroy(effect, 1f);
 		c.prePos = c.transform.position;
+		c.Init();
 		CritterCountChange();
 	}
 
 	private void OnMove(InputValue value)
 	{
 		Vector2 input = value.Get<Vector2>();
-
 		if (Mathf.Abs(input.x) > 0.5f && Mathf.Abs(input.y) > 0.5f)
 		{
 			// 대각선 입력 방지 규칙
@@ -177,7 +192,6 @@ public class PlayerController : CritterController
 
 		viewIndex = mainCamera.viewIndex;
 		moveDir = Quaternion.Euler(0, 90 * viewIndex, 0) * moveDir;
-
 		moveDir.Normalize();
 	}
 

@@ -4,18 +4,26 @@ using UnityEngine;
 public class CritterController : MonoBehaviour
 {
 	[SerializeField] protected bool isMoving = false;
+	public Vector3 BornPos;
 	public Vector3 prePos;
 	public Vector3 validAngle;
 	public float height;
 	public bool isSpinned = false;
 	public bool isBirth = true;
 	public bool isRetire = false;
+	public bool isMovable = true;
 	public PlayerController player;
 	protected BombController bomb;
 	public int Order;
 
 	public Rigidbody _rigidBody;
 	public Collider _collider;
+
+	public void Init()
+	{
+		isBirth = true;
+		BornPos = transform.position;
+	}
 
 	private void OnEnable()
 	{
@@ -108,7 +116,7 @@ public class CritterController : MonoBehaviour
 			elapsedTime += Time.deltaTime;
 			float t = elapsedTime / moveDuration;
 			
-			if (!isSpinned)
+			if (!isSpinned && destDir != Vector3.zero)
 			{
 				transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, t);
 			}
@@ -120,7 +128,7 @@ public class CritterController : MonoBehaviour
 		validAngle = transform.forward;
 		transform.position = destPos;
 		isMoving = false;
-		if (isBirth) { isBirth = false; }
+		if (Vector3.Distance(BornPos, transform.position) > 0.5f && isBirth) { isBirth = false; }
 	}
 
 	public void Retire()

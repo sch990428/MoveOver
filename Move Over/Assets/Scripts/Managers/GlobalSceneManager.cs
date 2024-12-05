@@ -8,10 +8,9 @@ public class GlobalSceneManager : Singleton<GlobalSceneManager>
 	[SerializeField] private GameObject FadeImage;
 	private Animator animator;
 
-	protected override void Awake()
+	protected override void Awake() 
 	{
 		base.Awake();
-
 		animator = GetComponent<Animator>();
 	}
 
@@ -19,6 +18,24 @@ public class GlobalSceneManager : Singleton<GlobalSceneManager>
 	{
 		animator.speed = speed;
 		StartCoroutine(LoadSceneWithFade(sceneName));
+	}
+
+	public void FadeOut()
+	{
+		FadeImage.SetActive(true);
+		animator.SetTrigger("Out");
+	}
+
+	public void FadeIn()
+	{
+		StartCoroutine(StartFadeIn());
+	}
+
+	private IEnumerator StartFadeIn()
+	{
+		animator.SetTrigger("In");
+		yield return new WaitForSeconds(1f);
+		FadeImage.SetActive(false);
 	}
 
 	private IEnumerator LoadSceneWithFade(string sceneName)
