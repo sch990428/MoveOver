@@ -23,7 +23,8 @@ public class Stage0 : MonoBehaviour
 	// 스테이지 구성 관련
 	[SerializeField] private GameObject helper1;
 	[SerializeField] private GameObject helper2;
-	[SerializeField] private List<BaseMob> MobList;
+	[SerializeField] private List<BaseMob> Wave1MobList;
+	[SerializeField] private List<BaseMob> Wave2MobList;
 	[SerializeField] private List<SwitchController> SwitchList;
 	[SerializeField] private GameObject Door;
 	[SerializeField] private CinemachineCamera DoorCam;
@@ -49,7 +50,7 @@ public class Stage0 : MonoBehaviour
         {
             if (player.Critters.Count == 4)
 			{
-				foreach (BaseMob mob in MobList)
+				foreach (BaseMob mob in Wave1MobList)
 				{
 					mob.gameObject.SetActive(true);
 				}
@@ -60,7 +61,7 @@ public class Stage0 : MonoBehaviour
 		if (currentMission == 2)
 		{
 			int count = 0;
-			foreach (BaseMob mob in MobList)
+			foreach (BaseMob mob in Wave1MobList)
 			{
 				if (mob == null)
 				{
@@ -95,7 +96,24 @@ public class Stage0 : MonoBehaviour
 			UpdateMission(4);
 			Door.GetComponent<Animator>().SetTrigger("Open");
 		}
-    }
+
+		if (currentMission == 5)
+		{
+			int count = 0;
+			foreach (BaseMob mob in Wave2MobList)
+			{
+				if (mob == null)
+				{
+					count++;
+				}
+
+				if (count == 4)
+				{
+					UpdateMission(6);
+				}
+			}
+		}
+	}
 
 	public void UpdateMission(int index)
 	{
@@ -129,5 +147,9 @@ public class Stage0 : MonoBehaviour
 		player.Init(new Vector3(-9f, 0f, -9f), StageList[CurrentStage]);
 		GlobalSceneManager.Instance.FadeIn();
 		UpdateMission(5);
+		foreach (BaseMob mob in Wave2MobList)
+		{
+			mob.gameObject.SetActive(true);
+		}
 	}
 }

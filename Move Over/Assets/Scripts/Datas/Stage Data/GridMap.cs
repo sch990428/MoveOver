@@ -26,6 +26,11 @@ public class GridMap : MonoBehaviour
 		MakeGridMap();
 	}
 
+	private void OnEnable()
+	{
+		MakeGridMap();
+	}
+
 	public void MakeGridMap()
 	{
 		// Grids 채우기
