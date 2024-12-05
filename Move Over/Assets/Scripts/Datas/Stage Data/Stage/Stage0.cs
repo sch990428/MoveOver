@@ -30,8 +30,6 @@ public class Stage0 : MonoBehaviour
 
 	private void Awake()
 	{
-		CurrentStage = 0;
-		currentMission = 0;
 		MissionList.Add("폭탄으로 나무상자를 부수고 탈출하세요");
 		MissionList.Add("모든 부하들을 구출하세요");
 		MissionList.Add("폭탄으로 쥐들을 물리치세요");
@@ -41,6 +39,8 @@ public class Stage0 : MonoBehaviour
 		MissionList.Add("대장을 물리치세요");
 		MissionList.Add("인간을 구출하세요");
 		UpdateMission(currentMission);
+
+		player.Init(player.transform.position, StageList[CurrentStage]);
 	}
 
 	private void Update()
@@ -126,7 +126,7 @@ public class Stage0 : MonoBehaviour
 		StageList[CurrentStage].gameObject.SetActive(false);
 		CurrentStage++;
 		StageList[CurrentStage].gameObject.SetActive(true);
-		player.Init(new Vector3(-9f, 0f, -9f));
+		player.Init(new Vector3(-9f, 0f, -9f), StageList[CurrentStage]);
 		GlobalSceneManager.Instance.FadeIn();
 		UpdateMission(5);
 	}

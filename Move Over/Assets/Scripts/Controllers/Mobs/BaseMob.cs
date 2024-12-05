@@ -313,7 +313,7 @@ public class BaseMob : MonoBehaviour
 			randomDirection = randomDirection.normalized;
 			randomDirection.y = 1f;
 
-			_rigidBody.AddForce(randomDirection * 40, ForceMode.Impulse);
+			_rigidBody.AddForce(randomDirection * 20, ForceMode.Impulse);
 			_rigidBody.AddTorque(randomDirection * 5, ForceMode.Impulse);
 
 			ResourceManager.Instance.Destroy(gameObject, 1f);
