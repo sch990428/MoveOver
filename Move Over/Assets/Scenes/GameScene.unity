@@ -1201,7 +1201,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4288837594969232004, guid: 648f0b8caedb30b4f90985a4ba5aa23c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4
+      value: -4
       objectReference: {fileID: 0}
     - target: {fileID: 4288837594969232004, guid: 648f0b8caedb30b4f90985a4ba5aa23c, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1209,7 +1209,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4288837594969232004, guid: 648f0b8caedb30b4f90985a4ba5aa23c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4288837594969232004, guid: 648f0b8caedb30b4f90985a4ba5aa23c, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1241,7 +1241,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5049197676035479012, guid: 648f0b8caedb30b4f90985a4ba5aa23c, type: 3}
       propertyPath: m_Name
-      value: RangerRat (1)
+      value: RangerRat
+      objectReference: {fileID: 0}
+    - target: {fileID: 5049197676035479012, guid: 648f0b8caedb30b4f90985a4ba5aa23c, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -7153,7 +7157,7 @@ MonoBehaviour:
   missionText: {fileID: 868603697}
   missionProgressUI: {fileID: 1785969881}
   MissionList: []
-  currentMission: 3
+  currentMission: 0
   helper1: {fileID: 304974022}
   helper2: {fileID: 1206561779}
   MobList:
@@ -10887,7 +10891,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1682789969
 Transform:
   m_ObjectHideFlags: 0
@@ -13179,6 +13183,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: RangerRat
       objectReference: {fileID: 0}
+    - target: {fileID: 5049197676035479012, guid: 648f0b8caedb30b4f90985a4ba5aa23c, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -13234,7 +13242,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.3, y: 0.66, z: 0.3}
+  m_Size: {x: 0.5, y: 0.66, z: 0.5}
   m_Center: {x: 0, y: 0.33, z: 0}
 --- !u!1 &3420695182261688290
 GameObject:

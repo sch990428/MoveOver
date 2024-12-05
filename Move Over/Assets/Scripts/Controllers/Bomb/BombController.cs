@@ -19,6 +19,7 @@ public class BombController : MonoBehaviour
 
 	public int Wide;
 	public float Damage;
+	public bool makerExit = false;
 
 	public float Timer = 0f;
 	public float MaxTimer;
@@ -28,6 +29,7 @@ public class BombController : MonoBehaviour
 		ExplodeAreas = new List<GameObject>();
 		CandidatePosStack = new Stack<Vector3>();
 		Timer = 0f;
+		makerExit = false;
 		MaxTimer = 3f;
 		Damage = 3f;
 	}
@@ -102,7 +104,7 @@ public class BombController : MonoBehaviour
 
 	public void ForcedExplode()
 	{
-		Timer = MaxTimer - 0.2f;
+		Timer = MaxTimer - 0.01f;
 	}
 
 	public IEnumerator Explosion()
@@ -155,8 +157,7 @@ public class BombController : MonoBehaviour
 			PoolManager.Instance.Destroy(Define.PoolableType.ExplodeEffect, go, 1f);
 		}
 
-		if (minIndex < int.MaxValue)
-		{ Player.Damage(minIndex); }
+		if (minIndex < int.MaxValue) { Player.Damage(minIndex); }
 
 		SoundManager.Instance.PlaySound(SoundManager.GameSound.Explode);
 		Player.currentBomb--;

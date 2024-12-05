@@ -53,7 +53,7 @@ public class PlayerController : CritterController
 	{
 		mainCamera = Camera.main.GetComponent<CameraController>();
 		playerCollider = GetComponent<Collider>();
-		bombY = playerCollider.bounds.max.y;
+		bombY = 0f;
 		maxBomb = 1;
 		currentBomb = 0;
 		bombEnable = true;
@@ -242,6 +242,22 @@ public class PlayerController : CritterController
 		else if (collision.gameObject.CompareTag("Item"))
 		{
 			collision.transform.GetComponent<IBaseItem>().Collected();
+		}
+		else if (collision.gameObject.CompareTag("Bomb"))
+		{
+			BombController b = collision.transform.GetComponent<BombController>();
+			if (b.makerExit)
+			{
+				b.ForcedExplode();
+			}
+		}
+	}
+
+	private void OnCollisionExit(Collision collision)
+	{
+		if (collision.gameObject.CompareTag("Bomb"))
+		{
+			collision.transform.GetComponent<BombController>().makerExit = true;
 		}
 	}
 

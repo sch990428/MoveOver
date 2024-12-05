@@ -230,14 +230,7 @@ public class BaseMob : MonoBehaviour
 
 		foreach (Collider hit in hits)
 		{
-			if (hit.CompareTag("Bomb"))
-			{
-				hit.GetComponent<BombController>().ForcedExplode();
-			}
-			else
-			{
-				return true; // 충돌 발생
-			}
+			return true; // 충돌 발생
 		}
 
 		return false; // 충돌 없음
@@ -245,10 +238,13 @@ public class BaseMob : MonoBehaviour
 
 	protected void OnCollisionEnter(Collision collision)
 	{
-		if (collision.transform.CompareTag("Tail"))
+        if ( collision.transform.CompareTag("Bomb"))
+        {
+			collision.transform.GetComponent<BombController>().ForcedExplode();
+        }
+        else if (collision.transform.CompareTag("Tail"))
 		{
 			ApplyDamage(collision.transform.GetComponent<CritterController>().Order);
-
 		}
 		else if (collision.transform.CompareTag("Player"))
 		{
