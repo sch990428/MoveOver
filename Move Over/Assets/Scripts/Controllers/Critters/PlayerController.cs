@@ -31,6 +31,7 @@ public class PlayerController : CritterController
 
 	// 플레이어 부하 관련
 	public List<CritterController> Critters;
+	public List<Carryable> Carrying;
 
 	// 플레이어 폭탄 관련
 	public int maxBomb;
@@ -123,6 +124,10 @@ public class PlayerController : CritterController
 							{
 								hit.GetComponent<BombController>().ForcedExplode();
 							}
+							else if (hit.CompareTag("Carryable") && hit.GetComponent<Carryable>().isGrabbed)
+							{
+								
+							}
 							else
 							{
 								isBlocked = true;
@@ -166,6 +171,11 @@ public class PlayerController : CritterController
 							foreach (CritterController c in Critters)
 							{
 								c.SideTo(moveDir, 0.3f);
+							}
+
+							foreach (Carryable g in Carrying)
+							{
+								g.Carry(moveDir, 0.3f);
 							}
 						}
 						else

@@ -11,6 +11,7 @@ TagManager:
   - Explodable
   - Item
   - Monster
+  - Carryable
   layers:
   - Default
   - TransparentFX
@@ -27,7 +28,7 @@ TagManager:
   - WallRight
   - Enemy
   - Bomb
-  - 
+  - Carryable
   - 
   - 
   - 

@@ -43,6 +43,11 @@ public class GlobalSceneManager : Singleton<GlobalSceneManager>
 		StartCoroutine(StartFadeIn());
 	}
 
+	public PlayerController GetPlayer()
+	{
+		return stage.player;
+	}
+
 	public GridMap GetCurrentMap()
 	{
 		return stage.GetGridMap(CurrentStage);

@@ -98,7 +98,16 @@ public class CritterController : MonoBehaviour
 	public bool IsBlocked(Vector3 dir)
 	{
 		Collider[] hits = Physics.OverlapBox(transform.position + dir, new Vector3(0.49f, 0.7f, 0.49f), Quaternion.identity, LayerMask.GetMask("Obstacle", "Explodable", "WallUp", "WallDown", "WallLeft", "WallRight"));
-		return hits.Length > 0;
+		bool isBlocked = false;
+		foreach(Collider c in hits)
+		{
+			if (!(c.CompareTag("Carryable") && c.GetComponent<Carryable>().isGrabbed))
+			{
+				isBlocked = true; 
+				break;
+			}
+		}
+		return isBlocked;
 	}
 
 	public void SideTo(Vector3 destPos, float moveDuration)
