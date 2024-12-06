@@ -4,7 +4,6 @@ using UnityEngine;
 public class Carryable : MonoBehaviour
 {
     [SerializeField] GridMap stage;
-    [SerializeField] Transform defaultParent;
     [SerializeField] PlayerController player;
 
 	private float defaultY;

@@ -14,10 +14,14 @@ public class Stage0 : Stage
 	[SerializeField] private GameObject helper2;
 	[SerializeField] private List<BaseMob> Wave1MobList;
 	[SerializeField] private List<BaseMob> Wave2MobList;
-	[SerializeField] private List<SwitchController> SwitchList;
+	[SerializeField] private List<SwitchController> Stage1SwitchList;
+	[SerializeField] private List<SwitchController> Stage2SwitchList;
 	[SerializeField] private GameObject Door;
 	[SerializeField] private CinemachineCamera DoorCam;
 	[SerializeField] private AudioClip bossBGM;
+
+	[SerializeField] private GameObject bossAltar;
+	[SerializeField] private GameObject foodGrid;
 
 	protected override void Start()
 	{
@@ -27,9 +31,9 @@ public class Stage0 : Stage
 
 	private void Update()
 	{
-        if (GlobalSceneManager.Instance.CurrentMission == 1)
-        {
-            if (player.Critters.Count == 4)
+		if (GlobalSceneManager.Instance.CurrentMission == 1)
+		{
+			if (player.Critters.Count == 4)
 			{
 				foreach (BaseMob mob in Wave1MobList)
 				{
@@ -37,7 +41,7 @@ public class Stage0 : Stage
 				}
 				UpdateMission(2);
 			}
-        }
+		}
 
 		if (GlobalSceneManager.Instance.CurrentMission == 2)
 		{
@@ -48,18 +52,18 @@ public class Stage0 : Stage
 				{
 					count++;
 				}
+			}
 
-				if (count == 2)
-				{
-					UpdateMission(3);
-					helper2.SetActive(true);
-				}
+			if (count == 2)
+			{
+				UpdateMission(3);
+				helper2.SetActive(true);
 			}
 		}
 
 		if (GlobalSceneManager.Instance.CurrentMission == 3)
 		{
-			foreach (SwitchController s in SwitchList)
+			foreach (SwitchController s in Stage1SwitchList)
 			{
 				if (!s.isOn)
 				{
@@ -68,7 +72,7 @@ public class Stage0 : Stage
 			}
 
 			helper2.SetActive(false);
-			foreach (SwitchController s in SwitchList)
+			foreach (SwitchController s in Stage1SwitchList)
 			{
 				s.Complete();
 			}
@@ -87,15 +91,71 @@ public class Stage0 : Stage
 				{
 					count++;
 				}
+			}
 
-				if (count == 4)
-				{
-					UpdateMission(6);
-					GetComponent<AudioSource>().resource = bossBGM;
-					GetComponent<AudioSource>().Play();
-				}
+			if (count == 0)
+			{
+				UpdateMission(6);
+				StartCoroutine(DownAltar());
 			}
 		}
+
+		if (GlobalSceneManager.Instance.CurrentMission == 6)
+		{
+			Collider[] hits = Physics.OverlapBox(transform.position, Vector3.one, Quaternion.identity, LayerMask.GetMask("Obstacle"));
+
+			int count = 0;
+			foreach (Collider c in hits)
+			{
+				if (c.transform.CompareTag("Carryable"))
+				{
+					count++;
+				}
+			}
+
+			Debug.Log(count);
+
+			if (count == 3)
+			{
+				foreach (Collider c in hits)
+				{
+					c.transform.SetParent(bossAltar.transform);
+				}
+
+				UpdateMission(7);	
+			}
+		}
+
+		if (GlobalSceneManager.Instance.CurrentMission == 7)
+		{
+			foreach (SwitchController s in Stage2SwitchList)
+			{
+				if (!s.isOn)
+				{
+					return;
+				}
+			}
+
+			foreach (SwitchController s in Stage2SwitchList)
+			{
+				s.Complete();
+			}
+
+			UpdateMission(8);
+			StartCoroutine(UpAltar());
+		}
+	}
+
+	private IEnumerator DownAltar()
+	{
+		bossAltar.GetComponent<Animator>().SetTrigger("Down");
+		yield return null;
+	}
+
+	private IEnumerator UpAltar()
+	{
+		bossAltar.GetComponent<Animator>().SetTrigger("Up");
+		yield return null;
 	}
 
 	public void UpdateMission(int index)
