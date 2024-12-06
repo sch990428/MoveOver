@@ -40,6 +40,11 @@ public class PlayerController : CritterController
 	public int maxCoin = 20;
 	public int currentCoin = 0;
 
+	// 플레이어 체력 관련
+	private float HP = 5f;
+	private float MaxHP = 5f;
+	private bool isDamaged = false;
+
 	public GridMap currentMap;
 
 	// 플레이어 이펙트 관련
@@ -232,6 +237,7 @@ public class PlayerController : CritterController
 				Destroy(go, 1f);
 
 				int o = c.Order;
+				if (o <= 0) { return; }
 				Camera.main.GetComponent<CameraController>().OnShakeCameraByPosition(0.3f, 0.3f);
 				Damage(o);
 
@@ -261,24 +267,40 @@ public class PlayerController : CritterController
 		}
 	}
 
-	public void Damage(int hitPoint)
+	public void Damage(int hitPoint, float damage = 1f)
 	{
 		int retireAmount = 0;
 		if (hitPoint < 0)
 		{
-			if (Critters.Count > 0)
+			if (!isDamaged)
 			{
-				foreach (CritterController c in Critters)
+				isDamaged = true;
+				if (Critters.Count > 0)
 				{
-					c.Retire();
+					foreach (CritterController c in Critters)
+					{
+						c.Retire();
+					}
+
+					retireAmount = Critters.Count;
+					Critters.Clear();
 				}
 
-				retireAmount = Critters.Count;
-				Critters.Clear();
-			}
-			else
-			{
-				Debug.Log("게임 오버");
+				GameObject go = Instantiate(MeleeDamageEffect);
+				go.transform.position = transform.position;
+				Destroy(go, 1f);
+
+				HP -= damage;
+				if (HP <= 0)
+				{
+					Debug.Log("게임 오버");
+					HP = 0;
+				}
+
+				StartCoroutine(DamageCooltime());
+				uiController.UpdateHpBar(HP, MaxHP);
+				Camera.main.GetComponent<CameraController>().OnShakeCameraByPosition(0.3f, 0.3f);
+				SoundManager.Instance.PlaySound(SoundManager.GameSound.Damage);
 			}
 		}
 		else if (hitPoint > Critters.Count)
@@ -291,16 +313,16 @@ public class PlayerController : CritterController
 			for (int i = hitPoint; i < Critters.Count; i++)
 			{
 				Critters[i].Retire();
-				
 			}
 
 			retireAmount = Critters.Count - hitPoint;
 			Critters.RemoveRange(hitPoint, Critters.Count - hitPoint);
+
+			Camera.main.GetComponent<CameraController>().OnShakeCameraByPosition(0.3f, 0.3f);
+			SoundManager.Instance.PlaySound(SoundManager.GameSound.Damage);
 		}
 
 		CritterCountChange();
-		Camera.main.GetComponent<CameraController>().OnShakeCameraByPosition(0.3f, 0.3f);
-		SoundManager.Instance.PlaySound(SoundManager.GameSound.Damage);
 
 		HashSet<Vector2Int> respawnPos = new HashSet<Vector2Int>();
 		// Debug.Log($"{retireAmount}만큼 만들자");
@@ -329,6 +351,12 @@ public class PlayerController : CritterController
 	{
 		yield return new WaitForSeconds(bombCooltime);
 		bombEnable = true;
+	}
+
+	private IEnumerator DamageCooltime()
+	{
+		yield return new WaitForSeconds(2f);
+		isDamaged = false;
 	}
 
 	public void BombCountChange()

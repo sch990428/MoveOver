@@ -12,7 +12,7 @@ public class Stage0 : MonoBehaviour
 	// 스테이지 관련
 	[SerializeField] private List<GridMap> StageList;
 	public int CurrentStage;
-	[SerializeField] private PlayerController player;
+	[SerializeField] public PlayerController player;
 
 	// 미션 관련
 	[SerializeField] private TMP_Text missionText;
@@ -28,6 +28,7 @@ public class Stage0 : MonoBehaviour
 	[SerializeField] private List<SwitchController> SwitchList;
 	[SerializeField] private GameObject Door;
 	[SerializeField] private CinemachineCamera DoorCam;
+	[SerializeField] private AudioClip bossBGM;
 
 	private void Awake()
 	{
@@ -110,6 +111,8 @@ public class Stage0 : MonoBehaviour
 				if (count == 4)
 				{
 					UpdateMission(6);
+					GetComponent<AudioSource>().resource = bossBGM;
+					GetComponent<AudioSource>().Play();
 				}
 			}
 		}

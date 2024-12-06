@@ -27,15 +27,15 @@ public class CritterController : MonoBehaviour
 
 	private void OnEnable()
 	{
+		isSpinned = false;
+		isBirth = true;
+		isRetire = false;
+
 		_collider = GetComponent<Collider>();
 		_rigidBody = GetComponent<Rigidbody>();
 
 		_collider.enabled = true;
 		_rigidBody.constraints = RigidbodyConstraints.FreezeAll;
-
-		isSpinned = false;
-		isBirth = true;
-		isRetire = false;
 	}
 
 	private void OnCollisionEnter(Collision collision)
@@ -97,7 +97,7 @@ public class CritterController : MonoBehaviour
 	public void MoveTo(Vector3 destPos, float moveDuration)
 	{
 		if (isRetire) { return; }
-
+		destPos.y = 0;
 		prePos = transform.position;
 		StartCoroutine(Move(destPos, moveDuration));
 	}
@@ -128,7 +128,7 @@ public class CritterController : MonoBehaviour
 		validAngle = transform.forward;
 		transform.position = destPos;
 		isMoving = false;
-		if (Vector3.Distance(BornPos, transform.position) > 0.5f && isBirth) { isBirth = false; }
+		if (Vector3.Distance(BornPos, transform.position) > 0.8f && isBirth) { isBirth = false; }
 	}
 
 	public void Retire()

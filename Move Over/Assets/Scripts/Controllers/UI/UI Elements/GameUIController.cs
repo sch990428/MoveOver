@@ -1,6 +1,7 @@
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameUIController : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class GameUIController : MonoBehaviour
 	[SerializeField] private TMP_Text chapterCode;
 	[SerializeField] private TMP_Text chapterName;
 	[SerializeField] private TMP_Text stageName;
+	[SerializeField] private Image HPBar;
 
 	private int currentStage;
 	private Data.BaseStage stage;
@@ -21,6 +23,11 @@ public class GameUIController : MonoBehaviour
 		stageName.text = $"{stage.ChapterCode} - {stage.ChapterName}";
 		chapterCode.text = stage.ChapterCode;
 		chapterName.text = stage.ChapterName;
+	}
+
+	public void UpdateHpBar(float hp, float maxhp)
+	{
+		HPBar.fillAmount = hp / maxhp;
 	}
 
 	public void UpdateBomb(int current, int max)

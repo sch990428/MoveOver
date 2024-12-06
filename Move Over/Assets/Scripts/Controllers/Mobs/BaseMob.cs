@@ -236,7 +236,7 @@ public class BaseMob : MonoBehaviour
 		return false; // 충돌 없음
 	}
 
-	protected void OnCollisionEnter(Collision collision)
+	protected void OnCollisionStay(Collision collision)
 	{
         if ( collision.transform.CompareTag("Bomb"))
         {
@@ -255,10 +255,12 @@ public class BaseMob : MonoBehaviour
 	protected void ApplyDamage(int order)
 	{
 		player.GetComponent<PlayerController>().Damage(order);
-
-		GameObject go = Instantiate(MeleeDamageEffect);
-		go.transform.position = transform.position + Vector3.up / 2;
-		Destroy(go, 1f);
+		if (order >= 0)
+		{
+			GameObject go = Instantiate(MeleeDamageEffect);
+			go.transform.position = transform.position + Vector3.up / 2;
+			Destroy(go, 1f);
+		}
 	}
 
 	public void GetDamage(float damage)

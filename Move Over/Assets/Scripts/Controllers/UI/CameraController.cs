@@ -7,6 +7,7 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
 	[SerializeField] private List<CinemachineCamera> camerasViews;
+	[SerializeField] private PlayerController player;
 	private int preCam;
 	private Camera mainCamera;
 
@@ -23,6 +24,8 @@ public class CameraController : MonoBehaviour
 	private int wallEastMask;
 	private int wallSouthMask;
 	private int wallWestMask;
+
+	private bool isRotatable = true;
 
 	Material material;
 	
@@ -47,23 +50,26 @@ public class CameraController : MonoBehaviour
 
 	private void Update()
 	{
-		if (Input.GetKeyUp(KeyCode.E))
-		{
-			viewIndex--;
-			if (viewIndex < 0)
+        if (isRotatable)
+        {
+			if (Input.GetKeyUp(KeyCode.E))
 			{
-				viewIndex = camerasViews.Count - 1;
+				viewIndex--;
+				if (viewIndex < 0)
+				{
+					viewIndex = camerasViews.Count - 1;
+				}
+				UpdateCullingMask();
 			}
-			UpdateCullingMask();
-		}
-		else if (Input.GetKeyUp(KeyCode.Q))
-		{
-			viewIndex++;
-			if (viewIndex >= camerasViews.Count)
+			else if (Input.GetKeyUp(KeyCode.Q))
 			{
-				viewIndex = 0;
+				viewIndex++;
+				if (viewIndex >= camerasViews.Count)
+				{
+					viewIndex = 0;
+				}
+				UpdateCullingMask();
 			}
-			UpdateCullingMask();
 		}
 	}
 
@@ -96,6 +102,8 @@ public class CameraController : MonoBehaviour
 
 	public void SwitchCamera(CinemachineCamera newCam, float time)
 	{
+		isRotatable = false;
+		player.isMovable = false;
 		preCam = viewIndex;
 		newCam.gameObject.SetActive(true);
 		StartCoroutine(Switch(newCam, time));
@@ -109,6 +117,8 @@ public class CameraController : MonoBehaviour
 		newCam.gameObject.SetActive(false);
 		viewIndex = preCam;
 		UpdateCullingMask();
+		isRotatable = true;
+		player.isMovable = true;
 	}
 
 	// 카메라 위치기반 흔들림 효과
