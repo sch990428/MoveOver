@@ -13,6 +13,7 @@ public class PlayerController : CritterController
 		Idle,
 		Move,
 		Attack,
+		GameOver,
 	}
 
 	public PlayerState state;
@@ -41,8 +42,8 @@ public class PlayerController : CritterController
 	public int currentCoin = 0;
 
 	// 플레이어 체력 관련
-	private float HP = 5f;
-	private float MaxHP = 5f;
+	private float HP = 3f;
+	private float MaxHP = 3f;
 	private bool isDamaged = false;
 
 	public GridMap currentMap;
@@ -51,10 +52,10 @@ public class PlayerController : CritterController
 	[SerializeField] private GameObject MeleeDamageEffect;
 
 	// UI 관련
-	[SerializeField] private GameUIController uiController;
+	public GameUIController uiController;
 	private CameraController mainCamera;
 
-	private void Awake()
+	private void Start()
 	{
 		mainCamera = Camera.main.GetComponent<CameraController>();
 		playerCollider = GetComponent<Collider>();
@@ -63,9 +64,7 @@ public class PlayerController : CritterController
 		currentBomb = 0;
 		bombEnable = true;
 		bombCooltime = 1f;
-
 		viewIndex = mainCamera.viewIndex;
-
 		BombCountChange();
 		CoinCountChange();
 		CritterCountChange();
@@ -203,7 +202,7 @@ public class PlayerController : CritterController
 
 	private void OnAttack()
 	{
-		if (currentBomb < maxBomb && bombEnable)
+		if (currentBomb < maxBomb && bombEnable && !isRetire)
 		{
 			currentBomb++;
 			bombEnable = false;
@@ -293,7 +292,7 @@ public class PlayerController : CritterController
 				HP -= damage;
 				if (HP <= 0)
 				{
-					Debug.Log("게임 오버");
+					uiController.GameOver();
 					HP = 0;
 				}
 
@@ -301,6 +300,7 @@ public class PlayerController : CritterController
 				uiController.UpdateHpBar(HP, MaxHP);
 				Camera.main.GetComponent<CameraController>().OnShakeCameraByPosition(0.3f, 0.3f);
 				SoundManager.Instance.PlaySound(SoundManager.GameSound.Damage);
+
 			}
 		}
 		else if (hitPoint > Critters.Count)

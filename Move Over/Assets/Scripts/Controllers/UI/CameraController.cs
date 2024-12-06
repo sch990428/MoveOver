@@ -7,7 +7,7 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
 	[SerializeField] private List<CinemachineCamera> camerasViews;
-	[SerializeField] private PlayerController player;
+	[SerializeField] public PlayerController player;
 	private int preCam;
 	private Camera mainCamera;
 
@@ -46,6 +46,14 @@ public class CameraController : MonoBehaviour
 		wallWestMask = LayerMask.GetMask("WallLeft");
 
 		UpdateCullingMask();
+	}
+
+	public void Init()
+	{
+		foreach (var cam in camerasViews)
+		{
+			cam.LookAt = player.transform;
+		}
 	}
 
 	private void Update()

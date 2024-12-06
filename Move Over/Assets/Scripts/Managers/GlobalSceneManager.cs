@@ -43,8 +43,27 @@ public class GlobalSceneManager : Singleton<GlobalSceneManager>
 		FadeImage.SetActive(true);
 		animator.SetTrigger("Out");
 		yield return new WaitForSeconds(1f);
-		SceneManager.LoadSceneAsync(sceneName);
+		AsyncOperation sceneLoad = SceneManager.LoadSceneAsync(sceneName);
 		yield return null;
+
+		while (!sceneLoad.isDone)
+		{
+			Debug.Log($"Loading: {sceneLoad.progress}");
+			yield return null;
+		}
+
+		if (sceneName.Equals("GameScene"))
+		{
+			GameObject gameUI = ResourceManager.Instance.Instantiate("Prefabs/Stage/UI Canvas");
+			GameObject stage = ResourceManager.Instance.Instantiate("Prefabs/Stage/Stage 0");
+			Stage0 stage0 = stage.GetComponent<Stage0>();
+			stage0.uiController = gameUI.GetComponent<GameUIController>();
+
+			CameraController cameraController = gameUI.GetComponent<CameraController>();
+			//cameraController.player = stage0.player;
+			//cameraController.Init();
+		}
+
 		animator.SetTrigger("In");
 		yield return new WaitForSeconds(1f);
 		FadeImage.SetActive(false);

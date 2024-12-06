@@ -14,6 +14,9 @@ public class Stage0 : MonoBehaviour
 	public int CurrentStage;
 	[SerializeField] public PlayerController player;
 
+	// 게임 UI
+	[SerializeField] public GameUIController uiController;
+
 	// 미션 관련
 	[SerializeField] private TMP_Text missionText;
 	[SerializeField] private Image missionProgressUI;
@@ -30,8 +33,13 @@ public class Stage0 : MonoBehaviour
 	[SerializeField] private CinemachineCamera DoorCam;
 	[SerializeField] private AudioClip bossBGM;
 
-	private void Awake()
+	private void Start()
 	{
+		missionText = uiController.missionText;
+		missionProgressUI = uiController.missionProgressUI;
+
+		player.uiController = uiController;
+
 		MissionList.Add("폭탄으로 나무상자를 부수고 탈출하세요");
 		MissionList.Add("모든 부하들을 구출하세요");
 		MissionList.Add("폭탄으로 쥐들을 물리치세요");
