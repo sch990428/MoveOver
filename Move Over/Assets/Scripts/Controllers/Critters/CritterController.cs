@@ -125,6 +125,8 @@ public class CritterController : MonoBehaviour
 
 			yield return null;
 		}
+
+		if (!isSpinned) { height = 0; }
 		validAngle = transform.forward;
 		transform.position = destPos;
 		isMoving = false;

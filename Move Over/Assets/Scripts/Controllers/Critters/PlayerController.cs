@@ -47,6 +47,7 @@ public class PlayerController : CritterController
 	private bool isDamaged = false;
 
 	public GridMap currentMap;
+	public bool isGameover = false;
 
 	// 플레이어 이펙트 관련
 	[SerializeField] private GameObject MeleeDamageEffect;
@@ -88,7 +89,10 @@ public class PlayerController : CritterController
 
 	private void Update()
 	{
-		if (uiController)
+		if (isGameover)
+		{
+			return;
+		}
 
 		// 테스트용 부하 생성
 		if (Input.GetKeyDown(KeyCode.X))
@@ -205,7 +209,11 @@ public class PlayerController : CritterController
 
 	private void OnAttack()
 	{
-		if (currentBomb < maxBomb && bombEnable && !isRetire)
+		if (isGameover)
+		{
+			return;
+		}
+		if (currentBomb < maxBomb && bombEnable)
 		{
 			currentBomb++;
 			bombEnable = false;
@@ -296,6 +304,7 @@ public class PlayerController : CritterController
 				if (HP <= 0)
 				{
 					uiController.GameOver();
+					isGameover = true;
 					HP = 0;
 				}
 
