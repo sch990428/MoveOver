@@ -1,23 +1,33 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GlobalSceneManager : Singleton<GlobalSceneManager>
 {
+	public Dictionary<int, Data.BaseStage> StageDict;
+
 	[SerializeField] private GameObject FadeImage;
+	[SerializeField] private List<GameObject> StagePrefabs;
+
+	private Stage stage;
+	public int CurrentStage;
+	public int CurrentMission;
+
 	private Animator animator;
 
 	protected override void Awake() 
 	{
 		base.Awake();
+		StageDict = DataManager.Instance.LoadJsonToDict<Data.BaseStage>("Data/stage");
 		animator = GetComponent<Animator>();
 	}
 
-	public void LoadScene(string sceneName, float speed = 1f)
+	public void LoadScene(string sceneName, bool isReplay = false, int index = 0, float speed = 1f)
 	{
 		animator.speed = speed;
-		StartCoroutine(LoadSceneWithFade(sceneName));
+		StartCoroutine(LoadSceneWithFade(sceneName, index, isReplay));
 	}
 
 	public void FadeOut()
@@ -31,6 +41,11 @@ public class GlobalSceneManager : Singleton<GlobalSceneManager>
 		StartCoroutine(StartFadeIn());
 	}
 
+	public GridMap GetCurrentMap()
+	{
+		return stage.GetGridMap(CurrentStage);
+	}
+
 	private IEnumerator StartFadeIn()
 	{
 		animator.SetTrigger("In");
@@ -38,7 +53,7 @@ public class GlobalSceneManager : Singleton<GlobalSceneManager>
 		FadeImage.SetActive(false);
 	}
 
-	private IEnumerator LoadSceneWithFade(string sceneName)
+	private IEnumerator LoadSceneWithFade(string sceneName, int index, bool isReplay)
 	{
 		FadeImage.SetActive(true);
 		animator.SetTrigger("Out");
@@ -55,18 +70,25 @@ public class GlobalSceneManager : Singleton<GlobalSceneManager>
 		if (sceneName.Equals("GameScene"))
 		{
 			GameObject gameUI = ResourceManager.Instance.Instantiate("Prefabs/Stage/UI Canvas");
-			GameObject stage = ResourceManager.Instance.Instantiate("Prefabs/Stage/Stage 0");
-			Stage0 stage0 = stage.GetComponent<Stage0>();
-			stage0.uiController = gameUI.GetComponent<GameUIController>();
+			GameObject stageObject = Instantiate(StagePrefabs[index]);
+			stage = stageObject.GetComponent<Stage0>();
+			stage.uiController = gameUI.GetComponent<GameUIController>();
 
+			if (isReplay)
+			{
+				stage.LoadFromCheckPoint();
+			}
+			else
+			{
+				CurrentStage = 0;
+				CurrentMission = 0;
+			}
+			
 			CameraController cameraController = gameUI.GetComponent<CameraController>();
-			//cameraController.player = stage0.player;
-			//cameraController.Init();
 		}
 
 		animator.SetTrigger("In");
 		yield return new WaitForSeconds(1f);
 		FadeImage.SetActive(false);
 	}
-
 }

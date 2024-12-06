@@ -65,6 +65,7 @@ public class PlayerController : CritterController
 		bombEnable = true;
 		bombCooltime = 1f;
 		viewIndex = mainCamera.viewIndex;
+		currentMap = GlobalSceneManager.Instance.GetCurrentMap();
 		BombCountChange();
 		CoinCountChange();
 		CritterCountChange();
@@ -87,6 +88,8 @@ public class PlayerController : CritterController
 
 	private void Update()
 	{
+		if (uiController)
+
 		// 테스트용 부하 생성
 		if (Input.GetKeyDown(KeyCode.X))
 		{

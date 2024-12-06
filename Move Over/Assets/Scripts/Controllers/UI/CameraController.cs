@@ -48,14 +48,6 @@ public class CameraController : MonoBehaviour
 		UpdateCullingMask();
 	}
 
-	public void Init()
-	{
-		foreach (var cam in camerasViews)
-		{
-			cam.LookAt = player.transform;
-		}
-	}
-
 	private void Update()
 	{
         if (isRotatable)

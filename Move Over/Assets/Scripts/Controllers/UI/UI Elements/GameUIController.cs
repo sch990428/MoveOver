@@ -51,7 +51,8 @@ public class GameUIController : MonoBehaviour
 			}
 			else if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
 			{
-
+				Time.timeScale = 1f;
+				GlobalSceneManager.Instance.LoadScene("GameScene", true);
 			}
 		}
 	}
