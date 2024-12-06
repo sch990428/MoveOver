@@ -22,6 +22,7 @@ public class PlayerController : CritterController
 	private Vector3 moveDir = Vector3.zero;
 	[SerializeField] private float moveDuration = 0.3f;
 	[SerializeField] private float moveDistance = 1f;
+	private bool sidestep = false;
 	public int viewIndex;
 
 	// 플레이어 콜라이더 관련
@@ -94,6 +95,8 @@ public class PlayerController : CritterController
 			return;
 		}
 
+		sidestep = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.LeftShift);
+
 		// 테스트용 부하 생성
 		if (Input.GetKeyDown(KeyCode.X))
 		{
@@ -126,21 +129,48 @@ public class PlayerController : CritterController
 							}
 						}
 
-						transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(destPos - prePos), 0.3f);
+						if (!sidestep) { transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(destPos - prePos), 0.3f); }
 					}
 
-					if (Critters.Count > 0 && validAngle + moveDir == Vector3.zero) { break; }
+					if (Critters.Count > 0 && validAngle + moveDir == Vector3.zero && !sidestep) { break; }
 					if (isBlocked) { break; }
 					isMoving = true;
 
-					StartCoroutine(Move(destPos, moveDuration));
-					// 부하들을 순차적으로 이동
-					if (Critters.Count > 0)
+					if (!sidestep)
 					{
-						Critters[0].MoveTo(prePos, moveDuration);
-						for (int i = 1; i < Critters.Count; i++)
+						StartCoroutine(Move(destPos, moveDuration));
+						// 부하들을 순차적으로 이동
+						if (Critters.Count > 0)
 						{
-							Critters[i].MoveTo(Critters[i - 1].prePos, moveDuration);
+							Critters[0].MoveTo(prePos, moveDuration);
+							for (int i = 1; i < Critters.Count; i++)
+							{
+								Critters[i].MoveTo(Critters[i - 1].prePos, moveDuration);
+							}
+						}
+					}
+					else
+					{
+						bool isSideBlocked = false;
+						foreach (CritterController c in Critters)
+						{
+							if (c.IsBlocked(moveDir))
+							{
+								isSideBlocked = true;
+							}
+						}
+
+						if (!isSideBlocked)
+						{
+							StartCoroutine(SideStep(moveDir, 0.3f));
+							foreach (CritterController c in Critters)
+							{
+								c.SideTo(moveDir, 0.3f);
+							}
+						}
+						else
+						{
+							isMoving = false;
 						}
 					}
 				}

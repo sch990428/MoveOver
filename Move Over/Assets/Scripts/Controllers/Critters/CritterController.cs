@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class CritterController : MonoBehaviour
@@ -94,12 +95,52 @@ public class CritterController : MonoBehaviour
 		height = 0;
 	}
 
+	public bool IsBlocked(Vector3 dir)
+	{
+		Collider[] hits = Physics.OverlapBox(transform.position + dir, new Vector3(0.49f, 0.7f, 0.49f), Quaternion.identity, LayerMask.GetMask("Obstacle", "Explodable", "WallUp", "WallDown", "WallLeft", "WallRight"));
+		return hits.Length > 0;
+	}
+
+	public void SideTo(Vector3 destPos, float moveDuration)
+	{
+		if (isRetire)
+		{ return; }
+		destPos.y = 0;
+		prePos = transform.position;
+		StartCoroutine(SideStep(destPos, moveDuration));
+	}
+
+	public IEnumerator SideStep(Vector3 dir, float stepDuration)
+	{
+		Vector3 prePos = transform.position;
+		Vector3 destPos = transform.position + dir;
+		isMoving = true;
+
+		float elapsedTime = 0f;
+		while (elapsedTime < stepDuration)
+		{
+			elapsedTime += Time.deltaTime;
+			float t = elapsedTime / stepDuration;
+
+			height = Mathf.Sin(t * Mathf.PI) * 0.3f;
+
+			transform.position = Vector3.Lerp(new Vector3(prePos.x, height, prePos.z), new Vector3(destPos.x, height, destPos.z), t);
+			yield return null;
+		}
+
+		transform.position = destPos;
+		height = 0;
+		isMoving = false;
+	}
+
 	public void MoveTo(Vector3 destPos, float moveDuration)
 	{
 		if (isRetire) { return; }
 		destPos.y = 0;
 		prePos = transform.position;
 		StartCoroutine(Move(destPos, moveDuration));
+		if (Vector3.Distance(BornPos, transform.position) > 0.8f && isBirth)
+		{ isBirth = false; }
 	}
 
 	protected IEnumerator Move(Vector3 destPos, float moveDuration)
