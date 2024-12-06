@@ -23,7 +23,7 @@ public class GlobalSceneManager : Singleton<GlobalSceneManager>
 		StageDict = DataManager.Instance.LoadJsonToDict<Data.BaseStage>("Data/stage");
 		animator = GetComponent<Animator>();
 
-		LoadScene("GameScene", false);
+		LoadScene("GameScene", true);
 	}
 
 	public void LoadScene(string sceneName, bool isReplay = false, int index = 0, float speed = 1f)

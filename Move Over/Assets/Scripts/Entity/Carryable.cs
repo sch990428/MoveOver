@@ -6,7 +6,14 @@ public class Carryable : MonoBehaviour
     [SerializeField] GridMap stage;
     [SerializeField] Transform defaultParent;
     [SerializeField] PlayerController player;
+
+	private float defaultY;
     public bool isGrabbed = false;
+
+	private void Awake()
+	{
+		defaultY = transform.position.y;
+	}
 
 	private void Update()
 	{
@@ -36,7 +43,7 @@ public class Carryable : MonoBehaviour
 
         Vector2Int posKey = new Vector2Int((int)transform.position.x, (int)transform.position.z);
 		stage.Grids[posKey].IsWalkable = true;
-        Debug.Log($"{posKey}열림");
+        // Debug.Log($"{posKey}열림");
         StartCoroutine(Carrying(dir, t));
     }
 
@@ -52,9 +59,9 @@ public class Carryable : MonoBehaviour
 			elapsedTime += Time.deltaTime;
 			float t = elapsedTime / carryDuration;
 
-			float height = Mathf.Sin(t * Mathf.PI) * 0.3f;
+			float height = Mathf.Sin(t * Mathf.PI) * 0.3f + defaultY;
 
-			transform.position = Vector3.Lerp(new Vector3(prePos.x, height, prePos.z), new Vector3(destPos.x, height + 0.5f, destPos.z), t);
+			transform.position = Vector3.Lerp(new Vector3(prePos.x, height, prePos.z), new Vector3(destPos.x, height, destPos.z), t);
 			yield return null;
 		}
 
