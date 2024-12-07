@@ -12,6 +12,7 @@ TagManager:
   - Item
   - Monster
   - Carryable
+  - Boss
   layers:
   - Default
   - TransparentFX

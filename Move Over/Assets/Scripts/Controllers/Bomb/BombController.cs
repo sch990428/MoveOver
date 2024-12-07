@@ -152,6 +152,11 @@ public class BombController : MonoBehaviour
 					BaseMob b = hit.GetComponent<BaseMob>();
 					b.GetDamage(Damage);
 				}
+				else if (hit.CompareTag("Boss"))
+				{
+					Boss0PatternMob b = hit.GetComponent<Boss0PatternMob>();
+					b.GetDamage(Damage);
+				}
 			}
 
 			PoolManager.Instance.Destroy(Define.PoolableType.ExplodeEffect, go, 1f);

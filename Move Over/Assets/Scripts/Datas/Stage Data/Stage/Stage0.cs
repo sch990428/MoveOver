@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.Cinemachine;
 using Unity.VisualScripting;
+using Unity.VisualScripting.Dependencies.Sqlite;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,7 +21,9 @@ public class Stage0 : Stage
 	[SerializeField] private CinemachineCamera DoorCam;
 	[SerializeField] private AudioClip bossBGM;
 
+	[SerializeField] private CinemachineCamera BossCam;
 	[SerializeField] private GameObject bossAltar;
+	[SerializeField] private GameObject bossRat;
 	[SerializeField] private GameObject foodGrid;
 
 	protected override void Start()
@@ -102,7 +105,7 @@ public class Stage0 : Stage
 
 		if (GlobalSceneManager.Instance.CurrentMission == 6)
 		{
-			Collider[] hits = Physics.OverlapBox(transform.position, Vector3.one, Quaternion.identity, LayerMask.GetMask("Obstacle"));
+			Collider[] hits = Physics.OverlapBox(transform.position, Vector3.one * 2, Quaternion.identity, LayerMask.GetMask("Obstacle"));
 
 			int count = 0;
 			foreach (Collider c in hits)
@@ -113,7 +116,7 @@ public class Stage0 : Stage
 				}
 			}
 
-			Debug.Log(count);
+			// Debug.Log(count);
 
 			if (count == 3)
 			{
@@ -141,9 +144,28 @@ public class Stage0 : Stage
 				s.Complete();
 			}
 
+			bossRat.SetActive(true);
+			Camera.main.GetComponent<CameraController>().SwitchCamera(BossCam, 5f);
 			UpdateMission(8);
+			StartCoroutine(TableBreak());
 			StartCoroutine(UpAltar());
 		}
+	}
+
+	private IEnumerator TableBreak()
+	{
+		yield return new WaitForSeconds(2f);
+		Animator animator = bossAltar.GetComponent<Animator>();
+		animator.enabled = false;
+
+		Rigidbody _rigidBody = bossAltar.GetComponent<Rigidbody>();
+		_rigidBody.constraints = RigidbodyConstraints.None;
+		_rigidBody.isKinematic = false;
+
+		_rigidBody.AddForce(Vector3.up * 10, ForceMode.Impulse);
+		_rigidBody.AddTorque(Vector3.one * 5, ForceMode.Impulse);
+
+		Destroy(bossAltar, 2f);
 	}
 
 	private IEnumerator DownAltar()
@@ -155,7 +177,8 @@ public class Stage0 : Stage
 	private IEnumerator UpAltar()
 	{
 		bossAltar.GetComponent<Animator>().SetTrigger("Up");
-		yield return null;
+		yield return new WaitForSeconds(4f);
+		GlobalSceneManager.Instance.GetCurrentMap().MakeGridMap();
 	}
 
 	public void UpdateMission(int index)

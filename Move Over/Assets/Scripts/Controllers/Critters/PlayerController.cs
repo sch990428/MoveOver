@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering;
 
 public class PlayerController : CritterController
 {
@@ -19,10 +20,12 @@ public class PlayerController : CritterController
 	public PlayerState state;
 
 	// 플레이어 이동 관련
-	private Vector3 moveDir = Vector3.zero;
+	public Vector3 moveDir = Vector3.zero;
 	[SerializeField] private float moveDuration = 0.3f;
+	[SerializeField] private float stepTime = 0.15f;
 	[SerializeField] private float moveDistance = 1f;
 	private bool sidestep = false;
+	private bool sidestepDisable = false;
 	public int viewIndex;
 
 	// 플레이어 콜라이더 관련
@@ -126,7 +129,10 @@ public class PlayerController : CritterController
 							}
 							else if (hit.CompareTag("Carryable") && hit.GetComponent<Carryable>().isGrabbed)
 							{
-								
+								if (!sidestep)
+								{
+									isBlocked = true;
+								}
 							}
 							else
 							{
@@ -156,7 +162,14 @@ public class PlayerController : CritterController
 					}
 					else
 					{
+						if (sidestepDisable)
+						{
+							isMoving = false;
+							break;
+						}
+
 						bool isSideBlocked = false;
+						sidestepDisable = true;
 						foreach (CritterController c in Critters)
 						{
 							if (c.IsBlocked(moveDir))
@@ -167,25 +180,34 @@ public class PlayerController : CritterController
 
 						if (!isSideBlocked)
 						{
-							StartCoroutine(SideStep(moveDir, 0.3f));
+							StartCoroutine(SideStep(moveDir, stepTime));
 							foreach (CritterController c in Critters)
 							{
-								c.SideTo(moveDir, 0.3f);
+								c.SideTo(moveDir, stepTime);
 							}
 
 							foreach (Carryable g in Carrying)
 							{
-								g.Carry(moveDir, 0.3f);
+								g.Carry(moveDir, stepTime);
 							}
+
+							StartCoroutine(SidestepDisable());
 						}
 						else
 						{
 							isMoving = false;
+							sidestepDisable = false;
 						}
 					}
 				}
 				break;
 		}
+	}
+
+	private IEnumerator SidestepDisable()
+	{
+		yield return new WaitForSeconds(0.7f);
+		sidestepDisable = false;
 	}
 
 	public void AddCritter()
@@ -352,7 +374,6 @@ public class PlayerController : CritterController
 				uiController.UpdateHpBar(HP, MaxHP);
 				Camera.main.GetComponent<CameraController>().OnShakeCameraByPosition(0.3f, 0.3f);
 				SoundManager.Instance.PlaySound(SoundManager.GameSound.Damage);
-
 			}
 		}
 		else if (hitPoint > Critters.Count)
