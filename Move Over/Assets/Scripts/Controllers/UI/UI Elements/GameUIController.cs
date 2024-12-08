@@ -58,6 +58,22 @@ public class GameUIController : MonoBehaviour
 				GlobalSceneManager.Instance.LoadScene("GameScene", true);
 			}
 		}
+		else
+		{
+			if (Input.GetKeyDown(KeyCode.Escape) && !gameover && !GlobalSceneManager.Instance.pause)
+			{
+				GlobalSceneManager.Instance.pause = true;
+				Time.timeScale = 0f;
+				GameObject go = ResourceManager.Instance.Instantiate("Prefabs/UI/ConfirmMessageCanvas");
+				ConfirmMessageController cmc = go.GetComponent<ConfirmMessageController>();
+				cmc.Init("로비화면으로 돌아갑니다\n진행중인 게임은 저장되지 않습니다.", () =>
+				{
+					GlobalSceneManager.Instance.pause = false;
+					PoolManager.Instance.DestroyAll();
+					GlobalSceneManager.Instance.LoadScene("LobbyScene");
+				});
+			}
+		}
 	}
 
 	public void GameOver()

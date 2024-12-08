@@ -15,6 +15,8 @@ public class GlobalSceneManager : Singleton<GlobalSceneManager>
 	public int CurrentStage;
 	public int CurrentMission;
 
+	public bool pause;
+
 	private Animator animator;
 
 	protected override void Awake() 

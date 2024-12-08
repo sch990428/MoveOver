@@ -278,7 +278,7 @@ public class PlayerController : CritterController
 
 	private void OnAttack()
 	{
-		if (isGameover)
+		if (isGameover && !GlobalSceneManager.Instance.pause)
 		{
 			return;
 		}
