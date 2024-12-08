@@ -144,11 +144,11 @@ public class Stage0 : Stage
 				s.Complete();
 			}
 
+			StartCoroutine(UpAltar());
 			bossRat.SetActive(true);
 			Camera.main.GetComponent<CameraController>().SwitchCamera(BossCam, 5f);
 			UpdateMission(8);
 			StartCoroutine(TableBreak());
-			StartCoroutine(UpAltar());
 		}
 	}
 
@@ -162,8 +162,8 @@ public class Stage0 : Stage
 		_rigidBody.constraints = RigidbodyConstraints.None;
 		_rigidBody.isKinematic = false;
 
-		_rigidBody.AddForce(Vector3.up * 10, ForceMode.Impulse);
-		_rigidBody.AddTorque(Vector3.one * 5, ForceMode.Impulse);
+		_rigidBody.AddForce(Vector3.up * 100, ForceMode.Impulse);
+		_rigidBody.AddTorque(Vector3.one * 50, ForceMode.Impulse);
 
 		Destroy(bossAltar, 2f);
 	}

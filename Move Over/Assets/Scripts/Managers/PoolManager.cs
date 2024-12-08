@@ -5,6 +5,7 @@ using UnityEngine;
 public class PoolManager : Singleton<PoolManager>
 {
 	public Dictionary<int, Data.Poolable> poolingDict;
+	public Dictionary<GameObject, Define.PoolableType> activeDict;
 
 	protected override void Awake()
 	{
@@ -16,7 +17,8 @@ public class PoolManager : Singleton<PoolManager>
 	private void Init()
 	{
 		poolingDict = DataManager.Instance.LoadJsonToDict<Data.Poolable>("Data/Poolable");
-		
+		activeDict = new Dictionary<GameObject, Define.PoolableType>();
+
 		foreach (var poolPair in poolingDict)
 		{
 			for (int i = 0; i < poolPair.Value.PoolingAmount; i++)
@@ -45,6 +47,7 @@ public class PoolManager : Singleton<PoolManager>
 			go = ResourceManager.Instance.Instantiate(poolingDict[(int)type].ResourcePath);
 		}
 
+		activeDict[go] = type;
 		return go;
 	}
 
@@ -57,6 +60,11 @@ public class PoolManager : Singleton<PoolManager>
 		else
 		{
 			ResourceManager.Instance.Destroy(go, t);
+		}
+
+		if (activeDict.ContainsKey(go))
+		{
+			activeDict.Remove(go);
 		}
 	}
 
@@ -75,5 +83,18 @@ public class PoolManager : Singleton<PoolManager>
 		{
 			ResourceManager.Instance.Destroy(go);
 		}
+	}
+
+	public void DestroyAll()
+	{
+		List<GameObject> keys = new List<GameObject>(activeDict.Keys);
+
+		// 활성화된 모든 오브젝트를 풀로 반환
+		foreach (GameObject key in keys)
+		{
+			Destroy(activeDict[key], key);
+		}
+
+		activeDict.Clear();
 	}
 }
