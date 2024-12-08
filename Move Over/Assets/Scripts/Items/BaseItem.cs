@@ -67,6 +67,10 @@ public class BaseItem : MonoBehaviour, IBaseItem
 					Player.AddCritter();
 					SoundManager.Instance.PlaySound(SoundManager.GameSound.CollectCritter);
 					break;
+				case Define.ItemType.Key:
+					Player.currentKey++;
+					SoundManager.Instance.PlaySound(SoundManager.GameSound.CollectItem);
+					break;
 			}
 			
 			StartCoroutine(Destroy());

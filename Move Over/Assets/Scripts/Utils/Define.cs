@@ -14,6 +14,7 @@ public class Define
 	{
 		MaxBomb,
 		Coin,
-		Critter
+		Critter,
+		Key
 	}
 }

@@ -42,9 +42,10 @@ public class PlayerController : CritterController
 	public bool bombEnable = true;
 	public float bombCooltime;
 
-	// 코인 수집 관련 (추후 게임매니저로 이동)
+	// 수집 관련 (추후 게임매니저로 이동)
 	public int maxCoin = 20;
 	public int currentCoin = 0;
+	public int currentKey = 0;
 
 	// 플레이어 체력 관련
 	private float HP = 3f;

@@ -15,16 +15,19 @@ public class Stage0 : Stage
 	[SerializeField] private GameObject helper2;
 	[SerializeField] private List<BaseMob> Wave1MobList;
 	[SerializeField] private List<BaseMob> Wave2MobList;
+	[SerializeField] private List<BaseMob> Wave3MobList;
 	[SerializeField] private List<SwitchController> Stage1SwitchList;
 	[SerializeField] private List<SwitchController> Stage2SwitchList;
 	[SerializeField] private GameObject Door;
+	[SerializeField] private GameObject Door2;
 	[SerializeField] private CinemachineCamera DoorCam;
+	[SerializeField] private CinemachineCamera DoorCam2;
+	[SerializeField] private AudioClip originalBGM;
 	[SerializeField] private AudioClip bossBGM;
 
 	[SerializeField] private CinemachineCamera BossCam;
 	[SerializeField] private GameObject bossAltar;
 	[SerializeField] private GameObject bossRat;
-	[SerializeField] private GameObject foodGrid;
 
 	protected override void Start()
 	{
@@ -150,6 +153,31 @@ public class Stage0 : Stage
 			UpdateMission(8);
 			StartCoroutine(TableBreak());
 		}
+
+		if (GlobalSceneManager.Instance.CurrentMission == 8)
+		{
+			if (bossRat == null)
+			{
+				StartCoroutine(Mission9());
+				UpdateMission(9);
+			}
+		}
+
+
+		if (GlobalSceneManager.Instance.CurrentMission == 10)
+		{
+			if (player.currentKey == 4)
+			{
+				UpdateMission(11);
+			}
+		}
+	}
+
+	private IEnumerator Mission9()
+	{
+		yield return new WaitForSeconds(2f);
+		Camera.main.GetComponent<CameraController>().SwitchCamera(DoorCam2, 3f);
+		Door2.GetComponent<Animator>().SetTrigger("Open");
 	}
 
 	private IEnumerator TableBreak()
@@ -202,6 +230,11 @@ public class Stage0 : Stage
 		StartCoroutine(LoadNewStage(1f));
 	}
 
+	public void ToNextStage2()
+	{
+		StartCoroutine(LoadNewStage2(1f));
+	}
+
 	private IEnumerator LoadNewStage(float t)
 	{
 		player.isMovable = false;
@@ -214,6 +247,23 @@ public class Stage0 : Stage
 		GlobalSceneManager.Instance.FadeIn();
 		UpdateMission(5);
 		foreach (BaseMob mob in Wave2MobList)
+		{
+			mob.gameObject.SetActive(true);
+		}
+	}
+
+	private IEnumerator LoadNewStage2(float t)
+	{
+		player.isMovable = false;
+		GlobalSceneManager.Instance.FadeOut();
+		yield return new WaitForSeconds(t);
+		StageList[GlobalSceneManager.Instance.CurrentStage].gameObject.SetActive(false);
+		GlobalSceneManager.Instance.CurrentStage++;
+		StageList[GlobalSceneManager.Instance.CurrentStage].gameObject.SetActive(true);
+		player.Init(new Vector3(-9f, 0f, -9f), StageList[GlobalSceneManager.Instance.CurrentStage], 0);
+		GlobalSceneManager.Instance.FadeIn();
+		UpdateMission(10);
+		foreach (BaseMob mob in Wave3MobList)
 		{
 			mob.gameObject.SetActive(true);
 		}
