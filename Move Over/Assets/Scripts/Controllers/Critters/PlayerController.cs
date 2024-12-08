@@ -77,7 +77,7 @@ public class PlayerController : CritterController
 		CritterCountChange();
 	}
 
-	public void Init(Vector3 pos, GridMap map)
+	public void Init(Vector3 pos, GridMap map, int defaultCritter)
 	{
 		transform.position = pos;
 
@@ -89,6 +89,12 @@ public class PlayerController : CritterController
 		}
 
 		currentMap = map;
+
+		for (int i = 0; i < defaultCritter; i++)
+		{
+			AddCritter();
+		}
+
 		isMovable = true;
 	}
 

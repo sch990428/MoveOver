@@ -211,6 +211,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GlobalSceneManager
       objectReference: {fileID: 0}
+    - target: {fileID: 8882658969986625211, guid: 8fbf7c46ce47f2340b93c486572e7f6b, type: 3}
+      propertyPath: CurrentStage
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

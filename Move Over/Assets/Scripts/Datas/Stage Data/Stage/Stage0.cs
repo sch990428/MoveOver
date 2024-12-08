@@ -210,7 +210,7 @@ public class Stage0 : Stage
 		StageList[GlobalSceneManager.Instance.CurrentStage].gameObject.SetActive(false);
 		GlobalSceneManager.Instance.CurrentStage++;
 		StageList[GlobalSceneManager.Instance.CurrentStage].gameObject.SetActive(true);
-		player.Init(new Vector3(-9f, 0f, -9f), StageList[GlobalSceneManager.Instance.CurrentStage]);
+		player.Init(new Vector3(-9f, 0f, -9f), StageList[GlobalSceneManager.Instance.CurrentStage], 0);
 		GlobalSceneManager.Instance.FadeIn();
 		UpdateMission(5);
 		foreach (BaseMob mob in Wave2MobList)

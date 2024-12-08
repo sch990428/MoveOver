@@ -10,6 +10,7 @@ public class Stage : MonoBehaviour
 	[SerializeField] protected List<Vector3> StartPos;
 	[SerializeField] public List<string> MissionList; // 미션 
 	[SerializeField] protected List<int> FirstMissions; // 각 스테이지의 첫번째 미션 집합
+	[SerializeField] protected List<int> RequireCritters; // 각 스테이지의 필수 부하
 	[SerializeField] public PlayerController player;
 
 	// 게임 UI
@@ -26,7 +27,7 @@ public class Stage : MonoBehaviour
 		missionProgressUI = uiController.missionProgressUI;
 
 		player.uiController = uiController;
-		player.Init(player.transform.position, StageList[GlobalSceneManager.Instance.CurrentStage]);
+		player.Init(player.transform.position, StageList[GlobalSceneManager.Instance.CurrentStage], RequireCritters[GlobalSceneManager.Instance.CurrentStage]);
 	}
 
 	public void LoadFromCheckPoint()
