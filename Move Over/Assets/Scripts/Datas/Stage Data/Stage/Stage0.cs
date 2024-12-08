@@ -13,6 +13,8 @@ public class Stage0 : Stage
 	// 스테이지 구성 관련
 	[SerializeField] private GameObject helper1;
 	[SerializeField] private GameObject helper2;
+	[SerializeField] private GameObject helper3;
+	[SerializeField] private GameObject helper4;
 	[SerializeField] private List<BaseMob> Wave1MobList;
 	[SerializeField] private List<BaseMob> Wave2MobList;
 	[SerializeField] private List<BaseMob> Wave3MobList;
@@ -105,7 +107,9 @@ public class Stage0 : Stage
 			if (count == 4)
 			{
 				UpdateMission(6);
+				helper3.SetActive(false);
 				StartCoroutine(DownAltar());
+				helper4.SetActive(true);
 			}
 		}
 
@@ -131,7 +135,8 @@ public class Stage0 : Stage
 					c.transform.SetParent(bossAltar.transform);
 				}
 
-				UpdateMission(7);	
+				UpdateMission(7);
+				helper4.SetActive(false);
 			}
 		}
 
