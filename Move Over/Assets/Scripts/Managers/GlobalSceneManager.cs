@@ -89,6 +89,7 @@ public class GlobalSceneManager : Singleton<GlobalSceneManager>
 			{
 				CurrentStage = 0;
 				CurrentMission = 0;
+				stage.LoadFromCheckPoint();
 			}
 			
 			CameraController cameraController = gameUI.GetComponent<CameraController>();

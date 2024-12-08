@@ -30,6 +30,7 @@ public class Stage0 : Stage
 	[SerializeField] private CinemachineCamera BossCam;
 	[SerializeField] private GameObject bossAltar;
 	[SerializeField] private GameObject bossRat;
+	[SerializeField] private GameObject human;
 
 	protected override void Start()
 	{
@@ -101,7 +102,7 @@ public class Stage0 : Stage
 				}
 			}
 
-			if (count == 0)
+			if (count == 4)
 			{
 				UpdateMission(6);
 				StartCoroutine(DownAltar());
@@ -243,22 +244,34 @@ public class Stage0 : Stage
 
 	public void ToNextStage()
 	{
-		StartCoroutine(LoadNewStage(1f));
+		if (player.Critters.Count >= RequireCritters[1])
+		{
+			StartCoroutine(LoadNewStage(1f));
+		}
 	}
 
 	public void ToNextStage2()
 	{
-		StartCoroutine(LoadNewStage2(1f));
+		if (player.Critters.Count >= RequireCritters[2])
+		{
+			StartCoroutine(LoadNewStage2(1f));
+		}
 	}
 
 	public void ToNextStage3()
 	{
-		StartCoroutine(LoadNewStage2(1f));
+		if (player.Critters.Count >= RequireCritters[3])
+		{
+			StartCoroutine(LoadNewStage3(1f));
+		}
 	}
 
 	public void Clear()
 	{
-		Debug.Log("클리어");
+		if (human.transform.position.x >= 9.5)
+		{
+			Debug.Log("클리어");
+		}
 	}
 
 	private IEnumerator LoadNewStage(float t)
