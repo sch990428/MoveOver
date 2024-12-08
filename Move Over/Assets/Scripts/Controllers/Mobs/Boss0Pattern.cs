@@ -58,13 +58,12 @@ public class Boss0PatternMob : MonoBehaviour
 				yield break;
 			}
 
-			if (Vector3.Distance(transform.position, player.position) > meleeRange)
+            if (Vector3.Distance(transform.position, player.position) > meleeRange)
 			{
 				if (isShootable)
 				{
 					isShootable = false;
 					PlayerController playerController = player.GetComponent<PlayerController>();
-
 					List<RedApple> Apples = new List<RedApple>();
 					for (int i = 0; i < 3; i++)
 					{
@@ -110,6 +109,7 @@ public class Boss0PatternMob : MonoBehaviour
 				{
 					isJumpable = false;
 					RedApple apple = ResourceManager.Instance.Instantiate("Prefabs/Mobs/Projectiles/RedApple").GetComponent<RedApple>();
+					apple.transform.position = transform.position + Vector3.down;
 					apple.player = player.GetComponent<PlayerController>();
 					apple.targetPos = transform.position;
 					apple.Rad = 2;

@@ -14,9 +14,18 @@ public class GameUIController : MonoBehaviour
 	[SerializeField] private TMP_Text stageName;
 	[SerializeField] private Image HPBar;
 
+	[SerializeField] private Sprite Success;
+	[SerializeField] private Color32 SuccessColor;
+	[SerializeField] private Sprite Failed;
+	[SerializeField] private Color32 FailedColor;
+
 	[SerializeField] private GameObject StageUI;
 	[SerializeField] private GameObject GameUI;
 	[SerializeField] private GameObject GameoverUI;
+
+	[SerializeField] private Image CoinMissionIcon;
+	[SerializeField] private Image NoDeathMissionIcon;
+	[SerializeField] public TMP_Text coinMissionText;
 
 	[SerializeField] public TMP_Text missionText;
 	[SerializeField] public Image missionProgressUI;
@@ -35,27 +44,41 @@ public class GameUIController : MonoBehaviour
 		chapterName.text = stage.ChapterName;
 	}
 
+	public void UpdateDeathMissionUI()
+	{
+		if (GlobalSceneManager.Instance.deathCount > 0)
+		{
+			NoDeathMissionIcon.sprite = Failed;
+			NoDeathMissionIcon.color = FailedColor;
+		}
+	}
+
 	private void Update()
 	{
 		if (gameover)
 		{
 			if (Input.GetKeyUp(KeyCode.R))
 			{
+				Debug.Log("R");
 				Time.timeScale = 1f;
 				PoolManager.Instance.DestroyAll();
 				GlobalSceneManager.Instance.LoadScene("GameScene");
+				gameover = false;
 			}
 			else if (Input.GetKeyUp(KeyCode.Escape))
 			{
 				Time.timeScale = 1f;
 				PoolManager.Instance.DestroyAll();
 				GlobalSceneManager.Instance.LoadScene("LobbyScene");
+				gameover = false;
 			}
-			else if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
+			else if (Input.GetKeyUp(KeyCode.Return) || Input.GetKeyUp(KeyCode.KeypadEnter))
 			{
+				Debug.Log("엔터");
 				Time.timeScale = 1f;
 				PoolManager.Instance.DestroyAll();
 				GlobalSceneManager.Instance.LoadScene("GameScene", true);
+				gameover = false;
 			}
 		}
 		else
@@ -68,11 +91,37 @@ public class GameUIController : MonoBehaviour
 				ConfirmMessageController cmc = go.GetComponent<ConfirmMessageController>();
 				cmc.Init("로비화면으로 돌아갑니다\n진행중인 게임은 저장되지 않습니다.", () =>
 				{
+					Time.timeScale = 1f;
 					GlobalSceneManager.Instance.pause = false;
 					PoolManager.Instance.DestroyAll();
 					GlobalSceneManager.Instance.LoadScene("LobbyScene");
 				});
 			}
+		}
+	}
+
+	public void Clear()
+	{
+		if (!GlobalSceneManager.Instance.pause)
+		{
+			GlobalSceneManager.Instance.pause = true;
+			Time.timeScale = 0f;
+			GameObject go = ResourceManager.Instance.Instantiate("Prefabs/UI/ClearCanvas");
+			ClearController cc = go.GetComponent<ClearController>();
+
+			int count = 1;
+
+			if (GlobalSceneManager.Instance.GetPlayer().currentCoin == GlobalSceneManager.Instance.GetPlayer().currentCoin)
+			{
+				count++;
+			}
+
+			if (GlobalSceneManager.Instance.deathCount == 0)
+			{
+				count++;
+			}
+
+			cc.Init(count);
 		}
 	}
 
@@ -90,9 +139,7 @@ public class GameUIController : MonoBehaviour
 		GameUI.SetActive(false);
 		yield return new WaitForSeconds(1f);
 		gameover = true;
-		Time.timeScale = 0f;
-		
-		
+		Time.timeScale = 0f;	
 	}
 
 	public void UpdateHpBar(float hp, float maxhp)
@@ -113,5 +160,12 @@ public class GameUIController : MonoBehaviour
 	public void UpdateCoin(int current, int max)
 	{
 		coinStatUI.text = $"{current} / <b>{max}</b>";
+		coinMissionText.text = $"코인 수집 ({current} / {max})";
+
+		if (current == max)
+		{
+			CoinMissionIcon.sprite = Success;
+			CoinMissionIcon.color = SuccessColor;
+		}
 	}
 }

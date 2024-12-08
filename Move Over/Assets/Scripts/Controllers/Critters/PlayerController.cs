@@ -43,7 +43,7 @@ public class PlayerController : CritterController
 	public float bombCooltime;
 
 	// 수집 관련 (추후 게임매니저로 이동)
-	public int maxCoin = 20;
+	public int maxCoin = 10;
 	public int currentCoin = 0;
 	public int currentKey = 0;
 

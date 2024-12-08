@@ -34,6 +34,8 @@ public class Stage0 : Stage
 	[SerializeField] private GameObject bossRat;
 	[SerializeField] private GameObject human;
 
+	bool gameClear = false;
+
 	protected override void Start()
 	{
 		base.Start();
@@ -273,9 +275,10 @@ public class Stage0 : Stage
 
 	public void Clear()
 	{
-		if (human.transform.position.x >= 9.5)
+		if (human.transform.position.x >= 9.5 && !gameClear)
 		{
-			Debug.Log("클리어");
+			gameClear = true;
+			uiController.Clear();
 		}
 	}
 

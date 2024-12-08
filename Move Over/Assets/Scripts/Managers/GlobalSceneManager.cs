@@ -16,6 +16,7 @@ public class GlobalSceneManager : Singleton<GlobalSceneManager>
 	public int CurrentMission;
 
 	public bool pause;
+	public int deathCount;
 
 	private Animator animator;
 
@@ -25,7 +26,7 @@ public class GlobalSceneManager : Singleton<GlobalSceneManager>
 		StageDict = DataManager.Instance.LoadJsonToDict<Data.BaseStage>("Data/stage");
 		animator = GetComponent<Animator>();
 
-		LoadScene("GameScene", true);
+		// LoadScene("GameScene", true);
 	}
 
 	public void LoadScene(string sceneName, bool isReplay = false, int index = 0, float speed = 1f)
@@ -85,15 +86,21 @@ public class GlobalSceneManager : Singleton<GlobalSceneManager>
 
 			if (isReplay)
 			{
+				Debug.Log("다시하기");
+				deathCount = 1;
 				stage.LoadFromCheckPoint();
 			}
 			else
 			{
+				Debug.Log("처음부터");
+				deathCount = 0;
 				CurrentStage = 0;
 				CurrentMission = 0;
 				stage.LoadFromCheckPoint();
 			}
-			
+
+			gameUI.GetComponent<GameUIController>().UpdateDeathMissionUI();
+
 			CameraController cameraController = gameUI.GetComponent<CameraController>();
 		}
 
