@@ -42,11 +42,13 @@ public class GameUIController : MonoBehaviour
 			if (Input.GetKeyUp(KeyCode.R))
 			{
 				Time.timeScale = 1f;
+				PoolManager.Instance.DestroyAll();
 				GlobalSceneManager.Instance.LoadScene("GameScene");
 			}
 			else if (Input.GetKeyUp(KeyCode.Escape))
 			{
 				Time.timeScale = 1f;
+				PoolManager.Instance.DestroyAll();
 				GlobalSceneManager.Instance.LoadScene("LobbyScene");
 			}
 			else if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
