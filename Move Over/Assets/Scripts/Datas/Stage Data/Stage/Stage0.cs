@@ -20,8 +20,10 @@ public class Stage0 : Stage
 	[SerializeField] private List<SwitchController> Stage2SwitchList;
 	[SerializeField] private GameObject Door;
 	[SerializeField] private GameObject Door2;
+	[SerializeField] private GameObject Door3;
 	[SerializeField] private CinemachineCamera DoorCam;
 	[SerializeField] private CinemachineCamera DoorCam2;
+	[SerializeField] private CinemachineCamera DoorCam3;
 	[SerializeField] private AudioClip originalBGM;
 	[SerializeField] private AudioClip bossBGM;
 
@@ -168,6 +170,7 @@ public class Stage0 : Stage
 		{
 			if (player.currentKey == 4)
 			{
+				StartCoroutine(Mission10());
 				UpdateMission(11);
 			}
 		}
@@ -175,9 +178,19 @@ public class Stage0 : Stage
 
 	private IEnumerator Mission9()
 	{
-		yield return new WaitForSeconds(2f);
+		SoundManager.Instance.PlaySound(SoundManager.GameSound.BossRetire);
+		GetComponent<AudioSource>().resource = originalBGM;
+		GetComponent<AudioSource>().Play();
+		yield return new WaitForSeconds(1f);
 		Camera.main.GetComponent<CameraController>().SwitchCamera(DoorCam2, 3f);
 		Door2.GetComponent<Animator>().SetTrigger("Open");
+	}
+
+	private IEnumerator Mission10()
+	{
+		yield return new WaitForSeconds(1f);
+		Camera.main.GetComponent<CameraController>().SwitchCamera(DoorCam3, 3f);
+		Door3.GetComponent<Animator>().SetTrigger("Open");
 	}
 
 	private IEnumerator TableBreak()
@@ -204,6 +217,9 @@ public class Stage0 : Stage
 
 	private IEnumerator UpAltar()
 	{
+		SoundManager.Instance.PlaySound(SoundManager.GameSound.BossAwake);
+		GetComponent<AudioSource>().resource = bossBGM;
+		GetComponent<AudioSource>().Play();
 		bossAltar.GetComponent<Animator>().SetTrigger("Up");
 		yield return new WaitForSeconds(4f);
 		GlobalSceneManager.Instance.GetCurrentMap().MakeGridMap();
@@ -233,6 +249,16 @@ public class Stage0 : Stage
 	public void ToNextStage2()
 	{
 		StartCoroutine(LoadNewStage2(1f));
+	}
+
+	public void ToNextStage3()
+	{
+		StartCoroutine(LoadNewStage2(1f));
+	}
+
+	public void Clear()
+	{
+		Debug.Log("클리어");
 	}
 
 	private IEnumerator LoadNewStage(float t)
@@ -267,5 +293,18 @@ public class Stage0 : Stage
 		{
 			mob.gameObject.SetActive(true);
 		}
+	}
+
+	private IEnumerator LoadNewStage3(float t)
+	{
+		player.isMovable = false;
+		GlobalSceneManager.Instance.FadeOut();
+		yield return new WaitForSeconds(t);
+		StageList[GlobalSceneManager.Instance.CurrentStage].gameObject.SetActive(false);
+		GlobalSceneManager.Instance.CurrentStage++;
+		StageList[GlobalSceneManager.Instance.CurrentStage].gameObject.SetActive(true);
+		player.Init(new Vector3(-9f, 0f, -9f), StageList[GlobalSceneManager.Instance.CurrentStage], 0);
+		GlobalSceneManager.Instance.FadeIn();
+		UpdateMission(12);
 	}
 }

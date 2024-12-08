@@ -8,6 +8,7 @@ public class Carryable : MonoBehaviour
 
 	private float defaultY;
     public bool isGrabbed = false;
+    public bool updateGrid = true;
 
 	private void Awake()
 	{
@@ -39,11 +40,15 @@ public class Carryable : MonoBehaviour
 	public void Carry(Vector3 dir, float t)
     {
         SoundManager.Instance.PlaySound(SoundManager.GameSound.Break);
-
+		
+		if (updateGrid) 
+		{
         Vector2Int posKey = new Vector2Int((int)transform.position.x, (int)transform.position.z);
 		stage.Grids[posKey].IsWalkable = true;
-        // Debug.Log($"{posKey}열림");
-        StartCoroutine(Carrying(dir, t));
+			// Debug.Log($"{posKey}열림");
+		}
+		StartCoroutine(Carrying(dir, t));
+			
     }
 
     private IEnumerator Carrying(Vector3 dir, float carryDuration)
@@ -64,8 +69,12 @@ public class Carryable : MonoBehaviour
 			yield return null;
 		}
 
-		Vector2Int posKey = new Vector2Int((int)transform.position.x, (int)transform.position.z);
-		stage.Grids[posKey].IsWalkable = false;
+		if (updateGrid)
+		{
+			Vector2Int posKey = new Vector2Int((int)transform.position.x, (int)transform.position.z);
+			stage.Grids[posKey].IsWalkable = false;
+		}
+
 		transform.position = destPos;
 	}
 }
