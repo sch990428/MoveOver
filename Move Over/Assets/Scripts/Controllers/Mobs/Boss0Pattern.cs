@@ -30,7 +30,7 @@ public class Boss0PatternMob : MonoBehaviour
 	private bool isJumpable = true;
 	public float moveDuration = 1f;
 	public float reloadDuration = 5f;
-	public float jumpDuration = 10f;
+	public float jumpDuration = 7f;
 
 	private void OnEnable()
 	{
@@ -108,11 +108,11 @@ public class Boss0PatternMob : MonoBehaviour
 				if (isJumpable)
 				{
 					isJumpable = false;
-					RedApple apple = ResourceManager.Instance.Instantiate("Prefabs/Mobs/Projectiles/RedApple").GetComponent<RedApple>();
+					GoldApple apple = ResourceManager.Instance.Instantiate("Prefabs/Mobs/Projectiles/GoldApple").GetComponent<GoldApple>();
 					apple.transform.position = transform.position + Vector3.down;
 					apple.player = player.GetComponent<PlayerController>();
 					apple.targetPos = transform.position;
-					apple.Rad = 2;
+					apple.Rad = 3;
 					StartCoroutine(PrepareJump());
 				}
 			}
@@ -135,7 +135,9 @@ public class Boss0PatternMob : MonoBehaviour
 
 	private IEnumerator Reload()
 	{
-		yield return new WaitForSeconds(reloadDuration);
+		yield return new WaitForSeconds(reloadDuration - 1f);
+		SoundManager.Instance.PlaySound(SoundManager.GameSound.Explode);
+		yield return new WaitForSeconds(1f);
 		isShootable = true;
 	}
 

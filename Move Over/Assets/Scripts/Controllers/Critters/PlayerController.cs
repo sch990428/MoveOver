@@ -381,6 +381,8 @@ public class PlayerController : CritterController
 				uiController.UpdateHpBar(HP, MaxHP);
 				Camera.main.GetComponent<CameraController>().OnShakeCameraByPosition(0.3f, 0.3f);
 				SoundManager.Instance.PlaySound(SoundManager.GameSound.Damage);
+
+				GlobalSceneManager.Instance.DamageEffect();
 			}
 		}
 		else if (hitPoint > Critters.Count)
@@ -389,7 +391,6 @@ public class PlayerController : CritterController
 		}
 		else
 		{
-			
 			for (int i = hitPoint; i < Critters.Count; i++)
 			{
 				Critters[i].Retire();
@@ -425,6 +426,8 @@ public class PlayerController : CritterController
 			go.GetComponent<BaseItem>().Player = this;
 			go.transform.position = new Vector3(pos.x, 0.5f, pos.y);
 		}
+
+		GlobalSceneManager.Instance.DamageEffect();
 	}
 
 	private IEnumerator CreateBomb()

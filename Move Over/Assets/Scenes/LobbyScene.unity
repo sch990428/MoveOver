@@ -6709,7 +6709,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1621594436352940847, guid: 33eeaef1b1b8b5a449962fa5dfc6feea, type: 3}
       propertyPath: CurrentStage
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2189084791513327723, guid: 33eeaef1b1b8b5a449962fa5dfc6feea, type: 3}
       propertyPath: m_Pivot.x
@@ -6795,9 +6795,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: GlobalSceneManager
       objectReference: {fileID: 0}
-    - target: {fileID: 5793440173359483305, guid: 33eeaef1b1b8b5a449962fa5dfc6feea, type: 3}
-      propertyPath: m_IsActive
-      value: 1
+    - target: {fileID: 8576073343516259391, guid: 33eeaef1b1b8b5a449962fa5dfc6feea, type: 3}
+      propertyPath: m_ReferenceResolution.x
+      value: 1920
+      objectReference: {fileID: 0}
+    - target: {fileID: 8576073343516259391, guid: 33eeaef1b1b8b5a449962fa5dfc6feea, type: 3}
+      propertyPath: m_ReferenceResolution.y
+      value: 1080
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

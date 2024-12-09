@@ -4,7 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEditor.PlayerSettings;
 
-public class RedApple : MonoBehaviour
+public class GoldApple : MonoBehaviour
 {
 	public List<GameObject> ExplodeAreas;
 	public PlayerController player;
@@ -28,7 +28,7 @@ public class RedApple : MonoBehaviour
 		yield return new WaitForSeconds(1f);
 		Vector3 pos = new Vector3(Mathf.RoundToInt(targetPos.x), 0.1f, Mathf.RoundToInt(targetPos.z));
 
-		for (int x = -Rad; x <= Rad; x++)
+		for (int x = -Rad + 1; x <= Rad; x++)
 		{
 			for (int z = -Rad; z <= Rad; z++)
 			{
@@ -44,7 +44,7 @@ public class RedApple : MonoBehaviour
 
 		foreach (GameObject area in ExplodeAreas)
 		{
-			GameObject go = PoolManager.Instance.Instantiate(Define.PoolableType.ExplodeEffect);
+			GameObject go = ResourceManager.Instance.Instantiate("Prefabs/Effects/Bomb Effect/Smoke");
 			go.transform.position = area.transform.position;
 			PoolManager.Instance.Destroy(Define.PoolableType.WarningGrid, area);
 
@@ -79,12 +79,13 @@ public class RedApple : MonoBehaviour
 				}
 			}
 
-			PoolManager.Instance.Destroy(Define.PoolableType.ExplodeEffect, go, 1f);
+			ResourceManager.Instance.Destroy(go, 1f);
 		}
 
 		if (minIndex < int.MaxValue)
 		{ player.Damage(minIndex); }
 
+		SoundManager.Instance.PlaySound(SoundManager.GameSound.Explode);
 		Destroy(gameObject);
 	}
 

@@ -9,6 +9,7 @@ public class GlobalSceneManager : Singleton<GlobalSceneManager>
 	public Dictionary<int, Data.BaseStage> StageDict;
 
 	[SerializeField] private GameObject FadeImage;
+	[SerializeField] private Image DamageFade;
 	[SerializeField] private List<GameObject> StagePrefabs;
 
 	private Stage stage;
@@ -31,6 +32,41 @@ public class GlobalSceneManager : Singleton<GlobalSceneManager>
 	{
 		animator.speed = speed;
 		StartCoroutine(LoadSceneWithFade(sceneName, index, isReplay));
+	}
+
+	public void DamageEffect()
+	{
+		StartCoroutine(Damage());
+	}
+
+	public IEnumerator Damage()
+	{
+		DamageFade.gameObject.SetActive(true);
+		float time = 0f;
+		float duration = 0.2f;
+		float halfDuration = duration / 2;
+
+		Color32 color = DamageFade.color;
+
+		while (time < duration)
+		{
+			time += Time.deltaTime;
+			float alpha;
+			if (time <= halfDuration)
+			{
+				alpha = Mathf.Lerp(0f, 0.1f, time / halfDuration);
+			}
+			else
+			{
+				alpha = Mathf.Lerp(0.1f, 0f, (time - halfDuration) / halfDuration);
+			}
+			DamageFade.color = new Color(color.r, color.g, color.b, alpha);
+
+			yield return null;
+		}
+
+		DamageFade.color = new Color(color.r, color.g, color.b, 0f);
+		DamageFade.gameObject.SetActive(false);
 	}
 
 	public void FadeOut()
@@ -92,7 +128,7 @@ public class GlobalSceneManager : Singleton<GlobalSceneManager>
 			{
 				Debug.Log("처음부터");
 				deathCount = 0;
-				CurrentStage = 1;
+				CurrentStage = 0;
 				CurrentMission = 0;
 				stage.LoadFromCheckPoint();
 			}
