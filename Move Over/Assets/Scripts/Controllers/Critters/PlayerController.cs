@@ -435,7 +435,7 @@ public class PlayerController : CritterController
 
 	private IEnumerator DamageCooltime()
 	{
-		yield return new WaitForSeconds(2f);
+		yield return new WaitForSeconds(0.5f);
 		isDamaged = false;
 	}
 

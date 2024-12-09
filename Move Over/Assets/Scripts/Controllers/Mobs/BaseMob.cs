@@ -19,6 +19,7 @@ public class BaseMob : MonoBehaviour
 	public float MaxHP = 10f; // 최대 체력
 	public float HP; // 체력
 	public bool isDamaged = false;
+	public bool attackable = true;
 
 	protected LayerMask mask;
 
@@ -238,17 +239,26 @@ public class BaseMob : MonoBehaviour
 
 	protected void OnCollisionStay(Collision collision)
 	{
-        if ( collision.transform.CompareTag("Bomb"))
-        {
+		if (collision.transform.CompareTag("Bomb"))
+		{
 			collision.transform.GetComponent<BombController>().ForcedExplode();
-        }
-        else if (collision.transform.CompareTag("Tail"))
-		{
-			ApplyDamage(collision.transform.GetComponent<CritterController>().Order);
 		}
-		else if (collision.transform.CompareTag("Player"))
+
+		if (attackable)
 		{
-			ApplyDamage(-1);
+			if (collision.transform.CompareTag("Tail"))
+			{
+				ApplyDamage(collision.transform.GetComponent<CritterController>().Order);
+				attackable = false;
+				StartCoroutine(AttackTerm());
+			}
+
+			if (collision.transform.CompareTag("Player"))
+			{
+				ApplyDamage(-1);
+				attackable = false;
+				StartCoroutine(AttackTerm());
+			}
 		}
 	}
 
@@ -283,6 +293,12 @@ public class BaseMob : MonoBehaviour
 	{
 		yield return new WaitForSeconds(0.5f);
 		isDamaged = false;
+	}
+	
+	private IEnumerator AttackTerm()
+	{
+		yield return new WaitForSeconds(2f);
+		attackable = true;
 	}
 
 	public void Retire()

@@ -25,8 +25,6 @@ public class GlobalSceneManager : Singleton<GlobalSceneManager>
 		base.Awake();
 		StageDict = DataManager.Instance.LoadJsonToDict<Data.BaseStage>("Data/stage");
 		animator = GetComponent<Animator>();
-
-		// LoadScene("GameScene", true);
 	}
 
 	public void LoadScene(string sceneName, bool isReplay = false, int index = 0, float speed = 1f)
@@ -94,7 +92,7 @@ public class GlobalSceneManager : Singleton<GlobalSceneManager>
 			{
 				Debug.Log("처음부터");
 				deathCount = 0;
-				CurrentStage = 0;
+				CurrentStage = 1;
 				CurrentMission = 0;
 				stage.LoadFromCheckPoint();
 			}
