@@ -26,14 +26,14 @@ public class RedApple : MonoBehaviour
 	private IEnumerator RangeAttack()
 	{
 		yield return new WaitForSeconds(1f);
-		Vector3 pos = new Vector3(Mathf.RoundToInt(targetPos.x), 0.1f, Mathf.RoundToInt(targetPos.z));
+		Vector3 pos = new Vector3(Mathf.RoundToInt(targetPos.x), 0.01f, Mathf.RoundToInt(targetPos.z));
 
 		for (int x = -Rad; x <= Rad; x++)
 		{
 			for (int z = -Rad; z <= Rad; z++)
 			{
 				GameObject go = PoolManager.Instance.Instantiate(Define.PoolableType.WarningGrid);
-				go.transform.position = new Vector3(pos.x + x, 0.02f, pos.z + z);
+				go.transform.position = new Vector3(pos.x + x, 0.01f, pos.z + z);
 				ExplodeAreas.Add(go);
 			}
 		}

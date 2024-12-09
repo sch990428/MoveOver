@@ -45,7 +45,7 @@ public class GoldApple : MonoBehaviour
 		foreach (GameObject area in ExplodeAreas)
 		{
 			GameObject go = ResourceManager.Instance.Instantiate("Prefabs/Effects/Bomb Effect/Smoke");
-			go.transform.position = area.transform.position;
+			go.transform.position = area.transform.position + Vector3.up;
 			PoolManager.Instance.Destroy(Define.PoolableType.WarningGrid, area);
 
 			Collider[] hits = Physics.OverlapBox(area.transform.position, new Vector3(0.5f, 0.7f, 0.5f), Quaternion.identity, LayerMask.GetMask("Critter", "Enemy", "Obstacle", "Bomb"));

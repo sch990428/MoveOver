@@ -12,6 +12,8 @@ public class GlobalSceneManager : Singleton<GlobalSceneManager>
 	[SerializeField] private Image DamageFade;
 	[SerializeField] private List<GameObject> StagePrefabs;
 
+	public List<int> CollectedCoinList;
+
 	private Stage stage;
 	public int CurrentStage;
 	public int CurrentMission;
@@ -113,6 +115,7 @@ public class GlobalSceneManager : Singleton<GlobalSceneManager>
 
 		if (sceneName.Equals("GameScene"))
 		{
+			PoolManager.Instance.DestroyAll();
 			GameObject gameUI = ResourceManager.Instance.Instantiate("Prefabs/Stage/UI Canvas");
 			GameObject stageObject = Instantiate(StagePrefabs[index]);
 			stage = stageObject.GetComponent<Stage0>();
@@ -127,6 +130,7 @@ public class GlobalSceneManager : Singleton<GlobalSceneManager>
 			else
 			{
 				Debug.Log("처음부터");
+				CollectedCoinList.Clear();
 				deathCount = 0;
 				CurrentStage = 0;
 				CurrentMission = 0;

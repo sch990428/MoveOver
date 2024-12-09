@@ -9,6 +9,7 @@ public interface IBaseItem
 
 public class BaseItem : MonoBehaviour, IBaseItem
 {
+	public int CoinIndex;
 	[SerializeField] private float alpha;
 	[SerializeField] private Define.ItemType type;
 	public PlayerController Player;
@@ -60,6 +61,7 @@ public class BaseItem : MonoBehaviour, IBaseItem
 					break;
 				case Define.ItemType.Coin:
 					Player.currentCoin++;
+					GlobalSceneManager.Instance.CollectedCoinList.Add(CoinIndex);
 					Player.CoinCountChange();
 					SoundManager.Instance.PlaySound(SoundManager.GameSound.CollectItem);
 					break;

@@ -82,14 +82,30 @@ public class PlayerController : CritterController
 	{
 		transform.position = pos;
 
-		foreach (var c in Critters)
+		if (defaultCritter != 0)
 		{
-			c.transform.position = pos;
-			c.transform.rotation = transform.rotation;
-			c.Init();
+			Critters.Clear();
+			foreach (var c in Critters)
+			{
+				PoolManager.Instance.Destroy(Define.PoolableType.Critter, c.gameObject);
+			}
+		}
+		else
+		{
+			foreach (var c in Critters)
+			{
+				c.transform.position = pos;
+				c.transform.rotation = transform.rotation;
+				c.Init();
+			}
 		}
 
 		currentMap = map;
+
+		if (defaultCritter != 0)
+		{
+			Critters.Clear();
+		}
 
 		for (int i = 0; i < defaultCritter; i++)
 		{
@@ -454,6 +470,6 @@ public class PlayerController : CritterController
 
 	public void CoinCountChange()
 	{
-		uiController.UpdateCoin(currentCoin, maxCoin);
+		uiController.UpdateCoin(GlobalSceneManager.Instance.CollectedCoinList.Count, maxCoin);
 	}
 }

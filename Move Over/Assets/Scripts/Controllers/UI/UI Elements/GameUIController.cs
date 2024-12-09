@@ -111,7 +111,7 @@ public class GameUIController : MonoBehaviour
 
 			int count = 1;
 
-			if (GlobalSceneManager.Instance.GetPlayer().currentCoin == GlobalSceneManager.Instance.GetPlayer().maxCoin)
+			if (GlobalSceneManager.Instance.CollectedCoinList.Count == GlobalSceneManager.Instance.GetPlayer().maxCoin)
 			{
 				count++;
 			}

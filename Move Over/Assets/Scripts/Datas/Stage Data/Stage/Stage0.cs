@@ -11,6 +11,8 @@ using UnityEngine.UI;
 public class Stage0 : Stage
 {
 	// 스테이지 구성 관련
+	public List<BaseItem> CoinList;
+
 	[SerializeField] private GameObject helper1;
 	[SerializeField] private GameObject helper2;
 	[SerializeField] private GameObject helper3;
@@ -40,6 +42,19 @@ public class Stage0 : Stage
 	{
 		base.Start();
 		UpdateMission(GlobalSceneManager.Instance.CurrentMission);
+
+		int i = 0;
+		foreach(BaseItem coin in CoinList)
+		{
+			coin.CoinIndex = i;
+
+			if (GlobalSceneManager.Instance.CollectedCoinList.Contains(i))
+			{
+				CoinList[i].gameObject.SetActive(false);
+			}
+
+			i++;
+		}
 	}
 
 	private void Update()
@@ -225,11 +240,12 @@ public class Stage0 : Stage
 
 	private IEnumerator UpAltar()
 	{
+		bossAltar.GetComponent<Animator>().SetTrigger("Up");
 		SoundManager.Instance.PlaySound(SoundManager.GameSound.BossAwake);
+		yield return new WaitForSeconds(2f);
 		GetComponent<AudioSource>().resource = bossBGM;
 		GetComponent<AudioSource>().Play();
-		bossAltar.GetComponent<Animator>().SetTrigger("Up");
-		yield return new WaitForSeconds(4f);
+		yield return new WaitForSeconds(2f);
 		GlobalSceneManager.Instance.GetCurrentMap().MakeGridMap();
 	}
 
