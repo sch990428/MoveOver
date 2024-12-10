@@ -1,12 +1,7 @@
-using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using Unity.Cinemachine;
-using Unity.VisualScripting;
-using Unity.VisualScripting.Dependencies.Sqlite;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class Stage0 : Stage
 {
@@ -108,6 +103,7 @@ public class Stage0 : Stage
 			Camera.main.GetComponent<CameraController>().SwitchCamera(DoorCam, 3f);
 			UpdateMission(4);
 			Door.GetComponent<Animator>().SetTrigger("Open");
+			SoundManager.Instance.PlaySound(SoundManager.GameSound.DoorOpen);
 		}
 
 		if (GlobalSceneManager.Instance.CurrentMission == 5)
@@ -207,6 +203,7 @@ public class Stage0 : Stage
 		yield return new WaitForSeconds(1f);
 		Camera.main.GetComponent<CameraController>().SwitchCamera(DoorCam2, 3f);
 		Door2.GetComponent<Animator>().SetTrigger("Open");
+		SoundManager.Instance.PlaySound(SoundManager.GameSound.DoorOpen);
 	}
 
 	private IEnumerator Mission10()
@@ -214,6 +211,7 @@ public class Stage0 : Stage
 		yield return new WaitForSeconds(1f);
 		Camera.main.GetComponent<CameraController>().SwitchCamera(DoorCam3, 3f);
 		Door3.GetComponent<Animator>().SetTrigger("Open");
+		SoundManager.Instance.PlaySound(SoundManager.GameSound.DoorOpen);
 	}
 
 	private IEnumerator TableBreak()

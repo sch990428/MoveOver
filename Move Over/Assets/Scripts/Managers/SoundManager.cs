@@ -19,7 +19,8 @@ public class SoundManager : Singleton<SoundManager>
 		CollectCritter,
 		Break,
 		BossAwake,
-		BossRetire
+		BossRetire,
+		DoorOpen,
 	}
 
 	private Dictionary<GameSound, AudioClip> audioClipDict;

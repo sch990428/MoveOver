@@ -1,9 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor.Embree;
 using UnityEngine;
-using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
 
 public class Boss0PatternMob : MonoBehaviour
@@ -169,6 +166,7 @@ public class Boss0PatternMob : MonoBehaviour
 		if (!isRetire)
 		{
 			isRetire = true;
+			player.GetComponent<PlayerController>().Heal();
 			HealthUI.SetActive(false);
 			StopCoroutine(moveCoroutine);
 			moveCoroutine = null;

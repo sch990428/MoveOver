@@ -44,7 +44,7 @@ public class BombController : MonoBehaviour
 			for (int z = -1; z <= 1; z++)
 			{
 				GameObject go = PoolManager.Instance.Instantiate(Define.PoolableType.WarningGrid);
-				go.transform.position = new Vector3(pos.x + x, 0.01f, pos.z + z);
+				go.transform.position = new Vector3(pos.x + x, 0.02f, pos.z + z);
 				ExplodeAreas.Add(go);
 			}
 		}
@@ -65,13 +65,13 @@ public class BombController : MonoBehaviour
 
 			// 맨 첫열과 마지막 열을 후보목록에 삽입
 			for (int z = -r; z <= r; z++) { 
-				CandidatePosList.Add(new Vector3(pos.x - r, 0.01f, pos.z + z)); 
-				CandidatePosList.Add(new Vector3(pos.x + r, 0.01f, pos.z + z)); 
+				CandidatePosList.Add(new Vector3(pos.x - r, 0.02f, pos.z + z)); 
+				CandidatePosList.Add(new Vector3(pos.x + r, 0.02f, pos.z + z)); 
 			}
 			// 맨 첫행과 마지막 행을 후보목록에 삽입
 			for (int x = -r + 1; x < r; x++) {
-				CandidatePosList.Add(new Vector3(pos.x + x, 0.01f, pos.z - r));
-				CandidatePosList.Add(new Vector3(pos.x + x, 0.01f, pos.z + r)); 
+				CandidatePosList.Add(new Vector3(pos.x + x, 0.02f, pos.z - r));
+				CandidatePosList.Add(new Vector3(pos.x + x, 0.02f, pos.z + r)); 
 			}
 
 			// 셔플

@@ -18,12 +18,6 @@ public class ConfirmMessageController : MonoBehaviour
 	private void Awake()
 	{
         Time.timeScale = 0f;
-        Accept.onClick.AddListener(() => {
-            if (OnAccept != null)
-            {
-                OnAccept.Invoke();
-			}
-        });
 	}
 
     private void Update()
@@ -45,6 +39,13 @@ public class ConfirmMessageController : MonoBehaviour
         Message.text = msg;
         OnAccept = onAccept;
 		isInitialized = true;
+
+		Accept.onClick.AddListener(() => {
+			if (OnAccept != null)
+			{
+				OnAccept.Invoke();
+			}
+		});
 	}
     
     public void Close()

@@ -115,6 +115,12 @@ public class PlayerController : CritterController
 		isMovable = true;
 	}
 
+	public void Heal()
+	{
+		HP = MaxHP;
+		uiController.UpdateHpBar(HP, MaxHP);
+	}
+
 	private void Update()
 	{
 		if (isGameover)

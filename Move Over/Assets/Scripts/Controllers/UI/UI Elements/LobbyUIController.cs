@@ -52,4 +52,9 @@ public class LobbyUIController : MonoBehaviour
 	{
 		GlobalSceneManager.Instance.LoadScene(scene);
 	}
+
+	public void ExitGame()
+	{
+		Application.Quit();
+	}
 }
