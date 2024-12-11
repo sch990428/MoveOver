@@ -1,10 +1,6 @@
 ﻿using System.Collections;
-using System.Runtime.CompilerServices;
-using UnityEditor.Rendering.LookDev;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
-using UnityEngine.Playables;
 
 public class PlayerController : MonoBehaviour
 {
@@ -85,11 +81,6 @@ public class PlayerController : MonoBehaviour
 		moveDirection.Normalize();
 	}
 
-	public void MoveTo(Vector3 destPosition, float moveDuration)
-	{
-		StartCoroutine(Move(destPosition, moveDuration));
-	}
-
 	private IEnumerator Move(Vector3 destPosition, float duration)
 	{
 		prevPosition = transform.position;
@@ -112,8 +103,8 @@ public class PlayerController : MonoBehaviour
 			yield return new WaitForFixedUpdate();
 		}
 
-		rb.MovePosition(destPosition);
-		rb.MoveRotation(lookRotation);
+		transform.position = destPosition;
+		transform.rotation = lookRotation;
 		isMoving = false;
 	}
 }
