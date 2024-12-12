@@ -1,8 +1,9 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : CritterController
 {
 	// 플레이어 상태 관련
 	public enum PlayerState
@@ -15,34 +16,63 @@ public class PlayerController : MonoBehaviour
 	private PlayerState state;
 
 	// 플레이어 이동 관련
-	private Vector3 moveDirection = Vector3.zero;
-	private Vector3 prevPosition;
 	private float moveDuration = 0.3f;
-	private bool isMoving;
+
+	// 플레이어 부하 관련
+	[SerializeField] private GameObject CritterPrefab;
+	[SerializeField] private List<CritterController> Critters;
 
 	private void Awake()
 	{
-
+		Critters = new List<CritterController>();
 	}
 
 	private void Update()
 	{
+		if (Input.GetKeyDown(KeyCode.X))
+		{
+			GameObject go = Instantiate(CritterPrefab);
+			if (Critters.Count > 0)
+			{
+				go.transform.position = Critters[Critters.Count - 1].transform.position;
+			}
+			else
+			{
+				go.transform.position = transform.position;
+			}
+			
+			Critters.Add(go.GetComponent<CritterController>());
+		}
+
 		// 캐릭터의 상태값에 따른 동작 수행
 		switch (state)
 		{
 			case PlayerState.Idle:
 				// Debug.Log("대기");
 				break;
+
 			case PlayerState.Move:
 				Vector3 destPosition = transform.position + moveDirection;
 				if (!isMoving)
 				{
 					isMoving = true;
 					StartCoroutine(Move(MathUtils.RoundToNearestInt(destPosition), moveDuration));
+
+					// 부하들 순차적으로 이동
+					if (Critters.Count > 0)
+					{ 
+						Critters[0].MoveTo(prevPosition, moveDuration);
+						for (int i = 1; i < Critters.Count; i++)
+						{
+							Critters[i].MoveTo(Critters[i-1].prevPosition, moveDuration);
+						}
+					}
 				}
 				break;
+
 			case PlayerState.Attack:
 				break;
+
 			case PlayerState.GameOver:
 				break;
 		}
@@ -83,39 +113,8 @@ public class PlayerController : MonoBehaviour
 	}
 
 	// 방향에 따른 이동과 회전을 부드럽게 수행
-	private IEnumerator Move(Vector3 destPosition, float duration)
+	protected override IEnumerator Move(Vector3 destPosition, float duration)
 	{
-		Debug.Log($"{moveDirection}");
-		prevPosition = MathUtils.RoundToNearestInt(transform.position);
-
-		Vector3 destDirection = destPosition - prevPosition;
-
-		Quaternion lookRotation = Quaternion.LookRotation(destDirection);
-		float elapsedTime = 0f;
-
-		while (elapsedTime < duration)
-		{
-			elapsedTime += Time.deltaTime;
-			float t = elapsedTime / duration;
-
-			transform.position = Vector3.Slerp(prevPosition, destPosition, t);
-			transform.rotation = Quaternion.Lerp(transform.rotation, lookRotation, t);
-
-			if (Mathf.Approximately(destDirection.x, 0))
-			{
-				transform.position = new Vector3(prevPosition.x, 0, transform.position.z);
-			}
-			if (Mathf.Approximately(destDirection.z, 0))
-			{
-				transform.position = new Vector3(transform.position.x, 0, prevPosition.z);
-			}
-
-			yield return null;
-		}
-
-		// 이동 직후 좌표를 정수 위치에 스냅
-		transform.position = destPosition;
-		transform.rotation = lookRotation;
-		isMoving = false;
+		yield return StartCoroutine(base.Move(destPosition, duration));
 	}
 }
