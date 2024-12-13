@@ -125,6 +125,11 @@ public class PlayerController : CritterController
 		moveDirection.Normalize();
 	}
 
+	private void OnAttack(InputValue value)
+	{
+		Debug.Log("폭탄 설치");
+	}
+
 	// 방향에 따른 이동과 회전을 부드럽게 수행
 	protected override IEnumerator Move(Vector3 destPosition, float duration)
 	{
