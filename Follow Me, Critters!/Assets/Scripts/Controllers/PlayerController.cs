@@ -32,16 +32,21 @@ public class PlayerController : CritterController
 		if (Input.GetKeyDown(KeyCode.X))
 		{
 			GameObject go = Instantiate(CritterPrefab);
+			CritterController critter = go.GetComponent<CritterController>();
 			if (Critters.Count > 0)
 			{
-				go.transform.position = Critters[Critters.Count - 1].transform.position;
+				go.transform.position = Critters[Critters.Count - 1].prevPosition;
+				critter.prevPosition = go.transform.position;
+				go.transform.rotation = Critters[Critters.Count - 1].transform.rotation;
 			}
 			else
 			{
-				go.transform.position = transform.position;
+				go.transform.position = prevPosition;
+				critter.prevPosition = go.transform.position;
+				go.transform.rotation = transform.rotation;
 			}
 			
-			Critters.Add(go.GetComponent<CritterController>());
+			Critters.Add(critter);
 		}
 
 		// 캐릭터의 상태값에 따른 동작 수행

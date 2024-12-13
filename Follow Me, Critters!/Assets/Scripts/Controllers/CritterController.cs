@@ -23,8 +23,17 @@ public class CritterController : MonoBehaviour
 		prevPosition = MathUtils.RoundToNearestInt(transform.position);
 
 		Vector3 destDirection = destPosition - prevPosition;
+		
+		Quaternion lookRotation;
+		if (destDirection != Vector3.zero)
+		{
+			 lookRotation = Quaternion.LookRotation(destDirection);
+		}
+		else
+		{
+			lookRotation = transform.rotation;
+		}
 
-		Quaternion lookRotation = Quaternion.LookRotation(destDirection);
 		float elapsedTime = 0f;
 
 		while (elapsedTime < duration)
