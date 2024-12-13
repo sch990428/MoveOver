@@ -22,6 +22,11 @@ public class PlayerController : CritterController
 	[SerializeField] private GameObject CritterPrefab;
 	[SerializeField] private List<CritterController> Critters;
 
+	// 이펙트 관련
+	[SerializeField] private GameObject CritterSpawnEffect;
+	
+	
+
 	private void Awake()
 	{
 		Critters = new List<CritterController>();
@@ -46,6 +51,9 @@ public class PlayerController : CritterController
 				go.transform.rotation = transform.rotation;
 			}
 			
+			GameObject effects = Instantiate(CritterSpawnEffect);
+			effects.transform.position = go.transform.position + Vector3.up * 0.5f;
+			Destroy(effects, 2f);
 			Critters.Add(critter);
 		}
 
