@@ -4974,6 +4974,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TimerUI: {fileID: 4420111195750092602}
   RangeGridPrefab: {fileID: 5233016684673575833, guid: 88ac0aae67d5aec4dae553d448a7ff57, type: 3}
+  ExplosionEffectPrefab: {fileID: 4161266313794870105, guid: ac66da3557a482244b79b01361c46a38, type: 3}
 --- !u!65 &-1463134582144116024
 BoxCollider:
   m_ObjectHideFlags: 0

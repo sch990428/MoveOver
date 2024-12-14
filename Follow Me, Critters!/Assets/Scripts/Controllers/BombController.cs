@@ -19,8 +19,11 @@ public class BombController : MonoBehaviour
 	private int wide;
 	private float height;
 
-    // 폭발 위력 관련
+	// 폭발 위력 관련
+	[SerializeField] GameObject ExplosionEffectPrefab;
 	private float damage;
+	
+
 
 	private void OnEnable()
     {
@@ -124,7 +127,10 @@ public class BombController : MonoBehaviour
     {
 		foreach (GameObject area in ExplodeAreas)
 		{
+			GameObject go = Instantiate(ExplosionEffectPrefab);
 			Destroy(area);
+			go.transform.position = new Vector3(area.transform.position.x, height, area.transform.position.z);
+			Destroy(go, 1f);
 		}
 
 		Destroy(gameObject);
