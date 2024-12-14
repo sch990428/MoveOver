@@ -23,9 +23,10 @@ public class PlayerController : CritterController
 	[SerializeField] private List<CritterController> Critters;
 
 	// 이펙트 관련
-	[SerializeField] private GameObject CritterSpawnEffect;
-	
-	
+	[SerializeField] private GameObject SpawnEffect;
+
+	// 폭탄 관련
+	[SerializeField] private GameObject Bomb;
 
 	private void Awake()
 	{
@@ -51,7 +52,7 @@ public class PlayerController : CritterController
 				go.transform.rotation = transform.rotation;
 			}
 			
-			GameObject effects = Instantiate(CritterSpawnEffect);
+			GameObject effects = Instantiate(SpawnEffect);
 			effects.transform.position = go.transform.position + Vector3.up * 0.5f;
 			Destroy(effects, 2f);
 			Critters.Add(critter);
@@ -127,7 +128,10 @@ public class PlayerController : CritterController
 
 	private void OnAttack(InputValue value)
 	{
-		Debug.Log("폭탄 설치");
+		GameObject effects = Instantiate(SpawnEffect);
+		effects.transform.position = transform.position + Vector3.up * 0.5f;
+		Destroy(effects, 2f);
+		Instantiate(Bomb, MathUtils.RoundToNearestInt(transform.position), Quaternion.identity);
 	}
 
 	// 방향에 따른 이동과 회전을 부드럽게 수행
