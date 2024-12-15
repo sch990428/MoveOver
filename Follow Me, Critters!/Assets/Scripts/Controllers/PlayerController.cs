@@ -69,23 +69,27 @@ public class PlayerController : CritterController
 				Vector3 destPosition = transform.position + moveDirection;
 				if (!isMoving)
 				{
+					bool isBlocked = false;
 					Collider[] hits = Physics.OverlapBox(destPosition, new Vector3(0.49f, 0.7f, 0.49f), Quaternion.identity, LayerMask.GetMask("Obstacle", "WallUp", "WallDown", "WallLeft", "WallRight"));
-
-					if (hits.Length > 0)
+					if (hits.Length > 0) 
 					{
-						break;
+						isBlocked = true;
+						transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(destPosition - transform.position), 0.3f);
 					}
 
-					isMoving = true;
-					StartCoroutine(Move(MathUtils.RoundToNearestInt(destPosition), moveDuration));
+					if (!isBlocked)
+					{
+						isMoving = true;
+						StartCoroutine(Move(MathUtils.RoundToNearestInt(destPosition), moveDuration));
 
-					// 부하들 순차적으로 이동
-					if (Critters.Count > 0)
-					{ 
-						Critters[0].MoveTo(prevPosition, moveDuration);
-						for (int i = 1; i < Critters.Count; i++)
-						{
-							Critters[i].MoveTo(Critters[i-1].prevPosition, moveDuration);
+						// 부하들 순차적으로 이동
+						if (Critters.Count > 0)
+						{ 
+							Critters[0].MoveTo(prevPosition, moveDuration);
+							for (int i = 1; i < Critters.Count; i++)
+							{
+								Critters[i].MoveTo(Critters[i-1].prevPosition, moveDuration);
+							}
 						}
 					}
 				}
@@ -139,11 +143,5 @@ public class PlayerController : CritterController
 		effects.transform.position = transform.position + Vector3.up * 0.5f;
 		Destroy(effects, 2f);
 		Instantiate(Bomb, MathUtils.RoundToNearestInt(transform.position), Quaternion.identity);
-	}
-
-	// 방향에 따른 이동과 회전을 부드럽게 수행
-	protected override IEnumerator Move(Vector3 destPosition, float duration)
-	{
-		yield return StartCoroutine(base.Move(destPosition, duration));
 	}
 }
