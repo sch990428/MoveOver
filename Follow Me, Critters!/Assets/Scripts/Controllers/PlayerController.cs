@@ -69,6 +69,13 @@ public class PlayerController : CritterController
 				Vector3 destPosition = transform.position + moveDirection;
 				if (!isMoving)
 				{
+					Collider[] hits = Physics.OverlapBox(destPosition, new Vector3(0.49f, 0.7f, 0.49f), Quaternion.identity, LayerMask.GetMask("Obstacle", "WallUp", "WallDown", "WallLeft", "WallRight"));
+
+					if (hits.Length > 0)
+					{
+						break;
+					}
+
 					isMoving = true;
 					StartCoroutine(Move(MathUtils.RoundToNearestInt(destPosition), moveDuration));
 
