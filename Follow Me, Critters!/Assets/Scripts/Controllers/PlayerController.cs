@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -39,6 +40,7 @@ public class PlayerController : CritterController
 		{
 			GameObject go = Instantiate(CritterPrefab);
 			CritterController critter = go.GetComponent<CritterController>();
+			critter.order = Critters.Count;
 			if (Critters.Count > 0)
 			{
 				go.transform.position = Critters[Critters.Count - 1].prevPosition;
@@ -142,5 +144,24 @@ public class PlayerController : CritterController
 		effects.transform.position = transform.position + Vector3.up * 0.5f;
 		Destroy(effects, 2f);
 		Instantiate(Bomb, MathUtils.RoundToNearestInt(transform.position), Quaternion.identity);
+	}
+
+	private void OnTriggerEnter(Collider other)
+	{
+		if (other.CompareTag("Critter"))
+		{
+			CritterController critter = other.GetComponent<CritterController>();
+			if (critter.order != 0) { Damage(critter.order); } // 첫번째 부하와는 충돌이 불가능
+		}
+	}
+
+	public void Damage(int index)
+	{
+		for (int i = index; i < Critters.Count; i++)
+		{
+			Critters[i].Retire();
+		}
+
+		Critters.RemoveRange(index, Critters.Count - index);
 	}
 }

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8650312939509387421}
   - component: {fileID: 6984214827395291270}
   - component: {fileID: 3878569803645478000}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Rooster
   m_TagString: Critter
   m_Icon: {fileID: 0}
@@ -107,7 +107,7 @@ GameObject:
   - component: {fileID: 2217168058045885142}
   - component: {fileID: 6594239591750519758}
   - component: {fileID: 3986262578475187415}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: default
   m_TagString: Untagged
   m_Icon: {fileID: 0}

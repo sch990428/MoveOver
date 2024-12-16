@@ -1925,6 +1925,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15155dcf9ba96e14f9e2e19d6d00f448, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  order: 0
+  isRetire: 0
   prevPosition: {x: 0, y: 0, z: 0}
   CritterPrefab: {fileID: 3413039742064894292, guid: d3df3632ccdf97a4e979f75fd296741a, type: 3}
   Critters: []
@@ -2291,7 +2293,7 @@ GameObject:
   - component: {fileID: 1847227771}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

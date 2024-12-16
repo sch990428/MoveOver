@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class AutoDestroy : MonoBehaviour
 {
+	// 특정 시간 후에 자동으로 사라짐
     [SerializeField] private float timer;
 
 	private void Awake()

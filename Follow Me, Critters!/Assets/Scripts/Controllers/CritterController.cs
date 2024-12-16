@@ -1,15 +1,30 @@
 ﻿using System.Collections;
 using System.Runtime.CompilerServices;
+using UnityEditor.EditorTools;
 using UnityEngine;
 
 public class CritterController : MonoBehaviour
 {
+	// 부하 상태 관련
+	public int order;
+	public bool isRetire;
+
+	// 충돌 관련
+	private Collider _collider;
+	private Rigidbody _rigidBody;
+
 	// 이동 관련
 	protected Vector3 moveDirection = Vector3.zero;
 	public Vector3 prevPosition;
 	protected float height;
 	protected bool isMoving;
 	protected bool isSpinned;
+
+	private void Awake()
+	{
+		_collider = GetComponent<Collider>();
+		_rigidBody = GetComponent<Rigidbody>();
+	}
 
 	public void MoveTo(Vector3 destPosition, float moveDuration)
 	{
@@ -113,6 +128,34 @@ public class CritterController : MonoBehaviour
 		if (other.CompareTag("Bomb"))
 		{
 			StartCoroutine(SpinJump());
+		}
+	}
+
+	public void Retire()
+	{
+		if (!isRetire)
+		{
+			isRetire = true;
+
+			_rigidBody.constraints = RigidbodyConstraints.None;
+			_rigidBody.isKinematic = false;
+			_collider.enabled = false;
+
+			Vector3 randomDirection = new Vector3(Random.Range(0.5f, 1f), 0f, Random.Range(0.5f, 1f));
+
+			int r = Random.Range(0, 2);
+			if (r == 0)
+			{
+				randomDirection = -randomDirection;
+			}
+
+			randomDirection = randomDirection.normalized;
+			randomDirection.y = 1f;
+
+			_rigidBody.AddForce(randomDirection * 40, ForceMode.Impulse);
+			_rigidBody.AddTorque(randomDirection * 5, ForceMode.Impulse);
+
+			Destroy(gameObject, 1f);
 		}
 	}
 }

@@ -128,6 +128,7 @@ public class BombController : MonoBehaviour
         Explode();
     }
 
+	// 폭발 범위에 이펙트를 출력하고 데미지
     private void Explode()
     {
 		foreach (GameObject area in ExplodeAreas)
