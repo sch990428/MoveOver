@@ -4937,7 +4937,7 @@ GameObject:
   - component: {fileID: 6774150665843225343}
   m_Layer: 0
   m_Name: Bomb
-  m_TagString: Untagged
+  m_TagString: Bomb
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4975,6 +4975,7 @@ MonoBehaviour:
   TimerUI: {fileID: 4420111195750092602}
   RangeGridPrefab: {fileID: 5233016684673575833, guid: 88ac0aae67d5aec4dae553d448a7ff57, type: 3}
   ExplosionEffectPrefab: {fileID: 4161266313794870105, guid: ac66da3557a482244b79b01361c46a38, type: 3}
+  UpgradeEffectPrefab: {fileID: 8228797135324754483, guid: a1a0a04d1efc11d44ad6c2928452a577, type: 3}
 --- !u!65 &-1463134582144116024
 BoxCollider:
   m_ObjectHideFlags: 0

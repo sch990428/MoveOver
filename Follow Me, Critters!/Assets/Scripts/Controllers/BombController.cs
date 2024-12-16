@@ -20,10 +20,11 @@ public class BombController : MonoBehaviour
 	private float height;
 
 	// 폭발 위력 관련
-	[SerializeField] GameObject ExplosionEffectPrefab;
 	private float damage;
-	
 
+	// 이펙트 관련
+	[SerializeField] GameObject ExplosionEffectPrefab;
+	[SerializeField] GameObject UpgradeEffectPrefab;
 
 	private void OnEnable()
     {
@@ -106,6 +107,10 @@ public class BombController : MonoBehaviour
 		GameObject go = Instantiate(RangeGridPrefab);
 		go.transform.position = newPos;
 		ExplodeAreas.Add(go);
+
+		GameObject effect = Instantiate(UpgradeEffectPrefab);
+		effect.transform.position = transform.position + Vector3.up * 0.5f;
+
 		maxTimer += 0.3f;
 		timer += 0.3f;
 		damage += 1f;
@@ -130,7 +135,6 @@ public class BombController : MonoBehaviour
 			GameObject go = Instantiate(ExplosionEffectPrefab);
 			Destroy(area);
 			go.transform.position = new Vector3(area.transform.position.x, height, area.transform.position.z);
-			Destroy(go, 1f);
 		}
 
 		Destroy(gameObject);

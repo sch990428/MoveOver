@@ -54,7 +54,6 @@ public class PlayerController : CritterController
 			
 			GameObject effects = Instantiate(SpawnEffect);
 			effects.transform.position = go.transform.position + Vector3.up * 0.5f;
-			Destroy(effects, 2f);
 			Critters.Add(critter);
 		}
 
