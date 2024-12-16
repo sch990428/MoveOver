@@ -18,6 +18,7 @@ public class PlayerController : CritterController
 
 	// 플레이어 이동 관련
 	private float moveDuration = 0.3f;
+	private Vector3 prevDirection;
 
 	// 플레이어 부하 관련
 	[SerializeField] private GameObject CritterPrefab;
@@ -78,9 +79,16 @@ public class PlayerController : CritterController
 						transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(destPosition - transform.position), 0.3f);
 					}
 
+					// 부하가 하나라도 존재하면 직접 후진 불가능
+					if (Critters.Count > 0 && prevDirection + moveDirection == Vector3.zero)
+					{
+						isBlocked = true;
+					}
+
 					if (!isBlocked)
 					{
 						isMoving = true;
+						prevDirection = moveDirection;
 						StartCoroutine(Move(MathUtils.RoundToNearestInt(destPosition), moveDuration));
 
 						// 부하들 순차적으로 이동
