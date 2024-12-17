@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5086908051439178987}
   - component: {fileID: 675537891485884852}
   - component: {fileID: 1357324695957114147}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Fuse Effect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4859,7 +4859,7 @@ GameObject:
   - component: {fileID: 6652437937687114420}
   - component: {fileID: 9209279705589535457}
   - component: {fileID: 4420111195750092602}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Timer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4935,7 +4935,7 @@ GameObject:
   - component: {fileID: 4586751223485164254}
   - component: {fileID: -1463134582144116024}
   - component: {fileID: 6774150665843225343}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Bomb
   m_TagString: Bomb
   m_Icon: {fileID: 0}
@@ -5035,7 +5035,7 @@ GameObject:
   - component: {fileID: 6860727816800546276}
   - component: {fileID: 412952959864991241}
   - component: {fileID: 2303223273902066122}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5123,7 +5123,7 @@ GameObject:
   - component: {fileID: 3259950800288358039}
   - component: {fileID: 9092216499719709653}
   - component: {fileID: 2206528015159466088}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Bomb Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}

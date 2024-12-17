@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Critter
   - Bomb
+  - FxTemporaire
   layers:
   - Default
   - TransparentFX
@@ -19,7 +20,7 @@ TagManager:
   - WallRight
   - Obstacle
   - Critter
-  - 
+  - Bomb
   - 
   - 
   - 

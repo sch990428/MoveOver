@@ -238,7 +238,7 @@ GameObject:
   m_Component:
   - component: {fileID: 125649895}
   - component: {fileID: 125649896}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Direction Arrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -918,7 +918,7 @@ GameObject:
   m_Component:
   - component: {fileID: 446328281}
   - component: {fileID: 446328282}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Position Indicator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2292,7 +2292,7 @@ GameObject:
   - component: {fileID: 1847227773}
   - component: {fileID: 1847227772}
   - component: {fileID: 1847227771}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -2378,7 +2378,7 @@ GameObject:
   - component: {fileID: 1151388027976295370}
   - component: {fileID: 2823090748164414080}
   - component: {fileID: 1587545475629399572}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: default
   m_TagString: Untagged
   m_Icon: {fileID: 0}

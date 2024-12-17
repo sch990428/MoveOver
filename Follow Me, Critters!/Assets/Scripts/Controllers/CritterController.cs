@@ -98,6 +98,7 @@ public class CritterController : MonoBehaviour
 
 		while (elapsedTime < duration)
 		{
+			if (isRetire) { yield break; }
 			elapsedTime += Time.deltaTime;
 			float t = elapsedTime / duration;
 

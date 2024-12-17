@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -15,6 +16,7 @@ public class PlayerController : CritterController
 		GameOver,
 	}
 	private PlayerState state;
+	private bool isDamageable = true;
 
 	// 플레이어 이동 관련
 	private float moveDuration = 0.3f;
@@ -152,7 +154,8 @@ public class PlayerController : CritterController
 		GameObject effects = Instantiate(SpawnEffect);
 		effects.transform.position = transform.position + Vector3.up * 0.5f;
 		Destroy(effects, 2f);
-		Instantiate(Bomb, MathUtils.RoundToNearestInt(transform.position), Quaternion.identity);
+		GameObject bomb = Instantiate(Bomb, MathUtils.RoundToNearestInt(transform.position), Quaternion.identity);
+		bomb.GetComponent<BombController>().Player = this;
 	}
 
 	private void OnTriggerEnter(Collider other)
@@ -164,15 +167,42 @@ public class PlayerController : CritterController
 		}
 	}
 
-	public void Damage(int index)
+	// 플레이어와 부하들에게 데미지
+	public void Damage(int hitPoint)
 	{
-		GameObject effect = Instantiate(MeleeHitEffect);
-		effect.transform.position = Critters[index].transform.position + Vector3.up * 0.5f;
-		for (int i = index; i < Critters.Count; i++)
+		if (!isDamageable) { return; }
+		isDamageable = false;
+
+		if (hitPoint < 0)
 		{
-			Critters[i].Retire();
+			// 플레이어가 직격당한 경우
+			if (Critters.Count > 0)
+			{
+				foreach (CritterController c in Critters)
+				{
+					c.Retire();
+				}
+
+				Critters.Clear();
+			}
+
+			// TODO : 체력에 데미지 및 UI 업데이트
+		}
+		else if (hitPoint >= Critters.Count)
+		{
+			return;
+		}
+		else
+		{
+			// 부하가 피격당한 경우
+			for (int i = hitPoint; i < Critters.Count; i++)
+			{
+				Critters[i].Retire();
+			}
+
+			Critters.RemoveRange(hitPoint, Critters.Count - hitPoint);
 		}
 
-		Critters.RemoveRange(index, Critters.Count - index);
+		isDamageable = true;
 	}
 }

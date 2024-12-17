@@ -8,7 +8,10 @@ using static UnityEditor.PlayerSettings;
 public class BombController : MonoBehaviour
 {
 	// 상태 관련
+	public PlayerController Player;
 	private bool passCreator = false;
+
+
     // 타이머 관련
     [SerializeField] Image TimerUI;
     private float timer;
@@ -34,7 +37,7 @@ public class BombController : MonoBehaviour
 		CandidatePosStack = new Stack<Vector3>();
 		wide = 0;
 		timer = 3f;
-        maxTimer = 10f;
+        maxTimer = 3f;
         damage = 3f;
 		height = 0.01f;
 		Init();
@@ -110,7 +113,6 @@ public class BombController : MonoBehaviour
 			}
 
 			// 셔플
-
 			for (int i = CandidatePosList.Count - 1; i > 0; i--)
 			{
 				int j = Random.Range(0, i + 1);
@@ -152,13 +154,35 @@ public class BombController : MonoBehaviour
 	// 폭발 범위에 이펙트를 출력하고 데미지
     private void Explode()
     {
+		int frontest = int.MaxValue;
+		// 폭발 이펙트 출력 및 범위 그리드 제거
 		foreach (GameObject area in ExplodeAreas)
 		{
 			GameObject go = Instantiate(ExplosionEffectPrefab);
 			Destroy(area);
 			go.transform.position = new Vector3(area.transform.position.x, height, area.transform.position.z);
+
+			// 피폭 확인
+			Collider[] hits = Physics.OverlapBox(area.transform.position, new Vector3(0.5f, 0.7f, 0.5f), Quaternion.identity, LayerMask.GetMask("Critter", "Enemy", "Obstacle", "Bomb"));
+
+			foreach (Collider hit in hits)
+			{
+				if (hit.CompareTag("Critter"))
+				{
+					CritterController critter = hit.GetComponent<CritterController>();
+					if (!critter.isRetire)
+					{
+						frontest = Mathf.Min(critter.order, frontest);
+					}
+				}
+				else if (hit.CompareTag("Player"))
+				{
+					frontest = -1;
+				}
+			}
 		}
 
+		if (frontest < int.MaxValue) { Player.Damage(frontest); }
 		Destroy(gameObject);
 	}
 }
