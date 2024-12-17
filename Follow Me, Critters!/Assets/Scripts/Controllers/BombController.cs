@@ -7,6 +7,8 @@ using static UnityEditor.PlayerSettings;
 
 public class BombController : MonoBehaviour
 {
+	// 상태 관련
+	private bool passCreator = false;
     // 타이머 관련
     [SerializeField] Image TimerUI;
     private float timer;
@@ -57,11 +59,30 @@ public class BombController : MonoBehaviour
 
 	private void OnTriggerEnter(Collider other)
 	{
-		if (other.transform.CompareTag("Critter"))
+		if (other.transform.CompareTag("Player"))
 		{
-			Debug.Log("강화");
+			if (passCreator)
+			{
+				ForceExplode();
+			}
+		}
+		else if (other.transform.CompareTag("Critter"))
+		{
 			AddRange();
 		}
+	}
+
+	private void OnTriggerExit(Collider other)
+	{
+		if (other.transform.CompareTag("Player"))
+		{
+			passCreator = true;
+		}
+	}
+
+	private void ForceExplode()
+	{
+		timer = 0.0f;
 	}
 
 	public void AddRange()
