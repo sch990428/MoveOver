@@ -26,6 +26,7 @@ public class PlayerController : CritterController
 
 	// 이펙트 관련
 	[SerializeField] private GameObject SpawnEffect;
+	[SerializeField] private GameObject MeleeHitEffect;
 
 	// 폭탄 관련
 	[SerializeField] private GameObject Bomb;
@@ -165,6 +166,8 @@ public class PlayerController : CritterController
 
 	public void Damage(int index)
 	{
+		GameObject effect = Instantiate(MeleeHitEffect);
+		effect.transform.position = Critters[index].transform.position + Vector3.up * 0.5f;
 		for (int i = index; i < Critters.Count; i++)
 		{
 			Critters[i].Retire();
