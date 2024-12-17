@@ -1261,7 +1261,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1069121868}
   m_Layer: 0
-  m_Name: Stage 0
+  m_Name: Chapter 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1889,7 +1889,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1792193292}
   m_Layer: 0
-  m_Name: Map 1
+  m_Name: Stage 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
