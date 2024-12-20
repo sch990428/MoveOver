@@ -149,6 +149,7 @@ public class PlayerController : CritterController
 		moveDirection.Normalize();
 	}
 
+	// 공격 동작
 	private void OnAttack(InputValue value)
 	{
 		GameObject effects = Instantiate(SpawnEffect);
@@ -158,12 +159,19 @@ public class PlayerController : CritterController
 		bomb.GetComponent<BombController>().Player = this;
 	}
 
+	// 충돌 판정
 	private void OnTriggerEnter(Collider other)
 	{
 		if (other.CompareTag("Critter"))
 		{
 			CritterController critter = other.GetComponent<CritterController>();
-			if (critter.order != 0) { Damage(critter.order); } // 첫번째 부하와는 충돌이 불가능
+			// 첫번째 부하와는 충돌이 불가능
+			if (critter.order != 0)
+			{
+				GameObject effect = Instantiate(MeleeHitEffect);
+				effect.transform.position = other.transform.position + Vector3.up * 0.5f;
+				Damage(critter.order);
+			}
 		}
 	}
 
