@@ -179,6 +179,14 @@ public class BombController : MonoBehaviour
 				{
 					frontest = -1;
 				}
+				else if (hit.CompareTag("Obstacle"))
+				{
+					IBlock block = hit.GetComponent<IBlock>();
+					if (block != null && block.BlockType == Define.BlockType.Explodable)
+					{
+						hit.GetComponent<IExplodable>().Explode();
+					}
+				}
 			}
 		}
 

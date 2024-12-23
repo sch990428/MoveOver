@@ -328,9 +328,10 @@ GameObject:
   - component: {fileID: 280014359}
   - component: {fileID: 280014358}
   - component: {fileID: 280014361}
+  - component: {fileID: 280014362}
   m_Layer: 10
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -451,6 +452,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
+--- !u!114 &280014362
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 280014356}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8cb675eb4272cb1439695a2b219f59d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 1
+  DestroyEffect: {fileID: 6813416509558619124, guid: dae5f6666f0fddf4f8ea428e15849e72, type: 3}
 --- !u!1 &300162414
 GameObject:
   m_ObjectHideFlags: 0

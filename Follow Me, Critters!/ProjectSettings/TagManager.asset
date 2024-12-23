@@ -7,6 +7,7 @@ TagManager:
   - Critter
   - Bomb
   - FxTemporaire
+  - Obstacle
   layers:
   - Default
   - TransparentFX
@@ -46,6 +47,12 @@ TagManager:
     locked: 0
   - name: Indicator
     uniqueID: 3481175413
+    locked: 0
+  - name: Particle
+    uniqueID: 677632571
+    locked: 0
+  - name: UI
+    uniqueID: 154825241
     locked: 0
   m_RenderingLayers:
   - Default
