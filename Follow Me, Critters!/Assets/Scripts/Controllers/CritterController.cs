@@ -124,6 +124,29 @@ public class CritterController : MonoBehaviour
 		isMoving = false;
 	}
 
+	// 회피 시 옆으로 점프 이동
+	protected virtual IEnumerator Sprint(Vector3 destPosition, float duration)
+	{
+		prevPosition = MathUtils.RoundToNearestInt(transform.position);
+
+		float elapsedTime = 0f;
+		while (elapsedTime < duration)
+		{
+			elapsedTime += Time.deltaTime;
+			float t = elapsedTime / duration;
+
+			height = Mathf.Sin(t * Mathf.PI) * 0.3f;
+
+			transform.position = Vector3.Lerp(new Vector3(prevPosition.x, height, prevPosition.z), new Vector3(destPosition.x, height, destPosition.z), t);
+			yield return null;
+		}
+
+		transform.position = destPosition;
+		height = 0;
+		isMoving = false;
+	}
+
+
 	private void OnTriggerEnter(Collider other)
 	{
 		if (other.CompareTag("Bomb"))

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class PlayerController : CritterController
 {
@@ -21,6 +22,7 @@ public class PlayerController : CritterController
 	// 플레이어 이동 관련
 	private float moveDuration = 0.3f;
 	private Vector3 prevDirection;
+	private bool isSprint;
 
 	// 플레이어 부하 관련
 	[SerializeField] private GameObject CritterPrefab;
@@ -147,6 +149,12 @@ public class PlayerController : CritterController
 		int viewIndex = Camera.main.GetComponent<CameraController>().viewIndex;
 		moveDirection = Quaternion.Euler(0, 90 * (viewIndex + 1), 0) * moveDirection;
 		moveDirection.Normalize();
+	}
+
+	// 옆걸음 동작 토글
+	private void OnSprint(InputValue value)
+	{
+		isSprint = value.isPressed;
 	}
 
 	// 공격 동작
