@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Splines;
 using UnityEngine.UI;
 
 public class PlayerController : CritterController
@@ -21,6 +22,7 @@ public class PlayerController : CritterController
 
 	// 플레이어 이동 관련
 	private float moveDuration = 0.3f;
+	private float sprintDuration = 0.1f;
 	private Vector3 prevDirection;
 	private bool isSprint;
 
@@ -76,35 +78,13 @@ public class PlayerController : CritterController
 				Vector3 destPosition = transform.position + moveDirection;
 				if (!isMoving)
 				{
-					bool isBlocked = false;
-					Collider[] hits = Physics.OverlapBox(destPosition, new Vector3(0.49f, 0.7f, 0.49f), Quaternion.identity, LayerMask.GetMask("Obstacle", "WallUp", "WallDown", "WallLeft", "WallRight"));
-					if (hits.Length > 0) 
+					if (!isSprint)
 					{
-						isBlocked = true;
-						transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(destPosition - transform.position), 0.3f);
+						Walk(destPosition);
 					}
-
-					// 부하가 하나라도 존재하면 직접 후진 불가능
-					if (Critters.Count > 0 && prevDirection + moveDirection == Vector3.zero)
+					else
 					{
-						isBlocked = true;
-					}
-
-					if (!isBlocked)
-					{
-						isMoving = true;
-						prevDirection = moveDirection;
-						StartCoroutine(Move(MathUtils.RoundToNearestInt(destPosition), moveDuration));
-
-						// 부하들 순차적으로 이동
-						if (Critters.Count > 0)
-						{ 
-							Critters[0].MoveTo(prevPosition, moveDuration);
-							for (int i = 1; i < Critters.Count; i++)
-							{
-								Critters[i].MoveTo(Critters[i-1].prevPosition, moveDuration);
-							}
-						}
+						Sprint(destPosition);
 					}
 				}
 				break;
@@ -114,6 +94,57 @@ public class PlayerController : CritterController
 
 			case PlayerState.GameOver:
 				break;
+		}
+	}
+
+	// 단순 이동 로직
+	private void Walk(Vector3 destPosition)
+	{
+		bool isBlocked = false;
+		Collider[] hits = Physics.OverlapBox(destPosition, new Vector3(0.49f, 0.7f, 0.49f), Quaternion.identity, LayerMask.GetMask("Obstacle", "WallUp", "WallDown", "WallLeft", "WallRight"));
+		if (hits.Length > 0)
+		{
+			isBlocked = true;
+			transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(destPosition - transform.position), 0.3f);
+		}
+
+		// 부하가 하나라도 존재하면 직접 후진 불가능
+		if (Critters.Count > 0 && prevDirection + moveDirection == Vector3.zero)
+		{
+			isBlocked = true;
+		}
+
+		if (!isBlocked)
+		{
+			isMoving = true;
+			prevDirection = moveDirection;
+			StartCoroutine(Move(MathUtils.RoundToNearestInt(destPosition), moveDuration));
+
+			// 부하들 순차적으로 이동
+			if (Critters.Count > 0)
+			{
+				Critters[0].MoveTo(prevPosition, moveDuration);
+				for (int i = 1; i < Critters.Count; i++)
+				{
+					Critters[i].MoveTo(Critters[i - 1].prevPosition, moveDuration);
+				}
+			}
+		}
+	}
+
+	// 회피 이동 로직
+	private void Sprint(Vector3 destPosition)
+	{
+		isMoving = true;
+		StartCoroutine(Sprint(MathUtils.RoundToNearestInt(destPosition), sprintDuration));
+
+		// 부하들 순차적으로 이동
+		if (Critters.Count > 0)
+		{
+			foreach (CritterController critter in Critters)
+			{
+				critter.SprintTo(critter.transform.position + moveDirection, sprintDuration);
+			}
 		}
 	}
 

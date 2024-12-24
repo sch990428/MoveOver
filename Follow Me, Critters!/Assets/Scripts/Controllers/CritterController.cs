@@ -19,6 +19,7 @@ public class CritterController : MonoBehaviour
 	protected float height;
 	protected bool isMoving;
 	protected bool isSpinned;
+	private float sprintDelay = 0.4f;
 
 	private void Awake()
 	{
@@ -32,6 +33,15 @@ public class CritterController : MonoBehaviour
 		{
 			isMoving = true;
 			StartCoroutine(Move(MathUtils.RoundToNearestInt(destPosition), moveDuration));
+		}
+	}
+
+	public void SprintTo(Vector3 destPosition, float moveDuration)
+	{
+		if (!isMoving)
+		{
+			isMoving = true;
+			StartCoroutine(Sprint(MathUtils.RoundToNearestInt(destPosition), moveDuration));
 		}
 	}
 
@@ -143,9 +153,14 @@ public class CritterController : MonoBehaviour
 
 		transform.position = destPosition;
 		height = 0;
-		isMoving = false;
+		StartCoroutine(SprintDelay());
 	}
 
+	private IEnumerator SprintDelay()
+	{
+		yield return new WaitForSeconds(sprintDelay);
+		isMoving = false;
+	}
 
 	private void OnTriggerEnter(Collider other)
 	{
