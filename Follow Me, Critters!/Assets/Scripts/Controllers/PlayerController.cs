@@ -22,7 +22,7 @@ public class PlayerController : CritterController
 
 	// 플레이어 이동 관련
 	private float moveDuration = 0.3f;
-	private float sprintDuration = 0.1f;
+	private float sprintDuration = 0.15f;
 	private Vector3 prevDirection;
 	private bool isSprint;
 
