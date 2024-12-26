@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Cinemachine;
 using UnityEditor.EditorTools;
 using UnityEngine;
 using UnityEngine.UI;
@@ -191,6 +192,11 @@ public class BombController : MonoBehaviour
 		}
 
 		if (frontest < int.MaxValue) { Player.Damage(frontest); }
+
+		// 카메라 흔들림
+		CameraController cam = Camera.main.GetComponent<CameraController>();
+		cam.OnShakeCameraByPosition();
+
 		Destroy(gameObject);
 	}
 }

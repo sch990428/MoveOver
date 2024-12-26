@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using Unity.Cinemachine;
 using UnityEngine;
@@ -9,10 +10,15 @@ public class CameraController : MonoBehaviour
 	[SerializeField] private List<CinemachineCamera> camerasViews;
 	private Camera mainCamera;
 
+	// 시점 관련
 	public int viewIndex = 0;
 	private bool isRotatable = true;
 
-	// 벽 렌더링 마스크
+	// 카메라 흔들림 관련
+	private float shakeTime;
+	private float shakeIntensity;
+
+	// 벽 렌더링 마스크 관련
 	private int wallNorthMask;
 	private int wallEastMask;
 	private int wallSouthMask;
@@ -65,6 +71,7 @@ public class CameraController : MonoBehaviour
 		}
 	}
 
+	// 카메라 시점 스위칭
 	private void UpdateCameraAndMask()
 	{
 		for (int i = 0; i < 4; i++)
@@ -90,5 +97,32 @@ public class CameraController : MonoBehaviour
 				mainCamera.cullingMask = -1;
 				break;
 		}
+	}
+
+	// 카메라 흔들림 효과
+	public void OnShakeCameraByPosition(float shakeTime = 0.3f, float shakeIntensity = 0.5f)
+	{
+		this.shakeTime = shakeTime;
+		this.shakeIntensity = shakeIntensity;
+		StopCoroutine(ShakeByPosition());
+		StartCoroutine(ShakeByPosition());
+	}
+
+	private IEnumerator ShakeByPosition()
+	{
+		CinemachineBasicMultiChannelPerlin perlin =
+		camerasViews[viewIndex].GetComponent<CinemachineBasicMultiChannelPerlin>();
+		perlin.AmplitudeGain = shakeIntensity;
+		perlin.FrequencyGain = shakeIntensity;
+
+		while (shakeTime > 0f)
+		{
+			shakeTime -= Time.deltaTime;
+
+			yield return null;
+		}
+
+		perlin.AmplitudeGain = 0;
+		perlin.FrequencyGain = 0;
 	}
 }
