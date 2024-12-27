@@ -2,6 +2,7 @@
 using System.Runtime.CompilerServices;
 using UnityEditor.EditorTools;
 using UnityEngine;
+using UnityEngine.Splines;
 
 public class CritterController : MonoBehaviour
 {
@@ -160,6 +161,14 @@ public class CritterController : MonoBehaviour
 	{
 		yield return new WaitForSeconds(sprintDelay);
 		isMoving = false;
+	}
+
+	public bool IsBlockedAtDirection(Vector3 targetDirection)
+	{
+		Collider[] hits = Physics.OverlapBox(transform.position + targetDirection, new Vector3(0.49f, 0.7f, 0.49f), Quaternion.identity, 
+			LayerMask.GetMask("Obstacle", "WallUp", "WallDown", "WallLeft", "WallRight"));
+
+		return hits.Length > 0;
 	}
 
 	private void OnTriggerEnter(Collider other)

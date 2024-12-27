@@ -135,6 +135,13 @@ public class PlayerController : CritterController
 	// 회피 이동 로직
 	private void Sprint(Vector3 destPosition)
 	{
+		// 모든 부하들을 순회하여 방향에 장애물이 없는지 체크
+		if (IsBlockedAtDirection(moveDirection)) { return; }
+		foreach (CritterController c in Critters)
+		{
+			if (c.IsBlockedAtDirection(moveDirection)) { return; }
+		}
+
 		isMoving = true;
 		StartCoroutine(Sprint(MathUtils.RoundToNearestInt(destPosition), sprintDuration));
 
