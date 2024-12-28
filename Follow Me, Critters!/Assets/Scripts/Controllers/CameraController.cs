@@ -100,15 +100,15 @@ public class CameraController : MonoBehaviour
 	}
 
 	// 카메라 흔들림 효과
-	public void OnShakeCameraByPosition(float shakeTime = 0.3f, float shakeIntensity = 0.5f)
+	public void OnShakeCamera(float shakeTime = 0.1f, float shakeIntensity = 0.5f)
 	{
 		this.shakeTime = shakeTime;
 		this.shakeIntensity = shakeIntensity;
-		StopCoroutine(ShakeByPosition());
-		StartCoroutine(ShakeByPosition());
+		StopCoroutine(Shake());
+		StartCoroutine(Shake());
 	}
 
-	private IEnumerator ShakeByPosition()
+	private IEnumerator Shake()
 	{
 		CinemachineBasicMultiChannelPerlin perlin =
 		camerasViews[viewIndex].GetComponent<CinemachineBasicMultiChannelPerlin>();

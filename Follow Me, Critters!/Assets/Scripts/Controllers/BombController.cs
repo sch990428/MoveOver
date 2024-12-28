@@ -195,7 +195,7 @@ public class BombController : MonoBehaviour
 
 		// 카메라 흔들림
 		CameraController cam = Camera.main.GetComponent<CameraController>();
-		cam.OnShakeCameraByPosition();
+		cam.OnShakeCamera();
 
 		Destroy(gameObject);
 	}
