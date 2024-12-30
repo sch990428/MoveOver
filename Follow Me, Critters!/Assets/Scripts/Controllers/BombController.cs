@@ -202,6 +202,7 @@ public class BombController : MonoBehaviour
 		CameraController cam = Camera.main.GetComponent<CameraController>();
 		cam.OnShakeCamera();
 
+		Player.CurrentBomb++;
 		Destroy(gameObject);
 	}
 }

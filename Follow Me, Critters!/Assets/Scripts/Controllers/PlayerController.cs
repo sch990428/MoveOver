@@ -36,6 +36,8 @@ public class PlayerController : CritterController
 
 	// 폭탄 관련
 	[SerializeField] private GameObject Bomb;
+	private int MaxBomb = 3;
+	public int CurrentBomb = 3;
 
 	private void Awake()
 	{
@@ -198,11 +200,16 @@ public class PlayerController : CritterController
 	// 공격 동작
 	private void OnAttack(InputValue value)
 	{
-		GameObject effects = Instantiate(SpawnEffect);
-		effects.transform.position = transform.position + Vector3.up * 0.5f;
-		Destroy(effects, 2f);
-		GameObject bomb = Instantiate(Bomb, MathUtils.RoundToNearestInt(transform.position), Quaternion.identity);
-		bomb.GetComponent<BombController>().Player = this;
+		if (CurrentBomb > 0)
+		{
+			GameObject effects = Instantiate(SpawnEffect);
+			effects.transform.position = transform.position + Vector3.up * 0.5f;
+			Destroy(effects, 2f);
+			GameObject bomb = Instantiate(Bomb, MathUtils.RoundToNearestInt(transform.position), Quaternion.identity);
+			bomb.GetComponent<BombController>().Player = this;
+
+			CurrentBomb--;
+		}
 	}
 
 	// 충돌 판정

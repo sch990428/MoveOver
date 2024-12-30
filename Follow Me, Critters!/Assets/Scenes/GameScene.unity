@@ -464,7 +464,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cb675eb4272cb1439695a2b219f59d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 1
   DestroyEffect: {fileID: 6813416509558619124, guid: dae5f6666f0fddf4f8ea428e15849e72, type: 3}
 --- !u!1 &300162414
 GameObject:
@@ -2020,6 +2019,7 @@ MonoBehaviour:
   SpawnEffect: {fileID: 6813416509558619124, guid: dae5f6666f0fddf4f8ea428e15849e72, type: 3}
   MeleeHitEffect: {fileID: 141433446842962269, guid: a0dc50f903d22bc4784f183c0b8c771c, type: 3}
   Bomb: {fileID: 2311838251336603965, guid: ff485eb233bf5b949a7a4b3a04a8dda5, type: 3}
+  CurrentBomb: 3
 --- !u!114 &1847227772
 MonoBehaviour:
   m_ObjectHideFlags: 0
