@@ -36,7 +36,7 @@ public class PlayerController : CritterController
 
 	// 폭탄 관련
 	[SerializeField] private GameObject Bomb;
-	private int MaxBomb = 3;
+	public int MaxBomb = 3;
 	public int CurrentBomb = 3;
 
 	private void Awake()
