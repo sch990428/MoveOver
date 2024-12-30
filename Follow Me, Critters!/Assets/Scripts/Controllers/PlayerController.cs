@@ -48,25 +48,7 @@ public class PlayerController : CritterController
 	{
 		if (Input.GetKeyDown(KeyCode.X))
 		{
-			GameObject go = Instantiate(CritterPrefab);
-			CritterController critter = go.GetComponent<CritterController>();
-			critter.order = Critters.Count;
-			if (Critters.Count > 0)
-			{
-				go.transform.position = Critters[Critters.Count - 1].prevPosition;
-				critter.prevPosition = go.transform.position;
-				go.transform.rotation = Critters[Critters.Count - 1].transform.rotation;
-			}
-			else
-			{
-				go.transform.position = prevPosition;
-				critter.prevPosition = go.transform.position;
-				go.transform.rotation = transform.rotation;
-			}
-			
-			GameObject effects = Instantiate(SpawnEffect);
-			effects.transform.position = go.transform.position + Vector3.up * 0.5f;
-			Critters.Add(critter);
+			AddCritter();
 		}
 
 		// 캐릭터의 상태값에 따른 동작 수행
@@ -97,6 +79,29 @@ public class PlayerController : CritterController
 			case PlayerState.GameOver:
 				break;
 		}
+	}
+
+	private void AddCritter()
+	{
+		GameObject go = Instantiate(CritterPrefab);
+		CritterController critter = go.GetComponent<CritterController>();
+		critter.order = Critters.Count;
+		if (Critters.Count > 0)
+		{
+			go.transform.position = Critters[Critters.Count - 1].prevPosition;
+			critter.prevPosition = go.transform.position;
+			go.transform.rotation = Critters[Critters.Count - 1].transform.rotation;
+		}
+		else
+		{
+			go.transform.position = prevPosition;
+			critter.prevPosition = go.transform.position;
+			go.transform.rotation = transform.rotation;
+		}
+
+		GameObject effects = Instantiate(SpawnEffect);
+		effects.transform.position = go.transform.position + Vector3.up * 0.5f;
+		Critters.Add(critter);
 	}
 
 	// 단순 이동 로직

@@ -2019,6 +2019,7 @@ MonoBehaviour:
   SpawnEffect: {fileID: 6813416509558619124, guid: dae5f6666f0fddf4f8ea428e15849e72, type: 3}
   MeleeHitEffect: {fileID: 141433446842962269, guid: a0dc50f903d22bc4784f183c0b8c771c, type: 3}
   Bomb: {fileID: 2311838251336603965, guid: ff485eb233bf5b949a7a4b3a04a8dda5, type: 3}
+  MaxBomb: 3
   CurrentBomb: 3
 --- !u!114 &1847227772
 MonoBehaviour:
