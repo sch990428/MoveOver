@@ -14,7 +14,6 @@ public class PlayerController : CritterController
 	{
 		Idle,
 		Move,
-		Attack,
 		GameOver,
 	}
 	private PlayerState state;
@@ -72,10 +71,6 @@ public class PlayerController : CritterController
 					}
 				}
 				break;
-
-			case PlayerState.Attack:
-				break;
-
 			case PlayerState.GameOver:
 				break;
 		}
