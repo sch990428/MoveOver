@@ -8,21 +8,13 @@ public class SoundManager : Singleton<SoundManager>
 
 	private AudioSource audioSource;
 
-	// 게임 사운드 요소 (순서 주의)
+	// 전역 게임 사운드 요소 (순서 주의)
 	public enum GameSound
 	{
-		CreateBomb,
-		EnhenceBomb,
-		Explode,
-		Damage,
-		CollectItem,
-		CollectCritter,
-		Break,
-		BossAwake,
-		BossRetire,
-		DoorOpen,
+
 	}
 
+	[Header("Global Game Sound")]
 	private Dictionary<GameSound, AudioClip> audioClipDict;
 
 	protected override void Awake()
