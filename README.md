@@ -1,6 +1,7 @@
 # Follow Me, Critters!
 따라와 꼬마들 - 액션 아케이드 게임
 
+MoveOver 은 부트캠프 제출용 프로젝트 
 Follow Me Critters! 은 지속 개발용 프로젝트
 
 
